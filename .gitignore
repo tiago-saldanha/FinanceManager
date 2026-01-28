@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/API/bin/Debug/net8.0
+/API/obj
+/API/Financeiro.db
+/API/Financeiro.db-shm
+/API/Financeiro.db-wal

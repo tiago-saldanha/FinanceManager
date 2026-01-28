@@ -1,0 +1,40 @@
+﻿using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
+
+namespace API.Infrastructure.Handlers;
+
+public class GlobalExceptionHandler : IExceptionHandler
+{
+    public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
+    {
+        var problemDetails = new ProblemDetails
+        {
+            Instance = httpContext.Request.Path
+        };
+
+        switch (exception)
+        {
+            case InvalidOperationException:
+                problemDetails.Status = StatusCodes.Status400BadRequest;
+                problemDetails.Title = "Regra de Negócio violada";
+                problemDetails.Detail = exception.Message;
+                break;
+
+            case KeyNotFoundException:
+                problemDetails.Status = StatusCodes.Status404NotFound;
+                problemDetails.Title = "Recurso não encontrado";
+                problemDetails.Detail = exception.Message;
+                break;
+
+            default:
+                problemDetails.Status = StatusCodes.Status500InternalServerError;
+                problemDetails.Title = "Erro interno no servidor";
+                problemDetails.Detail = "Ocorreu um erro inesperado. Tente novamente mais tarde.";
+                break;
+        }
+
+        httpContext.Response.StatusCode = problemDetails.Status.Value;
+        await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
+        return true;
+    }
+}
