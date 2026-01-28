@@ -20,6 +20,30 @@ namespace API.Application.Services
             return transactions.Select(TransactionResponse.Create);
         }
 
+        public async Task<IEnumerable<TransactionResponse>> GetByStatusAsync(string status)
+        {
+            var transactionStatus = Enum.Parse<TransactionStatus>(status, true);
+            var transactions = await context.Transactions
+                .Where(q => q.Status == transactionStatus)
+                .Include(q => q.Category)
+                .AsNoTracking()
+                .ToListAsync();
+
+            return transactions.Select(TransactionResponse.Create);
+        }
+
+        public async Task<IEnumerable<TransactionResponse>> GetByTypeAsync(string type)
+        {
+            var transactionType = Enum.Parse<TransactionType>(type, true);
+            var transactions = await context.Transactions
+                .Where(q => q.Type == transactionType)
+                .Include(q => q.Category)
+                .AsNoTracking()
+                .ToListAsync();
+
+            return transactions.Select(TransactionResponse.Create);
+        }
+
         public async Task<TransactionResponse> CreateAsync(CreateTransactionRequest request)
         {
             var transaction = Transaction.Create(

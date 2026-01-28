@@ -10,9 +10,13 @@ namespace API.Endpoints
         {
             var group = builder.MapGroup("/api/transactions");
             
-            group.MapGet("/all", async (TransactionService service) => Results.Ok(await service.GetAllAsync()));
-            
             group.MapGet("/{id:guid}", async (Guid id, TransactionService service) => Results.Ok(await service.GetByIdAsync(id)));
+            
+            group.MapGet("/all", async (TransactionService service) => Results.Ok(await service.GetAllAsync()));
+
+            group.MapGet("/status/{status}", async (TransactionService service, string status) => Results.Ok(await service.GetByStatusAsync(status)));
+
+            group.MapGet("/type/{type}", async (TransactionService service, string type) => Results.Ok(await service.GetByTypeAsync(type)));
             
             group.MapPut("/pay/{id:guid}", async (Guid id, PayTransactionRequest request, TransactionService service) => Results.Ok(await service.PaidAsync(request)));
             
