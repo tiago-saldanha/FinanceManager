@@ -1,4 +1,8 @@
 ﻿namespace API.Application.DTOs.Responses
 {
-    public record CategoryTotal(decimal Received, decimal Spent, decimal TotalValue);
+    public record CategoryTotal(
+        decimal Received, 
+        decimal Spent, 
+        decimal TotalValue
+    );
 }
