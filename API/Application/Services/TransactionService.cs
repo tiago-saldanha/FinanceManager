@@ -50,8 +50,9 @@ namespace API.Application.Services
                 request.Description,
                 request.Amount,
                 request.DueDate,
-                request.Type,
-                request.CategoryId
+                Enum.Parse<TransactionType>(request.Type, true),
+                request.CategoryId,
+                request.CreatedAt
             );
             
             context.Transactions.Add(transaction);

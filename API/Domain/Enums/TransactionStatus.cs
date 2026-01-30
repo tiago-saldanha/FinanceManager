@@ -5,6 +5,5 @@
         Pending,
         Paid,
         Cancelled,
-        Overdue
     }
 }

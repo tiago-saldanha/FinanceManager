@@ -5,6 +5,7 @@
         decimal Amount,
         DateTime DueDate,
         string Type,
-        Guid CategoryId
+        Guid CategoryId,
+        DateTime CreatedAt
     );
 }
