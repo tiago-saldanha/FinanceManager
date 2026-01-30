@@ -9,7 +9,7 @@ namespace API.Domain.ValueObjects
         public Money(decimal value)
         {
             if (value < 0)
-                throw new TransactionException("O valor não pode ser negativo");
+                throw new TransactionAmountException();
 
             Value = value;
         }

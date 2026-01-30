@@ -71,7 +71,7 @@ namespace API.Tests.Domain.Entities
             var categoryId = Guid.NewGuid();
             var createdAt = Today;
 
-            var message = Assert.Throws<TransactionException>(() => Transaction.Create(description, amount, dueDate, type, categoryId, createdAt)).Message;
+            var message = Assert.Throws<TransactionAmountException>(() => Transaction.Create(description, amount, dueDate, type, categoryId, createdAt)).Message;
 
             Assert.Equal("O valor não pode ser negativo", message);
         }
@@ -86,7 +86,7 @@ namespace API.Tests.Domain.Entities
             var categoryId = Guid.NewGuid();
             var createdAt = Today;
 
-            var message = Assert.Throws<TransactionException>(() => Transaction.Create(description, amount, dueDate, type, categoryId, createdAt)).Message;
+            var message = Assert.Throws<TransactionDateException>(() => Transaction.Create(description, amount, dueDate, type, categoryId, createdAt)).Message;
 
             Assert.Equal("A data de vencimento não pode ser anterior à data de criação", message);
         }
@@ -101,7 +101,7 @@ namespace API.Tests.Domain.Entities
             var categoryId = Guid.NewGuid();
             var createdAt = Today;
 
-            var message = Assert.Throws<TransactionException>(() => Transaction.Create(description, amount, dueDate, type, categoryId, createdAt)).Message;
+            var message = Assert.Throws<TransactionDescriptionException>(() => Transaction.Create(description, amount, dueDate, type, categoryId, createdAt)).Message;
 
             Assert.Equal("A descrição deve ser informada", message);
         }

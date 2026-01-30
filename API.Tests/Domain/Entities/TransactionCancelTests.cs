@@ -28,7 +28,7 @@ namespace API.Tests.Domain.Entities
             var paymentDate = Tomorrow;
 
             sut.Pay(paymentDate);
-            var message = Assert.Throws<TransactionException>(() => sut.Cancel()).Message;
+            var message = Assert.Throws<TransactionCancelException>(() => sut.Cancel()).Message;
 
             Assert.Equal("Não é possível cancelar uma transação que já foi paga", message);
             Assert.Equal(TransactionStatus.Paid, sut.Status);

@@ -44,13 +44,13 @@ namespace API.Domain.Entities
         public void Pay(DateTime paymentDate)
         {
             if (Status == TransactionStatus.Cancelled)
-                throw new TransactionException("A transação já foi cancelada");
+                throw new TransactionPayException("A transação já foi cancelada");
 
             if (Status == TransactionStatus.Paid)
-                throw new TransactionException("A transação já foi paga");
+                throw new TransactionPayException("A transação já foi paga");
 
             if (paymentDate.Date < Dates.CreatedAt.Date)
-                throw new TransactionException("A data de pagamento não pode ser anterior à data de criação da transação");
+                throw new TransactionPayException("A data de pagamento não pode ser anterior à data de criação da transação");
 
             PaymentDate = paymentDate;
             Status = TransactionStatus.Paid;
@@ -59,7 +59,7 @@ namespace API.Domain.Entities
         public void Reopen()
         {
             if (Status != TransactionStatus.Paid)
-                throw new TransactionException("A transação não está paga");
+                throw new TransactionReopenException();
 
             Status = TransactionStatus.Pending;
             PaymentDate = null;
@@ -68,7 +68,7 @@ namespace API.Domain.Entities
         public void Cancel()
         {
             if (Status == TransactionStatus.Paid)
-                throw new TransactionException("Não é possível cancelar uma transação que já foi paga");
+                throw new TransactionCancelException();
 
             Status = TransactionStatus.Cancelled;
             PaymentDate = null;

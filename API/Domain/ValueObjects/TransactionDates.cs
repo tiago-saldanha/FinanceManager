@@ -10,7 +10,7 @@ namespace API.Domain.ValueObjects
         public TransactionDates(DateTime dueDate, DateTime createdAt)
         {
             if (dueDate.Date < createdAt.Date)
-                throw new TransactionException("A data de vencimento não pode ser anterior à data de criação");
+                throw new TransactionDateException();
 
             DueDate = dueDate;
             CreatedAt = createdAt;

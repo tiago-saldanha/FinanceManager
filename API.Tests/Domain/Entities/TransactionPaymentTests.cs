@@ -43,7 +43,7 @@ namespace API.Tests.Domain.Entities
             var sut = Create(TransactionType.Revenue, false);
             var invalidPaymentDate = Yesterday;
 
-            var message = Assert.Throws<TransactionException>(() => sut.Pay(invalidPaymentDate)).Message;
+            var message = Assert.Throws<TransactionPayException>(() => sut.Pay(invalidPaymentDate)).Message;
 
             Assert.Equal("A data de pagamento não pode ser anterior à data de criação da transação", message);
             Assert.Equal(TransactionStatus.Pending, sut.Status);
@@ -58,7 +58,7 @@ namespace API.Tests.Domain.Entities
             var paymentDate = Today;
             sut.Pay(paymentDate);
 
-            var message = Assert.Throws<TransactionException>(() => sut.Pay(paymentDate)).Message;
+            var message = Assert.Throws<TransactionPayException>(() => sut.Pay(paymentDate)).Message;
 
             Assert.Equal("A transação já foi paga", message);
             Assert.Equal(TransactionStatus.Paid, sut.Status);
@@ -73,7 +73,7 @@ namespace API.Tests.Domain.Entities
             var paymentDate = Today;
             sut.Cancel();
 
-            var message = Assert.Throws<TransactionException>(() => sut.Pay(paymentDate)).Message;
+            var message = Assert.Throws<TransactionPayException>(() => sut.Pay(paymentDate)).Message;
 
             Assert.Equal("A transação já foi cancelada", message);
             Assert.Equal(TransactionStatus.Cancelled, sut.Status);
@@ -89,7 +89,7 @@ namespace API.Tests.Domain.Entities
             sut.Pay(paymentDate);
             sut.Reopen();
 
-            var message = Assert.Throws<TransactionException>(() => sut.Reopen()).Message;
+            var message = Assert.Throws<TransactionReopenException>(() => sut.Reopen()).Message;
 
             Assert.Equal("A transação não está paga", message);
             Assert.Equal(TransactionStatus.Pending, sut.Status);
@@ -102,7 +102,7 @@ namespace API.Tests.Domain.Entities
             var sut = Create(TransactionType.Expense, true);
             sut.Cancel();
 
-            var message = Assert.Throws<TransactionException>(() => sut.Reopen()).Message;
+            var message = Assert.Throws<TransactionReopenException>(() => sut.Reopen()).Message;
 
             Assert.Equal("A transação não está paga", message);
             Assert.Equal(TransactionStatus.Cancelled, sut.Status);

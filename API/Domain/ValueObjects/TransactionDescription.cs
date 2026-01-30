@@ -9,7 +9,7 @@ namespace API.Domain.ValueObjects
         public TransactionDescription(string value)
         {
             if (string.IsNullOrEmpty(value))
-                throw new TransactionException("A descrição deve ser informada");
+                throw new TransactionDescriptionException();
 
             Value = value;
         }
