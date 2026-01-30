@@ -21,7 +21,7 @@ namespace API.Application.DTOs.Responses
                 Id = transaction.Id,
                 Description = transaction.Description,
                 Amount = transaction.Amount,
-                DueDate = transaction.DueDate,
+                DueDate = transaction.Dates.DueDate,
                 PaymentDate = transaction.PaymentDate,
                 Status = transaction.Status.ToString(),
                 Type = transaction.Type.ToString(),

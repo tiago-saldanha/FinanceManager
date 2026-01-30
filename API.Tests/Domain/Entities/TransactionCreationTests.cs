@@ -27,11 +27,11 @@ namespace API.Tests.Domain.Entities
             Assert.NotEqual(Guid.Empty, sut.Id);
             Assert.Equal(description, sut.Description);
             Assert.Equal(amount, sut.Amount);
-            Assert.Equal(dueDate, sut.DueDate);
+            Assert.Equal(dueDate, sut.Dates.DueDate);
             Assert.True(sut.Type == TransactionType.Revenue);
             Assert.True(sut.Status == TransactionStatus.Pending);
             Assert.Equal(sut.CategoryId, categoryId);
-            Assert.Equal(createdAt, sut.CreatedAt);
+            Assert.Equal(createdAt, sut.Dates.CreatedAt);
             Assert.Null(sut.PaymentDate);
             Assert.True(sut.IsOverdue);
         }
@@ -52,11 +52,11 @@ namespace API.Tests.Domain.Entities
             Assert.NotEqual(Guid.Empty, sut.Id);
             Assert.Equal(description, sut.Description);
             Assert.Equal(amount, sut.Amount);
-            Assert.Equal(dueDate, sut.DueDate);
+            Assert.Equal(dueDate, sut.Dates.DueDate);
             Assert.True(sut.Type == TransactionType.Expense);
             Assert.True(sut.Status == TransactionStatus.Pending);
             Assert.Equal(sut.CategoryId, categoryId);
-            Assert.Equal(createdAt, sut.CreatedAt);
+            Assert.Equal(createdAt, sut.Dates.CreatedAt);
             Assert.Null(sut.PaymentDate);
             Assert.True(sut.IsOverdue);
         }
@@ -103,7 +103,7 @@ namespace API.Tests.Domain.Entities
 
             var message = Assert.Throws<TransactionException>(() => Transaction.Create(description, amount, dueDate, type, categoryId, createdAt)).Message;
 
-            Assert.Equal("A descrição da transação deve ser informada", message);
+            Assert.Equal("A descrição deve ser informada", message);
         }
     }
 }

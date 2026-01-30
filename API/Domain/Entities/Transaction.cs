@@ -8,40 +8,38 @@ namespace API.Domain.Entities
     {
         protected Transaction() { }
 
-        private Transaction(Guid id, string description, Money amount, DateTime dueDate, TransactionType type, Guid categoryId, DateTime createdAt)
+        private Transaction(Guid id, TransactionDescription description, Money amount, TransactionDates dates, TransactionType type, Guid categoryId)
         {
-            if (string.IsNullOrEmpty(description)) 
-                throw new TransactionException("A descrição da transação deve ser informada");
-
-            if (amount <= 0) 
-                throw new TransactionException("O valor da transação deve ser maior que 0");
-
-            if (dueDate.Date < createdAt.Date) 
-                throw new TransactionException("A data de vencimento não pode ser anterior à data de criação");
-
             Id = id;
             Description = description;
             Amount = amount;
-            DueDate = dueDate;
+            Dates = dates;
             Type = type;
             CategoryId = categoryId;
             Status = TransactionStatus.Pending;
-            CreatedAt = createdAt;
         }
 
-        public static Transaction Create(string description, decimal amount, DateTime dueDate, TransactionType type, Guid categoryId, DateTime CreatedAt)
-            => new(Guid.NewGuid(), description, new Money(amount), dueDate, type, categoryId, CreatedAt);
+        public static Transaction Create(string description, decimal amount, DateTime dueDate, TransactionType type, Guid categoryId, DateTime createdAt)
+        {
+            return new Transaction(
+                Guid.NewGuid(),
+                new TransactionDescription(description),
+                new Money(amount),
+                new TransactionDates(dueDate, createdAt),
+                type,
+                categoryId
+            );
+        }
 
         public Guid Id { get; private set; }
-        public string Description { get; private set; }
+        public TransactionDescription Description { get; private set; }
         public Money Amount { get; private set; }
-        public DateTime DueDate { get; private set; }
+        public TransactionDates Dates { get; set; }
         public DateTime? PaymentDate { get; private set; }
         public TransactionStatus Status { get; private set; }
         public TransactionType Type { get; private set; }
         public Guid CategoryId { get; private set; }
         public virtual Category Category { get; private set; }
-        public DateTime CreatedAt { get; private set; }
 
         public void Pay(DateTime paymentDate)
         {
@@ -51,7 +49,7 @@ namespace API.Domain.Entities
             if (Status == TransactionStatus.Paid)
                 throw new TransactionException("A transação já foi paga");
 
-            if (paymentDate.Date < CreatedAt.Date)
+            if (paymentDate.Date < Dates.CreatedAt.Date)
                 throw new TransactionException("A data de pagamento não pode ser anterior à data de criação da transação");
 
             PaymentDate = paymentDate;
@@ -76,6 +74,6 @@ namespace API.Domain.Entities
             PaymentDate = null;
         }
 
-        public bool IsOverdue => Status == TransactionStatus.Pending && DateTime.Today > DueDate.Date;
+        public bool IsOverdue => Status == TransactionStatus.Pending && DateTime.Today > Dates.DueDate.Date;
     }
 }
