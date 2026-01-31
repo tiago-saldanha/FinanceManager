@@ -8,15 +8,10 @@ namespace API.Tests.Domain.ValueObjects
         [Fact]
         public void ShouldCreateMoneyWithValidValue()
         {
-            var validValue = 100.50m;
-            var money = new Money(validValue);
-            decimal modeyDecial = money;
-            Assert.Equal(validValue, money.Value);
-            Assert.NotNull(money);
-            Assert.IsType<decimal>(money.Value);
-            Assert.True(money.Value >= 0);
-            Assert.Equal(validValue, money.Value);
-            Assert.IsType<decimal>(modeyDecial);
+            var value = 100.50m;
+            var money = new Money(value);
+            decimal moneyValue = money;
+            Assert.Equal(value, money.Value);
         }
 
         [Fact]
@@ -25,7 +20,6 @@ namespace API.Tests.Domain.ValueObjects
             var invalidValue = -50.00m;
             var message = Assert.Throws<TransactionAmountException>(() => new Money(invalidValue)).Message;
             Assert.Equal("O valor não pode ser negativo", message);
-            Assert.NotNull(message);
         }
     }
 }
