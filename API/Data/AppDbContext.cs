@@ -32,7 +32,7 @@ namespace API.Data
             {
                 builder.Property(t => t.Description)
                     .IsRequired()
-                    .HasConversion(description => description.Value, value => new TransactionDescription(value))
+                    .HasConversion(description => description.Value, value => new Description(value))
                     .HasMaxLength(100);
 
                 builder.OwnsOne(t => t.Dates, dates => 

@@ -101,7 +101,7 @@ namespace API.Tests.Domain.Entities
             var categoryId = Guid.NewGuid();
             var createdAt = Today;
 
-            var message = Assert.Throws<TransactionDescriptionException>(() => Transaction.Create(description, amount, dueDate, type, categoryId, createdAt)).Message;
+            var message = Assert.Throws<DescriptionException>(() => Transaction.Create(description, amount, dueDate, type, categoryId, createdAt)).Message;
 
             Assert.Equal("A descrição deve ser informada", message);
         }

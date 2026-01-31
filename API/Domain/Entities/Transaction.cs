@@ -8,7 +8,7 @@ namespace API.Domain.Entities
     {
         protected Transaction() { }
 
-        private Transaction(Guid id, TransactionDescription description, Money amount, TransactionDates dates, TransactionType type, Guid categoryId)
+        private Transaction(Guid id, Description description, Money amount, TransactionDates dates, TransactionType type, Guid categoryId)
         {
             Id = id;
             Description = description;
@@ -23,7 +23,7 @@ namespace API.Domain.Entities
         {
             return new Transaction(
                 Guid.NewGuid(),
-                new TransactionDescription(description),
+                new Description(description),
                 new Money(amount),
                 new TransactionDates(dueDate, createdAt),
                 type,
@@ -32,7 +32,7 @@ namespace API.Domain.Entities
         }
 
         public Guid Id { get; private set; }
-        public TransactionDescription Description { get; private set; }
+        public Description Description { get; private set; }
         public Money Amount { get; private set; }
         public TransactionDates Dates { get; set; }
         public DateTime? PaymentDate { get; private set; }
