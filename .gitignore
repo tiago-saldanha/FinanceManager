@@ -15,6 +15,12 @@
 /Domain/obj
 /Domain.Tests/bin/Debug/net8.0
 /Domain.Tests/obj
-/Infraestructure/bin/Debug/net8.0
-/Infraestructure/obj
 /Application/bin/Debug/net8.0
+/Infrastructure/obj
+/Infrastructure/bin/Debug/net8.0
+/CrossCutting/bin/Debug/net8.0
+/CrossCutting/obj
+/Infrastructure/financeiro.db
+/Infrastructure/Migrations
+/Infrastructure/Financeiro.db-shm
+/Infrastructure/Financeiro.db-wal

@@ -1,7 +1,7 @@
 ﻿using Domain.Repositories;
 using Infrastructure.Data;
 
-namespace Infraestructure.Repositories
+namespace Infrastructure.Repositories
 {
     public class UnitOfWork(AppDbContext context) : IUnitOfWork
     {

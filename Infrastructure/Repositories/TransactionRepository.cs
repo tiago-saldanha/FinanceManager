@@ -1,11 +1,11 @@
 ﻿using System.Linq.Expressions;
 using Domain.Entities;
 using Domain.Repositories;
-using Infraestructure.Exceptions;
+using Infrastructure.Exceptions;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infraestructure.Repositories
+namespace Infrastructure.Repositories
 {
     public class TransactionRepository(AppDbContext context) : ITransactionRepository
     {
@@ -16,7 +16,7 @@ namespace Infraestructure.Repositories
             => await context.Transactions.Include(q => q.Category).AsNoTracking().ToListAsync();
 
         public async Task<Transaction> GetByIdAsync(Guid id)
-            => await context.Transactions.Include(q => q.Category).AsNoTracking().FirstOrDefaultAsync(q => q.Id == id) ?? throw new KeyNotFoundInfraException("Transação não encontrada");
+            => await context.Transactions.Include(q => q.Category).AsNoTracking().FirstOrDefaultAsync(q => q.Id == id) ?? throw new EntityNotFoundInfraException("Transação não encontrada");
 
         public void Update(Transaction transaction)
             => context.Transactions.Update(transaction);
