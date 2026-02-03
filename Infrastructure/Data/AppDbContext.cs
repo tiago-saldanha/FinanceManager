@@ -14,11 +14,11 @@ namespace Infrastructure.Data
             modelBuilder.Entity<Category>(builder =>
             {
                 builder.HasKey(c => c.Id);
-                
+
                 builder.Property(c => c.Name)
                     .IsRequired()
                     .HasMaxLength(60);
-                
+
                 builder.Property(c => c.Description)
                     .HasMaxLength(100);
 
@@ -26,6 +26,8 @@ namespace Infrastructure.Data
                     .WithOne(t => t.Category)
                     .HasForeignKey(t => t.CategoryId)
                     .OnDelete(DeleteBehavior.Restrict);
+                
+                builder.HasIndex(c => c.Name).IsUnique();
             });
 
             modelBuilder.Entity<Transaction>(builder =>

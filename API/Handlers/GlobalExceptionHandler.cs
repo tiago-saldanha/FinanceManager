@@ -19,11 +19,11 @@ public class GlobalExceptionHandler : IExceptionHandler
             case CategoryNameAppException:
             case TransactionTypeAppException:
             case TransactionStatusAppException:
+            case EntityAlreadyExistsInfraException:
                 problemDetails.Status = StatusCodes.Status400BadRequest;
                 problemDetails.Title = "Regra de Negócio violada";
                 problemDetails.Detail = exception.Message;
                 break;
-
             case EntityNotFoundInfraException:
                 problemDetails.Status = StatusCodes.Status404NotFound;
                 problemDetails.Title = "Recurso não encontrado";
