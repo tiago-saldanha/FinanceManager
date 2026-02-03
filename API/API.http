@@ -1,6 +1,79 @@
-@API_HostAddress = http://localhost:5227
+@API_HostAddress = https://localhost:7039/api
 
-GET {{API_HostAddress}}/weatherforecast/
+### Get All Categories
+GET {{API_HostAddress}}/categories/all
 Accept: application/json
 
-###
+### Get Category By Id
+@categoryId = 46b51285-04a6-4d1e-aa2a-293b9052c5dc
+GET {{API_HostAddress}}/categories/{{categoryId}}
+Accept: application/json
+
+### Post Category
+POST {{API_HostAddress}}/categories
+Accept: application/json
+Content-type: application/json
+{
+  "name": "Category Test",
+  "description": "Category Test"
+}
+
+### Get All Transactions
+GET {{API_HostAddress}}/transactions/all
+Accept: application/json
+
+### Get Transaction By Id
+@transactionId = 6dbfbd6e-4b5a-4b59-9a93-70fc8a697fbf
+GET {{API_HostAddress}}/transactions/{{transactionId}}
+Accept: application/json
+
+### Get Transaction By Status pending
+GET {{API_HostAddress}}/transactions/status/pending
+Accept: application/json
+
+### Get Transaction By Status paid
+GET {{API_HostAddress}}/transactions/status/paid
+Accept: application/json
+
+### Get Transaction By Status cancelled
+GET {{API_HostAddress}}/transactions/status/cancelled
+Accept: application/json
+
+### Get Transaction By Type expense
+GET {{API_HostAddress}}/transactions/type/expense
+Accept: application/json
+
+### Get Transaction By Type revenue
+GET {{API_HostAddress}}/transactions/type/revenue
+Accept: application/json
+
+### PUT Pay Transaction
+PUT {{API_HostAddress}}/transactions/pay/68e11fa7-98fe-41d4-9a92-37eea650c3df
+Accept: application/json
+Content-type: application/json
+{
+  "paymentDate": "2026-02-03T03:05:04.456Z"
+}
+
+### PUT Reopen Transaction
+PUT {{API_HostAddress}}/transactions/reopen/68e11fa7-98fe-41d4-9a92-37eea650c3df
+Accept: application/json
+Content-type: application/json
+
+### PUT Cancel Transaction
+PUT {{API_HostAddress}}/transactions/cancel/68e11fa7-98fe-41d4-9a92-37eea650c3df
+Accept: application/json
+Content-type: application/json
+
+### POST Create Transaction
+POST {{API_HostAddress}}/transactions
+Accept: application/json
+Content-type: application/json
+{
+  "description": "Transaction Test",
+  "amount": 3125,
+  "dueDate": "2026-02-03T03:08:19.338Z",
+  "transactionType": "revenue",
+  "categoryId": "86ebe290-aca2-43bc-a60e-aac2527ff6f7",
+  "createdAt": "2026-02-03T03:08:19.338Z"
+}
