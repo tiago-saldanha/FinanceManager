@@ -1,7 +1,7 @@
 ﻿using Application.DTOs.Requests;
 using Application.Interfaces;
 
-namespace API.EndPoints
+namespace API.Endpoints
 {
     public static class CategoryEndpoints
     {

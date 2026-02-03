@@ -1,5 +1,4 @@
 using API.Endpoints;
-using API.EndPoints;
 using API.Handlers;
 using CrossCutting;
 
