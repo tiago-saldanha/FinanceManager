@@ -2,15 +2,24 @@
 {
     public class Category
     {
-        public Category()
+        protected Category()
         {
         }
 
-        public Category(Guid id, string name, string? description)
+        private Category(Guid id, string name, string? description)
         {
             Id = id;
             Name = name;
             Description = description;
+        }
+
+        public static Category Create(string name, string? description)
+        {
+            return new Category(
+                Guid.NewGuid(),
+                name,
+                description
+            );
         }
 
         public Guid Id { get; private set; }

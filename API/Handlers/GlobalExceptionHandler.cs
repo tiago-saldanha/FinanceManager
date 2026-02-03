@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
+﻿using Application.Services;
+using Infrastructure.Exceptions;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Handlers;
@@ -14,13 +16,13 @@ public class GlobalExceptionHandler : IExceptionHandler
 
         switch (exception)
         {
-            case InvalidOperationException:
+            case InvalidCategoryNameException:
                 problemDetails.Status = StatusCodes.Status400BadRequest;
                 problemDetails.Title = "Regra de Negócio violada";
                 problemDetails.Detail = exception.Message;
                 break;
 
-            case KeyNotFoundException:
+            case EntityNotFoundInfraException:
                 problemDetails.Status = StatusCodes.Status404NotFound;
                 problemDetails.Title = "Recurso não encontrado";
                 problemDetails.Detail = exception.Message;

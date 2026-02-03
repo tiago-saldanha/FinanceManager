@@ -59,7 +59,7 @@ namespace Application.Services
         public async Task<TransactionResponse> CreateAsync(CreateTransactionRequest request)
         {
             var transaction = request.ToEntity();
-            await repository.CreateAsync(transaction);
+            await repository.AddAsync(transaction);
             await unitOfWork.CommitAsync();
             return TransactionResponse.Create(transaction);
         }
