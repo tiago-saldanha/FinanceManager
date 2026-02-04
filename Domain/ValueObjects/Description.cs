@@ -8,6 +8,8 @@ namespace Domain.ValueObjects
 
         public Description(string value)
         {
+            value = value.Trim();
+
             if (string.IsNullOrEmpty(value))
                 throw new DescriptionException();
 
