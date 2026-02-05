@@ -25,3 +25,5 @@
 /Infrastructure/Financeiro.db-shm
 /Infrastructure/Financeiro.db-wal
 /Infraestructure/obj
+/Application.Tests/bin/Debug/net8.0
+/Application.Tests/obj
