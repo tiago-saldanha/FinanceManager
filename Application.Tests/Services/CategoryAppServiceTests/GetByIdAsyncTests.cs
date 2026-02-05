@@ -1,23 +1,10 @@
-﻿using Application.Services;
-using Domain.Entities;
-using Domain.Repositories;
+﻿using Domain.Entities;
 using Moq;
 
 namespace Application.Tests.Services.CategoryAppServiceTests
 {
-    public class GetByIdAsyncTests
+    public class GetByIdAsyncTests : CategoryAppServiceBaseTests
     {
-        private readonly Mock<ICategoryRepository> _repositoryMock;
-        private readonly Mock<IUnitOfWork> _unitOfWork;
-        private readonly CategoryAppService _service;
-
-        public GetByIdAsyncTests()
-        {
-            _repositoryMock = new Mock<ICategoryRepository>();
-            _unitOfWork = new Mock<IUnitOfWork>();
-            _service = new CategoryAppService(_repositoryMock.Object, _unitOfWork.Object);
-        }
-
         [Fact]
         public async Task WhenCategoryIdIsProvided_ShouldReturnCategory()
         {

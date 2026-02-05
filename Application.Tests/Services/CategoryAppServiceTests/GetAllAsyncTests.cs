@@ -1,24 +1,10 @@
-﻿using Application.DTOs.Requests;
-using Application.Services;
-using Domain.Entities;
-using Domain.Repositories;
+﻿using Domain.Entities;
 using Moq;
 
 namespace Application.Tests.Services.CategoryAppServiceTests
 {
-    public class GetAllAsyncTests
+    public class GetAllAsyncTests : CategoryAppServiceBaseTests
     {
-        private readonly Mock<ICategoryRepository> _repositoryMock;
-        private readonly Mock<IUnitOfWork> _unitOfWork;
-        private readonly CategoryAppService _service;
-
-        public GetAllAsyncTests()
-        {
-            _repositoryMock = new Mock<ICategoryRepository>();
-            _unitOfWork = new Mock<IUnitOfWork>();
-            _service = new CategoryAppService(_repositoryMock.Object, _unitOfWork.Object);
-        }
-
         [Fact]
         public async Task WhenCategoriesExist_ShouldReturnAllCategories()
         {

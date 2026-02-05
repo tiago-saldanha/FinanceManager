@@ -1,24 +1,11 @@
 ﻿using Application.DTOs.Requests;
-using Application.Services;
 using Domain.Entities;
-using Domain.Repositories;
 using Moq;
 
 namespace Application.Tests.Services.CategoryAppServiceTests
 {
-    public class CreateAsyncTests
+    public class CreateAsyncTests : CategoryAppServiceBaseTests
     {
-        private readonly Mock<ICategoryRepository> _repositoryMock;
-        private readonly Mock<IUnitOfWork> _unitOfWork;
-        private readonly CategoryAppService _service;
-
-        public CreateAsyncTests()
-        {
-            _repositoryMock = new Mock<ICategoryRepository>();
-            _unitOfWork = new Mock<IUnitOfWork>();
-            _service = new CategoryAppService(_repositoryMock.Object, _unitOfWork.Object);
-        }
-
         [Fact]
         public async Task WhenRequestIsValid_ShouldCreateCategory()
         {
@@ -38,7 +25,6 @@ namespace Application.Tests.Services.CategoryAppServiceTests
             var request = new CategoryRequest("", "Description 1");
             
             await Assert.ThrowsAsync<Exceptions.CategoryNameAppException>(() => _service.CreateAsync(request));
-
             _repositoryMock.Verify(r => r.AddAsync(It.IsAny<Category>()), Times.Never);
             _unitOfWork.Verify(u => u.CommitAsync(), Times.Never);
         }
