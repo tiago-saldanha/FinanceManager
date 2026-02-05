@@ -34,11 +34,14 @@ namespace Application.Tests.Services
 
             _repositoryMock.Verify(r => r.GetAllAsync(), Times.Once);
 
-            var category = result.FirstOrDefault();
+            var first = result.First();
+            var last = result.Last();
 
             Assert.Equal(2, result.Count());
-            Assert.Equal("Category 1", category.Name);
-            Assert.Equal("Description 1", category.Description);
+            Assert.Equal("Category 1", first.Name);
+            Assert.Equal("Description 1", first.Description);
+            Assert.Equal("Category 2", last.Name);
+            Assert.Equal("Description 2", last.Description);
         }
 
         [Fact]

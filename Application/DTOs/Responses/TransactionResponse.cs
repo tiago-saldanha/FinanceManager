@@ -8,6 +8,7 @@ namespace Application.DTOs.Responses
         public string Description { get; private set; }
         public decimal Amount { get; private set; }
         public DateTime DueDate { get; private set; }
+        public DateTime CreatedAt { get; private set; }
         public DateTime? PaymentDate { get; private set; }
         public string Status { get; private set; }
         public string Type { get; private set; }
@@ -22,6 +23,7 @@ namespace Application.DTOs.Responses
                 Description = transaction.Description,
                 Amount = transaction.Amount,
                 DueDate = transaction.Dates.DueDate,
+                CreatedAt = transaction.Dates.CreatedAt,
                 PaymentDate = transaction.PaymentDate,
                 Status = transaction.Status.ToString(),
                 Type = transaction.Type.ToString(),
