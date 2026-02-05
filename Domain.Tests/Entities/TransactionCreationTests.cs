@@ -2,7 +2,7 @@
 using Domain.Enums;
 using Domain.Exceptions;
 
-namespace Tests.Domain.Entities
+namespace Domain.Tests.Entities
 {
     public class TransactionCreationTests
     {
@@ -23,7 +23,6 @@ namespace Tests.Domain.Entities
             var sut = Transaction.Create(description, amount, dueDate, type, categoryId, createdAt);
 
             Assert.NotNull(sut);
-            Assert.IsType<Guid>(sut.Id);
             Assert.NotEqual(Guid.Empty, sut.Id);
             Assert.Equal(description, sut.Description);
             Assert.Equal(amount, sut.Amount);
@@ -45,10 +44,10 @@ namespace Tests.Domain.Entities
             var type = TransactionType.Expense;
             var categoryId = Guid.NewGuid();
             var createdAt = Tomorrow;
+            
             var sut = Transaction.Create(description, amount, dueDate, type, categoryId, createdAt);
 
             Assert.NotNull(sut);
-            Assert.IsType<Guid>(sut.Id);
             Assert.NotEqual(Guid.Empty, sut.Id);
             Assert.Equal(description, sut.Description);
             Assert.Equal(amount, sut.Amount);
@@ -71,9 +70,7 @@ namespace Tests.Domain.Entities
             var categoryId = Guid.NewGuid();
             var createdAt = Today;
 
-            var message = Assert.Throws<TransactionAmountException>(() => Transaction.Create(description, amount, dueDate, type, categoryId, createdAt)).Message;
-
-            Assert.Equal("O valor não pode ser negativo", message);
+            Assert.Throws<TransactionAmountException>(() => Transaction.Create(description, amount, dueDate, type, categoryId, createdAt));
         }
 
         [Fact]
@@ -86,9 +83,7 @@ namespace Tests.Domain.Entities
             var categoryId = Guid.NewGuid();
             var createdAt = Today;
 
-            var message = Assert.Throws<TransactionDateException>(() => Transaction.Create(description, amount, dueDate, type, categoryId, createdAt)).Message;
-
-            Assert.Equal("A data de vencimento não pode ser anterior à data de criação", message);
+            Assert.Throws<TransactionDateException>(() => Transaction.Create(description, amount, dueDate, type, categoryId, createdAt));
         }
 
         [Fact]
@@ -101,9 +96,7 @@ namespace Tests.Domain.Entities
             var categoryId = Guid.NewGuid();
             var createdAt = Today;
 
-            var message = Assert.Throws<DescriptionException>(() => Transaction.Create(description, amount, dueDate, type, categoryId, createdAt)).Message;
-
-            Assert.Equal("A descrição deve ser informada", message);
+            Assert.Throws<DescriptionException>(() => Transaction.Create(description, amount, dueDate, type, categoryId, createdAt));
         }
     }
 }

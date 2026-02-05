@@ -28,7 +28,7 @@ namespace Application.Tests.Services
         }
 
         [Fact]
-        public async Task GetByIdAsync_ShouldReturnTransactionResponse()
+        public async Task GetByIdAsync_WhenTransactionExists_ShouldReturnTransaction()
         {
             var transaction = Transaction.Create("Description", 100, Tomorrow, TransactionType.Revenue, Guid.Empty, Today);
 
@@ -48,7 +48,7 @@ namespace Application.Tests.Services
         }
 
         [Fact]
-        public async Task GetAllAsync_ShouldReturnAllTransactions()
+        public async Task GetAllAsync_WhenTransactionsExist_ShouldReturnAllTransactions()
         {
             var transactions = new List<Domain.Entities.Transaction>()
             {
@@ -71,7 +71,7 @@ namespace Application.Tests.Services
         }
 
         [Fact]
-        public async Task GetByStatusAsync_ShouldReturnAllTransactionsByStatus()
+        public async Task GetByStatusAsync_WhenStatusIsProvided_ShouldReturnMatchingTransactions()
         {
             var transactions = new List<Domain.Entities.Transaction>()
             {
@@ -94,7 +94,7 @@ namespace Application.Tests.Services
         }
 
         [Fact]
-        public async Task GetByTypeAsync_ShouldReturnAllTransactionsByType()
+        public async Task GetByTypeAsync_WhenTypeIsProvided_ShouldReturnMatchingTransactions()
         {
             var transactions = new List<Domain.Entities.Transaction>()
             {
@@ -119,7 +119,7 @@ namespace Application.Tests.Services
         }
 
         [Fact]
-        public async Task PayAsync_ShouldReturnTheTransactionPaid()
+        public async Task PayAsync_WhenTransactionIsPending_ShouldMarkAsPaid()
         {
             var request = new PayTransactionRequest(Today);
             var transaction = Transaction.Create("Description 1", 100, Tomorrow, TransactionType.Revenue, Guid.Empty, Today);
@@ -136,7 +136,7 @@ namespace Application.Tests.Services
         }
 
         [Fact]
-        public async Task ReopenAsync_ShouldReturnTheTransactionPending()
+        public async Task ReopenAsync_WhenTransactionIsPaid_ShouldMarkAsPending()
         {
             var transaction = Transaction.Create("Description 1", 100, Tomorrow, TransactionType.Revenue, Guid.Empty, Today);
             transaction.Pay(Today);
@@ -154,7 +154,7 @@ namespace Application.Tests.Services
         }
 
         [Fact]
-        public async Task CancelAsync_ShouldReturnTheTransactionCancelled()
+        public async Task CancelAsync_WhenTransactionIsActive_ShouldMarkAsCancelled()
         {
             var transaction = Transaction.Create("Description 1", 100, Tomorrow, TransactionType.Revenue, Guid.Empty, Today);
 
@@ -171,7 +171,7 @@ namespace Application.Tests.Services
         }
 
         [Fact]
-        public async Task CreateAsync_ShouldReturnTheNewTransaction()
+        public async Task CreateAsync_WhenRequestIsValid_ShouldCreateTransaction()
         {
             var request = new CreateTransactionRequest
             {

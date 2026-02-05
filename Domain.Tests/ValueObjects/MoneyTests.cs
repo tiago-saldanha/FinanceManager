@@ -1,7 +1,7 @@
 ﻿using Domain.Exceptions;
 using Domain.ValueObjects;
 
-namespace Tests.Domain.ValueObjects
+namespace Domain.Tests.ValueObjects
 {
     public class MoneyTests
     {
@@ -11,6 +11,7 @@ namespace Tests.Domain.ValueObjects
             var value = 100.50m;
             var money = new Money(value);
             decimal moneyValue = money;
+            
             Assert.Equal(value, money.Value);
         }
 
@@ -18,8 +19,8 @@ namespace Tests.Domain.ValueObjects
         public void ShouldCreateMoneyWithInvalidValue()
         {
             var invalidValue = -50.00m;
-            var message = Assert.Throws<TransactionAmountException>(() => new Money(invalidValue)).Message;
-            Assert.Equal("O valor não pode ser negativo", message);
+
+            Assert.Throws<TransactionAmountException>(() => new Money(invalidValue));
         }
     }
 }

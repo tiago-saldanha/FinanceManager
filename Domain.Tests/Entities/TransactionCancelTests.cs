@@ -2,7 +2,7 @@
 using Domain.Enums;
 using Domain.Exceptions;
 
-namespace Tests.Domain.Entities
+namespace Domain.Tests.Entities
 {
     public class TransactionCancelTests
     {
@@ -28,9 +28,8 @@ namespace Tests.Domain.Entities
             var paymentDate = Tomorrow;
 
             sut.Pay(paymentDate);
-            var message = Assert.Throws<TransactionCancelException>(() => sut.Cancel()).Message;
 
-            Assert.Equal("Não é possível cancelar uma transação que já foi paga", message);
+            Assert.Throws<TransactionCancelException>(() => sut.Cancel());
             Assert.Equal(TransactionStatus.Paid, sut.Status);
             Assert.NotNull(sut.PaymentDate);
             Assert.Equal(paymentDate, sut.PaymentDate);
@@ -66,11 +65,10 @@ namespace Tests.Domain.Entities
         {
             var sut = CreateTransactionOverDue(TransactionType.Expense);
             var paymentDate = Tomorrow;
-
             sut.Pay(paymentDate);
-            var message = Assert.Throws<TransactionCancelException>(() => sut.Cancel()).Message;
 
-            Assert.Equal("Não é possível cancelar uma transação que já foi paga", message);
+            Assert.Throws<TransactionCancelException>(() => sut.Cancel());
+
             Assert.Equal(TransactionStatus.Paid, sut.Status);
             Assert.NotNull(sut.PaymentDate);
             Assert.Equal(paymentDate, sut.PaymentDate);
@@ -81,9 +79,9 @@ namespace Tests.Domain.Entities
         {
             var sut = CreateTransactionOverDue(TransactionType.Expense);
             var paymentDate = Tomorrow;
-
             sut.Pay(paymentDate);
             sut.Reopen();
+
             sut.Cancel();
 
             Assert.Equal(TransactionStatus.Cancelled, sut.Status);

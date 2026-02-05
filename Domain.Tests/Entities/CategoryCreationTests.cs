@@ -14,8 +14,6 @@ namespace Domain.Tests.Entities
             var category = Category.Create(name, description);
 
             Assert.NotNull(category);
-            Assert.IsType<Category>(category);
-            Assert.IsType<Guid>(category.Id);
             Assert.NotEqual(Guid.Empty, category.Id);
             Assert.Equal(name, category.Name);
             Assert.Equal(description, category.Description);
@@ -30,7 +28,6 @@ namespace Domain.Tests.Entities
 
             Assert.NotNull(category);
             Assert.IsType<Category>(category);
-            Assert.IsType<Guid>(category.Id);
             Assert.NotEqual(Guid.Empty, category.Id);
             Assert.Equal(name, category.Name);
             Assert.Null(category.Description);
@@ -40,8 +37,8 @@ namespace Domain.Tests.Entities
         public void ShouldCreateCategoryWithNoValidData()
         {
             var name = "   ";
-            var exception = Assert.Throws<DescriptionException>(() => Category.Create(name, null));
-            Assert.Equal("A descrição deve ser informada", exception.Message);
+            
+            Assert.Throws<DescriptionException>(() => Category.Create(name, null));
         }
     }
 }

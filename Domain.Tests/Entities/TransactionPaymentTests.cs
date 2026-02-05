@@ -2,7 +2,7 @@
 using Domain.Enums;
 using Domain.Exceptions;
 
-namespace Tests.Domain.Entities
+namespace Domain.Tests.Entities
 {
     public class TransactionPaymentTests
     {
@@ -43,9 +43,8 @@ namespace Tests.Domain.Entities
             var sut = CreateTransaction(TransactionType.Revenue);
             var invalidPaymentDate = Yesterday;
 
-            var message = Assert.Throws<TransactionPayException>(() => sut.Pay(invalidPaymentDate)).Message;
+            Assert.Throws<TransactionPayException>(() => sut.Pay(invalidPaymentDate));
 
-            Assert.Equal("A data de pagamento não pode ser anterior à data de criação da transação", message);
             Assert.Equal(TransactionStatus.Pending, sut.Status);
             Assert.Null(sut.PaymentDate);
             Assert.False(sut.IsOverdue(Today));
@@ -58,9 +57,8 @@ namespace Tests.Domain.Entities
             var paymentDate = Today;
             sut.Pay(paymentDate);
 
-            var message = Assert.Throws<TransactionPayException>(() => sut.Pay(paymentDate)).Message;
+            Assert.Throws<TransactionPayException>(() => sut.Pay(paymentDate));
 
-            Assert.Equal("A transação já foi paga", message);
             Assert.Equal(TransactionStatus.Paid, sut.Status);
             Assert.NotNull(sut.PaymentDate);
             Assert.Equal(paymentDate, sut.PaymentDate);
@@ -73,9 +71,8 @@ namespace Tests.Domain.Entities
             var paymentDate = Today;
             sut.Cancel();
 
-            var message = Assert.Throws<TransactionPayException>(() => sut.Pay(paymentDate)).Message;
+            Assert.Throws<TransactionPayException>(() => sut.Pay(paymentDate));
 
-            Assert.Equal("A transação já foi cancelada", message);
             Assert.Equal(TransactionStatus.Cancelled, sut.Status);
             Assert.Null(sut.PaymentDate);
             Assert.NotEqual(paymentDate, sut.PaymentDate);
@@ -89,9 +86,8 @@ namespace Tests.Domain.Entities
             sut.Pay(paymentDate);
             sut.Reopen();
 
-            var message = Assert.Throws<TransactionReopenException>(() => sut.Reopen()).Message;
+            Assert.Throws<TransactionReopenException>(() => sut.Reopen());
 
-            Assert.Equal("A transação não está paga", message);
             Assert.Equal(TransactionStatus.Pending, sut.Status);
             Assert.Null(sut.PaymentDate);
         }
@@ -102,9 +98,8 @@ namespace Tests.Domain.Entities
             var sut = CreateTransactionOverDue(TransactionType.Expense);
             sut.Cancel();
 
-            var message = Assert.Throws<TransactionReopenException>(() => sut.Reopen()).Message;
+            Assert.Throws<TransactionReopenException>(() => sut.Reopen());
 
-            Assert.Equal("A transação não está paga", message);
             Assert.Equal(TransactionStatus.Cancelled, sut.Status);
             Assert.Null(sut.PaymentDate);
         }

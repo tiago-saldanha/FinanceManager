@@ -1,7 +1,7 @@
 using Domain.Entities;
 using Domain.Enums;
 
-namespace Tests.Domain.Entities
+namespace Domain.Tests.Entities
 {
     public class TransactionOverdueTests
     {

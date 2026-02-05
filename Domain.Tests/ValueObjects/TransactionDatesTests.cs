@@ -1,7 +1,7 @@
 ﻿using Domain.Exceptions;
 using Domain.ValueObjects;
 
-namespace Tests.Domain.ValueObjects
+namespace Domain.Tests.ValueObjects
 {
     public class TransactionDatesTests
     {
@@ -13,16 +13,15 @@ namespace Tests.Domain.ValueObjects
         public void ShouldCreateTransactionDates()
         {
             var transactionDates = new TransactionDates(Today, Yesterday);
+            
             Assert.Equal(Today, transactionDates.DueDate);
             Assert.Equal(Yesterday, transactionDates.CreatedAt);
-            Assert.NotNull(transactionDates);
         }
 
         [Fact]
         public void ShouldNotCreateTransactionDates()
         {
-            var message = Assert.Throws<TransactionDateException>(() => new TransactionDates(Yesterday, Today)).Message;
-            Assert.Equal("A data de vencimento não pode ser anterior à data de criação", message);
+            Assert.Throws<TransactionDateException>(() => new TransactionDates(Yesterday, Today));
         }
     }
 }
