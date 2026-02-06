@@ -4,7 +4,7 @@ namespace Application.Tests.Mapper
     public class MapperTests
     {
         [Fact]
-        public void TransactionStatus_ShouldMapCorrectly()
+        public void TransactionStatus_WhenDtoIsValid_ShouldMapToDomainStatus()
         {
             var pendingDto = Enums.TransactionStatusDto.pending;
             var paidDto = Enums.TransactionStatusDto.paid;
@@ -20,7 +20,7 @@ namespace Application.Tests.Mapper
         }
 
         [Fact]
-        public void TransactionType_ShouldMapCorrectly()
+        public void TransactionType_WhenDtoIsValid_ShouldMapToDomainType()
         {
             var revenue = Enums.TransactionTypeDto.revenue;
             var expense = Enums.TransactionTypeDto.expense;
@@ -33,7 +33,7 @@ namespace Application.Tests.Mapper
         }
 
         [Fact]
-        public void TransactionType_ShouldMapCorrectlyFromString()
+        public void TransactionType_WhenStringIsValid_ShouldMapToDomainType()
         {
             var revenue = "revenue";
             var expense = "expense";
@@ -46,7 +46,7 @@ namespace Application.Tests.Mapper
         }
 
         [Fact]
-        public void TransactionType_ShouldRaiseException_ForInvalidInput()
+        public void TransactionStatusOrType_WhenInputIsInvalid_ShouldThrowException()
         {
             var invalidStatusDto = (Enums.TransactionStatusDto)999;
             var invalidTypeDto = (Enums.TransactionTypeDto)999;
