@@ -6,7 +6,7 @@ namespace Domain.Tests.ValueObjects
     public class DescriptionTests
     {
         [Fact]
-        public void ShouldCreateDescriptionWithValidValue()
+        public void Constructor_WhenValueIsValid_ShouldCreateDescription()
         {
             var validDescription = "Gastos com internet";
             var description = new Description(validDescription);
@@ -16,7 +16,7 @@ namespace Domain.Tests.ValueObjects
         }
 
         [Fact]
-        public void ShouldNotCreateDescriptionWithInvalidValue()
+        public void Constructor_WhenValueIsEmpty_ShouldThrowDescriptionException()
         {
             var invalidDescription = string.Empty;
             

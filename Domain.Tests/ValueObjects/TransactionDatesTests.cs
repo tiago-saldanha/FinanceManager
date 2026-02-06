@@ -7,10 +7,9 @@ namespace Domain.Tests.ValueObjects
     {
         private readonly static DateTime Yesterday = new(2025, 12, 31);
         private readonly static DateTime Today = new(2026, 01, 01);
-        private readonly static DateTime Tomorrow = new(2026, 01, 02);
 
         [Fact]
-        public void ShouldCreateTransactionDates()
+        public void Constructor_WhenDatesAreValid_ShouldCreateTransactionDates()
         {
             var transactionDates = new TransactionDates(Today, Yesterday);
             
@@ -19,7 +18,7 @@ namespace Domain.Tests.ValueObjects
         }
 
         [Fact]
-        public void ShouldNotCreateTransactionDates()
+        public void Constructor_WhenDueDateIsBeforeCreatedAt_ShouldThrowTransactionDateException()
         {
             Assert.Throws<TransactionDateException>(() => new TransactionDates(Yesterday, Today));
         }

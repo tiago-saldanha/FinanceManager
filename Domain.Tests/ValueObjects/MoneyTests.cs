@@ -6,7 +6,7 @@ namespace Domain.Tests.ValueObjects
     public class MoneyTests
     {
         [Fact]
-        public void ShouldCreateMoneyWithValidValue()
+        public void Constructor_WhenValueIsValid_ShouldCreateMoney()
         {
             var value = 100.50m;
             var money = new Money(value);
@@ -16,7 +16,7 @@ namespace Domain.Tests.ValueObjects
         }
 
         [Fact]
-        public void ShouldCreateMoneyWithInvalidValue()
+        public void Constructor_WhenValueIsNegative_ShouldThrowTransactionAmountException()
         {
             var invalidValue = -50.00m;
 
