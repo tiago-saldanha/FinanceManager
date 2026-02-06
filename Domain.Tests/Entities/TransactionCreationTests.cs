@@ -4,14 +4,10 @@ using Domain.Exceptions;
 
 namespace Domain.Tests.Entities
 {
-    public class TransactionCreationTests
+    public class TransactionCreationTests : TransactionBaseTests
     {
-        private static readonly DateTime Yesterday = new(2025, 12, 31);
-        private static readonly DateTime Today = new(2026, 01, 01);
-        private static readonly DateTime Tomorrow = new(2026, 01, 02);
-
         [Fact]
-        public void ShouldCreateTransactionRevenue()
+        public void Create_WhenDataIsValidAndTypeIsRevenue_ShouldCreatePendingRevenueTransaction()
         {
             var description = "Test";
             var amount = 100.0M;
@@ -36,7 +32,7 @@ namespace Domain.Tests.Entities
         }
 
         [Fact]
-        public void ShouldCreateTransactionExpense()
+        public void Create_WhenDataIsValidAndTypeIsExpense_ShouldCreatePendingExpenseTransaction()
         {
             var description = "Test";
             var amount = 100.0M;
@@ -61,7 +57,7 @@ namespace Domain.Tests.Entities
         }
 
         [Fact]
-        public void ShouldNotCreateTransactionWithAmountLessThenZero()
+        public void Create_WhenAmountIsNegative_ShouldThrowTransactionAmountException()
         {
             var description = "Test";
             var amount = -100.0M;
@@ -74,7 +70,7 @@ namespace Domain.Tests.Entities
         }
 
         [Fact]
-        public void ShouldNotCreateTransactionWithCreatedAtLessThenDueDate()
+        public void Create_WhenCreatedAtIsAfterDueDate_ShouldThrowTransactionDateException()
         {
             var description = "Test";
             var amount = 100.0M;
@@ -87,7 +83,7 @@ namespace Domain.Tests.Entities
         }
 
         [Fact]
-        public void ShouldNotCreateTransactionWithoutDescription()
+        public void Create_WhenDescriptionIsEmpty_ShouldThrowDescriptionException()
         {
             var description = string.Empty;
             var amount = 100.0M;

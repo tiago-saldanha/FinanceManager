@@ -3,14 +3,10 @@ using Domain.Enums;
 
 namespace Domain.Tests.Entities
 {
-    public class TransactionOverdueTests
+    public class TransactionOverdueTests : TransactionBaseTests
     {
-        private static readonly DateTime Yesterday = DateTime.Now.AddDays(-1);
-        private static readonly DateTime Today = DateTime.Now.AddDays(0);
-        private static readonly DateTime Tomorrow = DateTime.Now.AddDays(1);
-
         [Fact]
-        public void ShouldCreateTransactionRevenue()
+        public void Create_WhenDueDateIsInTheFutureAndTypeIsRevenue_ShouldNotBeOverdue()
         {
             var description = "Test";
             var amount = 100.0M;
@@ -36,7 +32,7 @@ namespace Domain.Tests.Entities
         }
 
         [Fact]
-        public void ShouldCreateTransactionRevenueOverDue()
+        public void Create_WhenDueDateIsInThePastAndTypeIsRevenue_ShouldBeOverdue()
         {
             var description = "Test";
             var amount = 100.0M;
@@ -62,7 +58,7 @@ namespace Domain.Tests.Entities
         }
 
         [Fact]
-        public void ShouldCreateTransactionExpense()
+        public void Create_WhenDueDateIsInTheFutureAndTypeIsExpense_ShouldNotBeOverdue()
         {
             var description = "Test";
             var amount = 100.0M;
@@ -88,7 +84,7 @@ namespace Domain.Tests.Entities
         }
 
         [Fact]
-        public void ShouldCreateTransactionExpenseOverDue()
+        public void Create_WhenDueDateIsInThePastAndTypeIsExpense_ShouldBeOverdue()
         {
             var description = "Test";
             var amount = 100.0M;

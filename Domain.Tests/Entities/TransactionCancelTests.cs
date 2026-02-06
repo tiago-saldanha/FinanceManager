@@ -4,16 +4,12 @@ using Domain.Exceptions;
 
 namespace Domain.Tests.Entities
 {
-    public class TransactionCancelTests
+    public class TransactionCancelTests : TransactionBaseTests
     {
-        private static readonly DateTime Yesterday = new(2025, 12, 31);
-        private static readonly DateTime Today = new(2026, 01, 01);
-        private static readonly DateTime Tomorrow = new(2026, 01, 02);
-
         [Fact]
-        public void ShouldCancelTransaction()
+        public void Cancel_WhenTransactionIsPending_ShouldMarkAsCancelled()
         {
-            var sut = CreateTransaction(TransactionType.Expense);
+            var sut = Transaction.Create("Test", 100.0M, Tomorrow, TransactionType.Expense, Guid.NewGuid(), Tomorrow);
 
             sut.Cancel();
 
@@ -22,9 +18,9 @@ namespace Domain.Tests.Entities
         }
 
         [Fact]
-        public void ShouldNotCancelTransactionAlreadyPaid()
+        public void Cancel_WhenTransactionIsPaid_ShouldThrowTransactionCancelException()
         {
-            var sut = CreateTransaction(TransactionType.Expense);
+            var sut = Transaction.Create("Test", 100.0M, Tomorrow, TransactionType.Expense, Guid.NewGuid(), Tomorrow);
             var paymentDate = Tomorrow;
 
             sut.Pay(paymentDate);
@@ -36,9 +32,9 @@ namespace Domain.Tests.Entities
         }
 
         [Fact]
-        public void ShouldCancelTransactionAfterReopen()
+        public void Cancel_WhenTransactionIsPendingAfterReopen_ShouldMarkAsCancelled()
         {
-            var sut = CreateTransaction(TransactionType.Expense);
+            var sut = Transaction.Create("Test", 100.0M, Tomorrow, TransactionType.Expense, Guid.NewGuid(), Tomorrow);
             var paymentDate = Tomorrow;
 
             sut.Pay(paymentDate);
@@ -50,9 +46,9 @@ namespace Domain.Tests.Entities
         }
 
         [Fact]
-        public void ShouldCancelTransactionOverDue()
+        public void Cancel_WhenTransactionIsOverdueAndPending_ShouldMarkAsCancelled()
         {
-            var sut = CreateTransactionOverDue(TransactionType.Expense);
+            var sut = Transaction.Create("Test", 100.0M, Yesterday, TransactionType.Expense, Guid.NewGuid(), Yesterday);
 
             sut.Cancel();
 
@@ -61,9 +57,9 @@ namespace Domain.Tests.Entities
         }
 
         [Fact]
-        public void ShouldNotCancelTransactionOverDueAlreadyPaid()
+        public void Cancel_WhenTransactionIsOverdueAndPaid_ShouldThrowTransactionCancelException()
         {
-            var sut = CreateTransactionOverDue(TransactionType.Expense);
+            var sut = Transaction.Create("Test", 100.0M, Yesterday, TransactionType.Expense, Guid.NewGuid(), Yesterday);
             var paymentDate = Tomorrow;
             sut.Pay(paymentDate);
 
@@ -75,9 +71,9 @@ namespace Domain.Tests.Entities
         }
 
         [Fact]
-        public void ShouldCancelTransactionOverDueAfterReopen()
+        public void Cancel_WhenTransactionIsOverdueAndPendingAfterReopen_ShouldMarkAsCancelled()
         {
-            var sut = CreateTransactionOverDue(TransactionType.Expense);
+            var sut = Transaction.Create("Test", 100.0M, Yesterday, TransactionType.Expense, Guid.NewGuid(), Yesterday);
             var paymentDate = Tomorrow;
             sut.Pay(paymentDate);
             sut.Reopen();
@@ -87,11 +83,5 @@ namespace Domain.Tests.Entities
             Assert.Equal(TransactionStatus.Cancelled, sut.Status);
             Assert.Null(sut.PaymentDate);
         }
-
-        private static Transaction CreateTransaction(TransactionType type)
-            => Transaction.Create("Test", 100.0M, Tomorrow, type, Guid.NewGuid(), Tomorrow);
-
-        private static Transaction CreateTransactionOverDue(TransactionType type)
-            => Transaction.Create("Test", 100.0M, Yesterday, type, Guid.NewGuid(), Yesterday);
     }
 }

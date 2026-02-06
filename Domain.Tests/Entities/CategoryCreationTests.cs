@@ -6,7 +6,7 @@ namespace Domain.Tests.Entities
     public class CategoryCreationTests
     {
         [Fact]
-        public void ShouldCreateCategoryWithValidData()
+        public void Create_WhenNameAndDescriptionAreValid_ShouldCreateCategory()
         {
             var name = "Electronics";
             var description = "All kinds of electronic devices";
@@ -20,7 +20,7 @@ namespace Domain.Tests.Entities
         }
 
         [Fact]
-        public void ShouldCreateCategoryWithoutValidData()
+        public void Create_WhenDescriptionIsNull_ShouldCreateCategory()
         {
             var name = "Books";
 
@@ -34,7 +34,7 @@ namespace Domain.Tests.Entities
         }
 
         [Fact]
-        public void ShouldCreateCategoryWithNoValidData()
+        public void Create_WhenNameIsEmpty_ShouldThrowDescriptionException()
         {
             var name = "   ";
             

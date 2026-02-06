@@ -4,16 +4,12 @@ using Domain.Exceptions;
 
 namespace Domain.Tests.Entities
 {
-    public class TransactionPaymentTests
+    public class TransactionPaymentTests : TransactionBaseTests
     {
-        private static readonly DateTime Yesterday = new(2025, 12, 31);
-        private static readonly DateTime Today = new(2026, 01, 01);
-        private static readonly DateTime Tomorrow = new(2026, 01, 02);
-
         [Fact]
-        public void ShouldPayTransaction()
+        public void Pay_WhenTransactionIsPending_ShouldMarkAsPaid()
         {
-            var sut = CreateTransaction(TransactionType.Expense);
+            var sut = Transaction.Create("Test", 100.0M, Today, TransactionType.Expense, Guid.NewGuid(), Today);
             var paymentDate = Today;
 
             sut.Pay(paymentDate);
@@ -24,12 +20,12 @@ namespace Domain.Tests.Entities
         }
 
         [Fact]
-        public void ShouldReopenTransaction()
+        public void Reopen_WhenTransactionIsPaid_ShouldMarkAsPending()
         {
-            var sut = CreateTransactionOverDue(TransactionType.Expense);
+            var sut = Transaction.Create("Test", 100.0M, Yesterday, TransactionType.Expense, Guid.NewGuid(), Yesterday);
             var paymentDate = Tomorrow;
-
             sut.Pay(paymentDate);
+            
             sut.Reopen();
 
             Assert.Equal(TransactionStatus.Pending, sut.Status);
@@ -38,9 +34,9 @@ namespace Domain.Tests.Entities
         }
 
         [Fact]
-        public void ShouldNotPayTransactionWithPaymentDateLessCreatedAtDate()
+        public void Pay_WhenPaymentDateIsBeforeCreatedAt_ShouldThrowTransactionPayException()
         {
-            var sut = CreateTransaction(TransactionType.Revenue);
+            var sut = Transaction.Create("Test", 100.0M, Today, TransactionType.Revenue, Guid.NewGuid(), Today);
             var invalidPaymentDate = Yesterday;
 
             Assert.Throws<TransactionPayException>(() => sut.Pay(invalidPaymentDate));
@@ -51,9 +47,9 @@ namespace Domain.Tests.Entities
         }
 
         [Fact]
-        public void ShouldNotPayTransactionAlreadyPaid()
+        public void Pay_WhenTransactionIsAlreadyPaid_ShouldThrowTransactionPayException()
         {
-            var sut = CreateTransactionOverDue(TransactionType.Expense);
+            var sut = Transaction.Create("Test", 100.0M, Yesterday, TransactionType.Expense, Guid.NewGuid(), Yesterday);
             var paymentDate = Today;
             sut.Pay(paymentDate);
 
@@ -65,9 +61,9 @@ namespace Domain.Tests.Entities
         }
 
         [Fact]
-        public void ShouldNotPayTransactionAfterCancel()
+        public void Pay_WhenTransactionIsCancelled_ShouldThrowTransactionPayException()
         {
-            var sut = CreateTransactionOverDue(TransactionType.Expense);
+            var sut = Transaction.Create("Test", 100.0M, Yesterday, TransactionType.Expense, Guid.NewGuid(), Yesterday);
             var paymentDate = Today;
             sut.Cancel();
 
@@ -79,9 +75,9 @@ namespace Domain.Tests.Entities
         }
 
         [Fact]
-        public void ShouldNotReopenTransactionIfStatusIsPending()
+        public void Reopen_WhenTransactionIsAlreadyPending_ShouldThrowTransactionReopenException()
         {
-            var sut = CreateTransactionOverDue(TransactionType.Revenue);
+            var sut = Transaction.Create("Test", 100.0M, Yesterday, TransactionType.Revenue, Guid.NewGuid(), Yesterday);
             var paymentDate = Today;
             sut.Pay(paymentDate);
             sut.Reopen();
@@ -93,9 +89,9 @@ namespace Domain.Tests.Entities
         }
 
         [Fact]
-        public void ShouldNotReopenTransactionIfStatusIsCancelled()
+        public void Reopen_WhenTransactionIsCancelled_ShouldThrowTransactionReopenException()
         {
-            var sut = CreateTransactionOverDue(TransactionType.Expense);
+            var sut = Transaction.Create("Test", 100.0M, Yesterday, TransactionType.Expense, Guid.NewGuid(), Yesterday);
             sut.Cancel();
 
             Assert.Throws<TransactionReopenException>(() => sut.Reopen());
@@ -103,11 +99,5 @@ namespace Domain.Tests.Entities
             Assert.Equal(TransactionStatus.Cancelled, sut.Status);
             Assert.Null(sut.PaymentDate);
         }
-
-        private static Transaction CreateTransaction(TransactionType type)
-            => Transaction.Create("Test", 100.0M, Today, type, Guid.NewGuid(), Today);
-
-        private static Transaction CreateTransactionOverDue(TransactionType type)
-            => Transaction.Create("Test", 100.0M, Yesterday, type, Guid.NewGuid(), Yesterday);
     }
 }
