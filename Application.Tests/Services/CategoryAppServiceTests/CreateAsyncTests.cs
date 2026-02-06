@@ -7,7 +7,7 @@ namespace Application.Tests.Services.CategoryAppServiceTests
     public class CreateAsyncTests : CategoryAppServiceBaseTests
     {
         [Fact]
-        public async Task WhenRequestIsValid_ShouldCreateCategory()
+        public async Task CreateAsync_WhenRequestIsValid_ShouldCreateCategory()
         {
             var request = new CategoryRequest("Category 1", "Description 1");
 
@@ -20,7 +20,7 @@ namespace Application.Tests.Services.CategoryAppServiceTests
         }
 
         [Fact]
-        public async Task WhenNameIsEmpty_ShouldThrowException()
+        public async Task CreateAsync_WhenNameIsEmpty_ShouldThrowCategoryNameAppException()
         {
             var request = new CategoryRequest("", "Description 1");
             

@@ -6,7 +6,7 @@ namespace Application.Tests.Services.CategoryAppServiceTests
     public class GetAllAsyncTests : CategoryAppServiceBaseTests
     {
         [Fact]
-        public async Task WhenCategoriesExist_ShouldReturnAllCategories()
+        public async Task GetAllAsync_WhenCategoriesExist_ShouldReturnAllCategories()
         {
             var categories = new List<Category>
             {

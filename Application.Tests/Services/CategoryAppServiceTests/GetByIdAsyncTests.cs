@@ -6,7 +6,7 @@ namespace Application.Tests.Services.CategoryAppServiceTests
     public class GetByIdAsyncTests : CategoryAppServiceBaseTests
     {
         [Fact]
-        public async Task WhenCategoryIdIsProvided_ShouldReturnCategory()
+        public async Task GetByIdAsync_WhenCategoryIdIsProvided_ShouldReturnCategory()
         {
             var category = Category.Create("Category 1", "Description 1");
             _repositoryMock.Setup(r => r.GetByIdAsync(category.Id)).ReturnsAsync(category);
