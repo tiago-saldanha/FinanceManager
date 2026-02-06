@@ -4,9 +4,7 @@ namespace Domain.Entities
 {
     public class Category
     {
-        protected Category()
-        {
-        }
+        protected Category() { }
 
         private Category(Guid id, Description name, string? description)
         {
