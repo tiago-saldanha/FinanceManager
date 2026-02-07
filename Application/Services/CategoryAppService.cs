@@ -23,7 +23,7 @@ namespace Application.Services
 
         public async Task<CategoryResponse> CreateAsync(CategoryRequest request)
         {
-            if (string.IsNullOrEmpty(request.Name)) throw new CategoryNameAppException();
+            if (string.IsNullOrWhiteSpace(request.Name)) throw new CategoryNameAppException();
             var category = Category.Create(request.Name, request.Description);
             await repository.AddAsync(category);
             await unitOfWork.CommitAsync();

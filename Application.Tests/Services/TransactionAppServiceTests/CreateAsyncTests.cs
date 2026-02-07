@@ -38,15 +38,18 @@ namespace Application.Tests.Services
             Assert.Equal(request.TransactionType.ToString(), result.Type.ToLower());
         }
 
-        [Fact]
-        public async Task CreateAsync_WhenTransactionTypeIsInvalid_ShouldThrowTransactionTypeAppException()
+        [Theory]
+        [InlineData("invalid_data")]
+        [InlineData("")]
+        [InlineData("   ")]
+        public async Task CreateAsync_WhenTransactionTypeIsInvalid_ShouldThrowTransactionTypeAppException(string transactionType)
         {
             var request = new CreateTransactionRequest
             {
                 Description = "Description 1",
                 Amount = 100,
                 DueDate = Tomorrow,
-                TransactionType = "invalid_data",
+                TransactionType = transactionType,
                 CategoryId = Guid.Empty,
                 CreatedAt = Today
             };

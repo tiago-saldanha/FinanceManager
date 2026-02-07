@@ -8,12 +8,10 @@ namespace Domain.ValueObjects
 
         public Description(string value)
         {
-            value = value.Trim();
-
-            if (string.IsNullOrEmpty(value))
+            if (string.IsNullOrWhiteSpace(value))
                 throw new DescriptionException();
 
-            Value = value;
+            Value = value.Trim();
         }
 
         public static implicit operator string(Description description)
