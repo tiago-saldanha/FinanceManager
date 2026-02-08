@@ -15,7 +15,7 @@ namespace Application.Tests.Services.CategoryAppServiceTests
         {
             _repositoryMock = new Mock<ICategoryRepository>();
             _unitOfWork = new Mock<IUnitOfWork>();
-            _service = new CategoryAppService(_repositoryMock.Object, _unitOfWork.Object, new CategoryTotalService());
+            _service = new CategoryAppService(_repositoryMock.Object, _unitOfWork.Object);
         }
     }
 }
