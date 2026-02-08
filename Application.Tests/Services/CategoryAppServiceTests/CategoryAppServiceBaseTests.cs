@@ -1,5 +1,6 @@
 ﻿using Application.Services;
 using Domain.Repositories;
+using Domain.Services;
 using Moq;
 
 namespace Application.Tests.Services.CategoryAppServiceTests
@@ -14,7 +15,7 @@ namespace Application.Tests.Services.CategoryAppServiceTests
         {
             _repositoryMock = new Mock<ICategoryRepository>();
             _unitOfWork = new Mock<IUnitOfWork>();
-            _service = new CategoryAppService(_repositoryMock.Object, _unitOfWork.Object);
+            _service = new CategoryAppService(_repositoryMock.Object, _unitOfWork.Object, new CategoryTotalService());
         }
     }
 }

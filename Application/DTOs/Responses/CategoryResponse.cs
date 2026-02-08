@@ -12,7 +12,7 @@ namespace Application.DTOs.Responses
 
         public static CategoryResponse Create(Category category, CategoryTotalService domainService)
         {
-            var categoryBalance = domainService.Calculate(category);
+            var categoryBalance = domainService.CalculateBalance(category);
             var categoryTotal = new CategoryTotal(categoryBalance.Received, categoryBalance.Spent, categoryBalance.Balance);
             
             var response = new CategoryResponse

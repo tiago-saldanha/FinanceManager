@@ -1,11 +1,9 @@
 ﻿using Application.DTOs.Responses;
 using Application.Enums;
-using Application.Services;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Exceptions;
 using Domain.Interfaces;
-using Domain.Repositories;
 using Moq;
 
 namespace Application.Tests.Services.TransactionAppServiceTests

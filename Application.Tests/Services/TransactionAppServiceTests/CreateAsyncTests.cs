@@ -2,11 +2,10 @@
 using Application.DTOs.Responses;
 using Application.Enums;
 using Application.Exceptions;
-using Application.Tests.Services.TransactionAppServiceTests;
 using Domain.Entities;
 using Moq;
 
-namespace Application.Tests.Services
+namespace Application.Tests.Services.TransactionAppServiceTests
 {
     public class CreateAsyncTests : TransactionAppServiceBaseTests
     {
