@@ -10,9 +10,9 @@ namespace Application.DTOs.Responses
         public string? Description { get; private set; }
         public CategoryTotal Total { get; private set; }
 
-        public static CategoryResponse Create(Category category, CategoryTotalService categoryTotalService)
+        public static CategoryResponse Create(Category category, CategoryTotalService domainService)
         {
-            var categoryBalance = categoryTotalService.Calculate(category);
+            var categoryBalance = domainService.Calculate(category);
             var categoryTotal = new CategoryTotal(categoryBalance.Received, categoryBalance.Spent, categoryBalance.Balance);
             
             var response = new CategoryResponse

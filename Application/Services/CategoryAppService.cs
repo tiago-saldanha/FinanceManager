@@ -13,15 +13,15 @@ namespace Application.Services
         public async Task<IEnumerable<CategoryResponse>> GetAllAsync()
         {
             var categories = await repository.GetAllAsync();
-            var categoryTotalService = new CategoryTotalService();
-            return categories.Select(x => CategoryResponse.Create(x, categoryTotalService));
+            var domainService = new CategoryTotalService();
+            return categories.Select(x => CategoryResponse.Create(x, domainService));
         }
 
         public async Task<CategoryResponse> GetByIdAsync(Guid id)
         {
             var category = await repository.GetByIdAsync(id);
-            var categoryTotalService = new CategoryTotalService();
-            return CategoryResponse.Create(category, categoryTotalService);
+            var domainService = new CategoryTotalService();
+            return CategoryResponse.Create(category, domainService);
         }
 
         public async Task<CategoryResponse> CreateAsync(CategoryRequest request)
@@ -30,8 +30,8 @@ namespace Application.Services
             var category = Category.Create(request.Name, request.Description);
             await repository.AddAsync(category);
             await unitOfWork.CommitAsync();
-            var categoryTotalService = new CategoryTotalService();
-            return CategoryResponse.Create(category, categoryTotalService);
+            var domainService = new CategoryTotalService();
+            return CategoryResponse.Create(category, domainService);
         }
     }
 }
