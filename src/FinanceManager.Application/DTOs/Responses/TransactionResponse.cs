@@ -1,6 +1,6 @@
 ﻿using FinanceManager.Domain.Entities;
 
-namespace Application.DTOs.Responses
+namespace FinanceManager.Application.DTOs.Responses
 {
     public class TransactionResponse
     {

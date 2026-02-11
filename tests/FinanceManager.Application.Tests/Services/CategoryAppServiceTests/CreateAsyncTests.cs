@@ -1,9 +1,9 @@
-﻿using Application.DTOs.Requests;
-using Application.Exceptions;
+﻿using FinanceManager.Application.DTOs.Requests;
+using FinanceManager.Application.Exceptions;
 using FinanceManager.Domain.Entities;
 using Moq;
 
-namespace Application.Tests.Services.CategoryAppServiceTests
+namespace FinanceManager.Application.Tests.Services.CategoryAppServiceTests
 {
     public class CreateAsyncTests : CategoryAppServiceBaseTests
     {

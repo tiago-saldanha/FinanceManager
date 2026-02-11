@@ -1,8 +1,8 @@
-﻿using Application.Interfaces.Handlers;
+﻿using FinanceManager.Application.Interfaces.Handlers;
 using FinanceManager.Domain.Events;
 using Microsoft.Extensions.Logging;
 
-namespace Application.Handlers
+namespace FinanceManager.Application.Handlers
 {
     public class TransactionPaidEventHandler(ILogger<TransactionPaidEventHandler> logger)
         : IDomainEventHandler<TransactionPaidEvent>

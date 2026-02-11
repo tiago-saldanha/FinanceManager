@@ -1,7 +1,7 @@
 ﻿using FinanceManager.Domain.Entities;
 using FinanceManager.Domain.Services;
 
-namespace Application.DTOs.Responses
+namespace FinanceManager.Application.DTOs.Responses
 {
     public class CategoryResponse
     {

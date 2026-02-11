@@ -1,11 +1,11 @@
-﻿using Application.DTOs.Requests;
-using Application.DTOs.Responses;
-using Application.Enums;
-using Application.Exceptions;
+﻿using FinanceManager.Application.DTOs.Requests;
+using FinanceManager.Application.DTOs.Responses;
+using FinanceManager.Application.Enums;
+using FinanceManager.Application.Exceptions;
 using FinanceManager.Domain.Entities;
 using Moq;
 
-namespace Application.Tests.Services.TransactionAppServiceTests
+namespace FinanceManager.Application.Tests.Services.TransactionAppServiceTests
 {
     public class CreateAsyncTests : TransactionAppServiceBaseTests
     {

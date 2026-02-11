@@ -1,4 +1,4 @@
-﻿namespace Application.Exceptions
+﻿namespace FinanceManager.Application.Exceptions
 {
     public class TransactionTypeAppException : Exception
     {

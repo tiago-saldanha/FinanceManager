@@ -1,8 +1,8 @@
-﻿using Application.DTOs.Requests;
-using Application.DTOs.Responses;
-using Application.Enums;
+﻿using FinanceManager.Application.DTOs.Requests;
+using FinanceManager.Application.DTOs.Responses;
+using FinanceManager.Application.Enums;
 
-namespace Application.Interfaces.Services
+namespace FinanceManager.Application.Interfaces.Services
 {
     public interface ITransactionAppService
     {

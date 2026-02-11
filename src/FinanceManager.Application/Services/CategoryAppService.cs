@@ -1,12 +1,12 @@
 ﻿using FinanceManager.Domain.Entities;
-using Application.DTOs.Requests;
-using Application.DTOs.Responses;
+using FinanceManager.Application.DTOs.Requests;
+using FinanceManager.Application.DTOs.Responses;
 using FinanceManager.Domain.Repositories;
-using Application.Exceptions;
-using Application.Interfaces.Services;
+using FinanceManager.Application.Exceptions;
+using FinanceManager.Application.Interfaces.Services;
 using FinanceManager.Domain.Services;
 
-namespace Application.Services
+namespace FinanceManager.Application.Services
 {
     public class CategoryAppService(ICategoryRepository repository, IUnitOfWork unitOfWork) : ICategoryAppService
     {

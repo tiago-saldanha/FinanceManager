@@ -1,11 +1,11 @@
 ﻿using FinanceManager.Domain.Repositories;
-using Application.DTOs.Requests;
-using Application.DTOs.Responses;
-using Application.Enums;
-using Application.Interfaces.Services;
-using Application.Interfaces.Dispatchers;
+using FinanceManager.Application.DTOs.Requests;
+using FinanceManager.Application.DTOs.Responses;
+using FinanceManager.Application.Enums;
+using FinanceManager.Application.Interfaces.Services;
+using FinanceManager.Application.Interfaces.Dispatchers;
 
-namespace Application.Services
+namespace FinanceManager.Application.Services
 {
     public class TransactionAppService(ITransactionRepository repository, IUnitOfWork unitOfWork, IDomainEventDispatcher dispatcher) : ITransactionAppService
     {

@@ -1,6 +1,6 @@
-﻿using Application.DTOs.Requests;
-using Application.Enums;
-using Application.Interfaces.Services;
+﻿using FinanceManager.Application.DTOs.Requests;
+using FinanceManager.Application.Enums;
+using FinanceManager.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Endpoints

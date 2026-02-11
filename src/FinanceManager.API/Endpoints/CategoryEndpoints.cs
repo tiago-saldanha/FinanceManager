@@ -1,5 +1,5 @@
-﻿using Application.DTOs.Requests;
-using Application.Interfaces.Services;
+﻿using FinanceManager.Application.DTOs.Requests;
+using FinanceManager.Application.Interfaces.Services;
 
 namespace API.Endpoints
 {

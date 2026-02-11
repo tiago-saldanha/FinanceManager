@@ -1,10 +1,10 @@
-﻿using Application.Dispatchers;
-using Application.Interfaces.Dispatchers;
-using Application.Services;
+﻿using FinanceManager.Application.Dispatchers;
+using FinanceManager.Application.Interfaces.Dispatchers;
+using FinanceManager.Application.Services;
 using FinanceManager.Domain.Repositories;
 using Moq;
 
-namespace Application.Tests.Services.TransactionAppServiceTests
+namespace FinanceManager.Application.Tests.Services.TransactionAppServiceTests
 {
     public class TransactionAppServiceBaseTests
     {

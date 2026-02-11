@@ -1,5 +1,5 @@
-﻿using Application.Interfaces.Services;
-using Application.Services;
+﻿using FinanceManager.Application.Interfaces.Services;
+using FinanceManager.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FinanceManager.Application.Extensions

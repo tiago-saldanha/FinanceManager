@@ -1,7 +1,7 @@
-﻿using Application.DTOs.Requests;
-using Application.DTOs.Responses;
+﻿using FinanceManager.Application.DTOs.Requests;
+using FinanceManager.Application.DTOs.Responses;
 
-namespace Application.Interfaces.Services
+namespace FinanceManager.Application.Interfaces.Services
 {
     public interface ICategoryAppService
     {

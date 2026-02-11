@@ -1,8 +1,8 @@
-﻿using Application.DTOs.Responses;
+﻿using FinanceManager.Application.DTOs.Responses;
 using FinanceManager.Domain.Entities;
 using FinanceManager.Domain.Enums;
 
-namespace Application.Tests.DTOs.Responses
+namespace FinanceManager.Application.Tests.DTOs.Responses
 {
     public class TransactionResponseTests
     {

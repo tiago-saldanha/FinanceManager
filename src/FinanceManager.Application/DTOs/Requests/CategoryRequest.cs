@@ -1,4 +1,4 @@
-﻿namespace Application.DTOs.Requests
+﻿namespace FinanceManager.Application.DTOs.Requests
 {
     public record CategoryRequest(
         string Name, 

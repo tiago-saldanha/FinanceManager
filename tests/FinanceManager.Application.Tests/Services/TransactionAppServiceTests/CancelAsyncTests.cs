@@ -1,12 +1,12 @@
-﻿using Application.DTOs.Responses;
-using Application.Enums;
+﻿using FinanceManager.Application.DTOs.Responses;
+using FinanceManager.Application.Enums;
 using FinanceManager.Domain.Entities;
 using FinanceManager.Domain.Enums;
 using FinanceManager.Domain.Exceptions;
 using FinanceManager.Domain.Interfaces;
 using Moq;
 
-namespace Application.Tests.Services.TransactionAppServiceTests
+namespace FinanceManager.Application.Tests.Services.TransactionAppServiceTests
 {
     public class CancelAsyncTests : TransactionAppServiceBaseTests
     {

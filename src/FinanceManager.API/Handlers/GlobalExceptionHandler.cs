@@ -1,4 +1,4 @@
-﻿using Application.Exceptions;
+﻿using FinanceManager.Application.Exceptions;
 using FinanceManager.Domain.Exceptions;
 using FinanceManager.Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;

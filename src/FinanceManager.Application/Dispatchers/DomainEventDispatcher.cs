@@ -1,9 +1,9 @@
-﻿using Application.Interfaces.Dispatchers;
-using Application.Interfaces.Handlers;
+﻿using FinanceManager.Application.Interfaces.Dispatchers;
+using FinanceManager.Application.Interfaces.Handlers;
 using FinanceManager.Domain.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Application.Dispatchers
+namespace FinanceManager.Application.Dispatchers
 {
     public class DomainEventDispatcher(IServiceProvider provider)
         : IDomainEventDispatcher

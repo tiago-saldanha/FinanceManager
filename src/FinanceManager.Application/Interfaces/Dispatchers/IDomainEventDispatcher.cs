@@ -1,6 +1,6 @@
 ﻿using FinanceManager.Domain.Interfaces;
 
-namespace Application.Interfaces.Dispatchers
+namespace FinanceManager.Application.Interfaces.Dispatchers
 {
     public interface IDomainEventDispatcher
     {

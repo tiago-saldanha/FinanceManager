@@ -1,6 +1,6 @@
 ﻿using FinanceManager.Domain.Interfaces;
 
-namespace Application.Interfaces.Handlers
+namespace FinanceManager.Application.Interfaces.Handlers
 {
     public interface IDomainEventHandler<in TEvent>
         where TEvent : IDomainEvent

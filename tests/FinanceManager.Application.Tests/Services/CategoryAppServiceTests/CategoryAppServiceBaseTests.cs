@@ -1,9 +1,9 @@
-﻿using Application.Services;
+﻿using FinanceManager.Application.Services;
 using FinanceManager.Domain.Repositories;
 using FinanceManager.Domain.Services;
 using Moq;
 
-namespace Application.Tests.Services.CategoryAppServiceTests
+namespace FinanceManager.Application.Tests.Services.CategoryAppServiceTests
 {
     public class CategoryAppServiceBaseTests
     {

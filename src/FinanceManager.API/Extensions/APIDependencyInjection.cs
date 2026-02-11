@@ -1,9 +1,9 @@
 ﻿using API.Endpoints;
 using API.Handlers;
-using Application.Dispatchers;
-using Application.Handlers;
-using Application.Interfaces.Dispatchers;
-using Application.Interfaces.Handlers;
+using FinanceManager.Application.Dispatchers;
+using FinanceManager.Application.Handlers;
+using FinanceManager.Application.Interfaces.Dispatchers;
+using FinanceManager.Application.Interfaces.Handlers;
 using FinanceManager.Domain.Events;
 
 namespace FinanceManager.API.Extensions

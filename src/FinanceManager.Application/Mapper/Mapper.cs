@@ -1,8 +1,8 @@
 ﻿using FinanceManager.Domain.Enums;
-using Application.Exceptions;
-using Application.Enums;
+using FinanceManager.Application.Exceptions;
+using FinanceManager.Application.Enums;
 
-namespace Application.Mapper
+namespace FinanceManager.Application.Mapper
 {
     public static class Mapper
     {

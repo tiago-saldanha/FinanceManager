@@ -1,4 +1,4 @@
-﻿namespace Application.Enums
+﻿namespace FinanceManager.Application.Enums
 {
     public enum TransactionTypeDto
     {

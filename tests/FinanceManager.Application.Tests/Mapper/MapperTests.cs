@@ -1,5 +1,5 @@
 
-namespace Application.Tests.Mapper
+namespace FinanceManager.Application.Tests.Mapper
 {
     public class MapperTests
     {

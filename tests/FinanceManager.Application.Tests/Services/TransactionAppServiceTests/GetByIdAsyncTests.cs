@@ -2,7 +2,7 @@
 using FinanceManager.Domain.Enums;
 using Moq;
 
-namespace Application.Tests.Services.TransactionAppServiceTests
+namespace FinanceManager.Application.Tests.Services.TransactionAppServiceTests
 {
     public class GetByIdAsyncTests : TransactionAppServiceBaseTests
     {

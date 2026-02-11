@@ -1,7 +1,7 @@
 ﻿using FinanceManager.Domain.Entities;
 using Moq;
 
-namespace Application.Tests.Services.CategoryAppServiceTests
+namespace FinanceManager.Application.Tests.Services.CategoryAppServiceTests
 {
     public class GetByIdAsyncTests : CategoryAppServiceBaseTests
     {

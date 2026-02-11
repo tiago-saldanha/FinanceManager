@@ -1,7 +1,7 @@
 ﻿using FinanceManager.Domain.Entities;
 using FinanceManager.Domain.Enums;
 
-namespace Application.DTOs.Requests
+namespace FinanceManager.Application.DTOs.Requests
 {
     public class CreateTransactionRequest
     {
