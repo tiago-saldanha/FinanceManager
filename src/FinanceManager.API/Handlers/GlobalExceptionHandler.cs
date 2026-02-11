@@ -1,6 +1,6 @@
 ﻿using Application.Exceptions;
 using FinanceManager.Domain.Exceptions;
-using Infrastructure.Exceptions;
+using FinanceManager.Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
