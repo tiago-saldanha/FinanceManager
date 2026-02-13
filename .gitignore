@@ -21,3 +21,5 @@
 /src/FinanceManager.Infrastructure/financeiro.db
 /src/FinanceManager.Infrastructure/Financeiro.db-shm
 /src/FinanceManager.Infrastructure/Financeiro.db-wal
+/FinanceManager.Infrastructure.Tests/bin/Debug/net8.0
+/FinanceManager.Infrastructure.Tests/obj
