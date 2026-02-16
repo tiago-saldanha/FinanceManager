@@ -22,11 +22,6 @@ namespace FinanceManager.API.Tests.Fixture
                 connection.Open();
 
                 services.AddDbContext<AppDbContext>(options => options.UseSqlite(connection));
-
-                var provider = services.BuildServiceProvider();
-                using var scope = provider.CreateScope();
-                var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-                db.Database.EnsureCreated();
             });
         }
     }

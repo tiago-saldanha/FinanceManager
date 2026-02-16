@@ -24,6 +24,7 @@ namespace FinanceManager.API.Tests.Endpoints
 
         public async Task InitializeAsync()
         {
+            _context.Database.EnsureCreated();
             await Task.CompletedTask;
         }
 
