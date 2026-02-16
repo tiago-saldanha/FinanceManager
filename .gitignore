@@ -23,3 +23,5 @@
 /tests/FinanceManager.Domain.Tests/obj
 /tests/FinanceManager.Infrastructure.Tests/bin
 /tests/FinanceManager.Infrastructure.Tests/obj
+/tests/FinanceManager.API.Tests/bin/Debug/net8.0
+/tests/FinanceManager.API.Tests/obj

@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceManager.Infrastructu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceManager.Infrastructure.Tests", "tests\FinanceManager.Infrastructure.Tests\FinanceManager.Infrastructure.Tests.csproj", "{DDAB3F0C-26D9-80E1-8FB9-39016AE9BAA5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceManager.API.Tests", "tests\FinanceManager.API.Tests\FinanceManager.API.Tests.csproj", "{441AE163-D483-444D-8666-CD7AC4F6E183}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{DDAB3F0C-26D9-80E1-8FB9-39016AE9BAA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DDAB3F0C-26D9-80E1-8FB9-39016AE9BAA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DDAB3F0C-26D9-80E1-8FB9-39016AE9BAA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{441AE163-D483-444D-8666-CD7AC4F6E183}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{441AE163-D483-444D-8666-CD7AC4F6E183}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{441AE163-D483-444D-8666-CD7AC4F6E183}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{441AE163-D483-444D-8666-CD7AC4F6E183}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

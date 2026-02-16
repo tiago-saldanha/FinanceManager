@@ -5,10 +5,10 @@ namespace FinanceManager.Application.DTOs.Responses
 {
     public class CategoryResponse
     {
-        public Guid Id { get; private set; }
-        public string Name { get; private set; }
-        public string? Description { get; private set; }
-        public CategoryTotal Total { get; private set; }
+        public Guid Id { get; init; }
+        public string Name { get; init; } = default!;
+        public string? Description { get; init; }
+        public CategoryTotal Total { get; init; } = default!;
 
         public static CategoryResponse Create(Category category, CategoryTotalService domainService)
         {
