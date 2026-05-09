@@ -115,8 +115,6 @@ import { PayTransactionDialogComponent } from '../pay-transaction-dialog/pay-tra
             <mat-icon>filter_alt_off</mat-icon>
           </button>
         }
-
-        <span class="filter-count">{{ transactions().length }} transação(ões)</span>
       </div>
 
       <!-- Table -->

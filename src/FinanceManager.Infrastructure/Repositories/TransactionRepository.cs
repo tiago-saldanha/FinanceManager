@@ -39,9 +39,7 @@ namespace FinanceManager.Infrastructure.Repositories
                 query = query.Where(t => t.Type == type.Value);
 
             if (!string.IsNullOrWhiteSpace(search))
-                query = query.Where(t =>
-                    EF.Property<string>(t, "Description").Contains(search) ||
-                    t.Category.Description.Contains(search));
+                query = query.Where(t => EF.Property<string>(t, "Description").Contains(search));
 
             if (startDate.HasValue)
                 query = query.Where(t => t.Dates.DueDate.Date >= startDate.Value.Date);
@@ -53,4 +51,3 @@ namespace FinanceManager.Infrastructure.Repositories
         }
     }
 }
-   

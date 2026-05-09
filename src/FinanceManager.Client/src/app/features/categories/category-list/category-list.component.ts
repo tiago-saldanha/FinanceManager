@@ -1,6 +1,8 @@
 import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { startWith } from 'rxjs';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -308,8 +310,13 @@ export class CategoryListComponent implements OnInit {
   categories = signal<Category[]>([]);
   searchCtrl = new FormControl('');
 
+  private searchValue = toSignal(
+    this.searchCtrl.valueChanges.pipe(startWith('')),
+    { initialValue: '' }
+  );
+
   filteredCategories = computed(() => {
-    const search = (this.searchCtrl.value ?? '').toLowerCase();
+    const search = (this.searchValue() ?? '').toLowerCase();
     return this.categories().filter(c =>
       !search || c.name.toLowerCase().includes(search)
     );
