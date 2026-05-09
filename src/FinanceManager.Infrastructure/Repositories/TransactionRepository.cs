@@ -1,10 +1,10 @@
-﻿using System.Linq.Expressions;
-using FinanceManager.Domain.Entities;
+﻿using FinanceManager.Domain.Entities;
 using FinanceManager.Domain.Enums;
 using FinanceManager.Domain.Repositories;
-using FinanceManager.Infrastructure.Exceptions;
 using FinanceManager.Infrastructure.Data;
+using FinanceManager.Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace FinanceManager.Infrastructure.Repositories
 {
@@ -39,7 +39,7 @@ namespace FinanceManager.Infrastructure.Repositories
                 query = query.Where(t => t.Type == type.Value);
 
             if (!string.IsNullOrWhiteSpace(search))
-                query = query.Where(t => EF.Property<string>(t, "Description").Contains(search));
+                query = query.Where(t => EF.Functions.Like((string)(object)t.Description, $"%{search}%"));
 
             if (startDate.HasValue)
                 query = query.Where(t => t.Dates.DueDate.Date >= startDate.Value.Date);

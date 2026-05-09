@@ -23,6 +23,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{02EA681E-C7D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{E637E29B-4BB6-4FC4-AEF8-A3C91DD976D8}"
 EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "FinanceManager.Client", "src\FinanceManager.Client\FinanceManager.Client.esproj", "{9FCCD335-DD00-1926-4C51-63F8948F0B24}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,12 @@ Global
 		{441AE163-D483-444D-8666-CD7AC4F6E183}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{441AE163-D483-444D-8666-CD7AC4F6E183}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{441AE163-D483-444D-8666-CD7AC4F6E183}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FCCD335-DD00-1926-4C51-63F8948F0B24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FCCD335-DD00-1926-4C51-63F8948F0B24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FCCD335-DD00-1926-4C51-63F8948F0B24}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{9FCCD335-DD00-1926-4C51-63F8948F0B24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FCCD335-DD00-1926-4C51-63F8948F0B24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FCCD335-DD00-1926-4C51-63F8948F0B24}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +82,7 @@ Global
 		{4958F05B-CE60-6B10-5A22-083FE14C74BB} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{DDAB3F0C-26D9-80E1-8FB9-39016AE9BAA5} = {E637E29B-4BB6-4FC4-AEF8-A3C91DD976D8}
 		{441AE163-D483-444D-8666-CD7AC4F6E183} = {E637E29B-4BB6-4FC4-AEF8-A3C91DD976D8}
+		{9FCCD335-DD00-1926-4C51-63F8948F0B24} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {330295FC-DE58-43C6-BF5C-D8EE0D931046}
