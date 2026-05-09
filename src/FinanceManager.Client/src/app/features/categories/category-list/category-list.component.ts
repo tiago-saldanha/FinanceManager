@@ -2,12 +2,14 @@ import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { startWith } from 'rxjs';
+import { startWith, forkJoin } from 'rxjs';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -15,8 +17,12 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { CategoryService } from '../../../core/services/category.service';
+import { TransactionService } from '../../../core/services/transaction.service';
 import { Category } from '../../../core/models/category.model';
+import { Transaction } from '../../../core/models/transaction.model';
 import { CategoryFormComponent } from '../category-form/category-form.component';
+
+type PeriodMode = 'thisMonth' | 'lastMonth' | 'last30Days' | 'thisYear' | 'all' | 'custom';
 
 @Component({
   selector: 'app-category-list',
@@ -30,6 +36,8 @@ import { CategoryFormComponent } from '../category-form/category-form.component'
     MatIconModule,
     MatInputModule,
     MatFormFieldModule,
+    MatSelectModule,
+    MatDatepickerModule,
     MatDialogModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
@@ -46,13 +54,49 @@ import { CategoryFormComponent } from '../category-form/category-form.component'
         </button>
       </div>
 
-      <!-- Search -->
-      <div class="search-bar">
-        <mat-form-field appearance="outline" subscriptSizing="dynamic" style="width: 320px">
+      <!-- Filters -->
+      <div class="filters-bar">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="search-field">
           <mat-label>Buscar categoria</mat-label>
           <mat-icon matPrefix>search</mat-icon>
           <input matInput [formControl]="searchCtrl" placeholder="Nome da categoria..." />
         </mat-form-field>
+
+        <mat-form-field appearance="outline" class="period-select" subscriptSizing="dynamic">
+          <mat-label>Período</mat-label>
+          <mat-select [value]="periodMode()" (valueChange)="setPeriod($event)">
+            <mat-option value="thisMonth">Este mês</mat-option>
+            <mat-option value="lastMonth">Mês passado</mat-option>
+            <mat-option value="last30Days">Últimos 30 dias</mat-option>
+            <mat-option value="thisYear">Este ano</mat-option>
+            <mat-option value="all">Tudo</mat-option>
+            <mat-option value="custom">Personalizado</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        @if (periodMode() === 'custom') {
+          <mat-form-field appearance="outline" class="date-range" subscriptSizing="dynamic">
+            <mat-label>Data Inicial</mat-label>
+            <input matInput
+                   [matDatepicker]="startPicker"
+                   [value]="customStartDate()"
+                   (dateChange)="customStartDate.set($event.value)" />
+            <mat-datepicker-toggle matIconSuffix [for]="startPicker" />
+            <mat-datepicker #startPicker />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="date-range" subscriptSizing="dynamic">
+            <mat-label>Data Final</mat-label>
+            <input matInput
+                   [matDatepicker]="endPicker"
+                   [value]="customEndDate()"
+                   [min]="customStartDate()"
+                   (dateChange)="customEndDate.set($event.value)" />
+            <mat-datepicker-toggle matIconSuffix [for]="endPicker" />
+            <mat-datepicker #endPicker />
+          </mat-form-field>
+        }
+
         <span class="filter-count">{{ filteredCategories().length }} categoria(s)</span>
       </div>
 
@@ -173,12 +217,25 @@ import { CategoryFormComponent } from '../category-form/category-form.component'
       .page-title { margin-bottom: 0; }
     }
 
-    .search-bar {
+    .filters-bar {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 12px;
+      flex-wrap: wrap;
       margin-bottom: 20px;
-      .filter-count { color: #757575; font-size: 13px; }
+      .filter-count { color: #757575; font-size: 13px; margin-left: auto; }
+    }
+
+    .search-field {
+      width: 320px;
+    }
+
+    .period-select {
+      width: 200px;
+    }
+
+    .date-range {
+      width: 170px;
     }
 
     .loading-center {
@@ -303,21 +360,59 @@ import { CategoryFormComponent } from '../category-form/category-form.component'
 })
 export class CategoryListComponent implements OnInit {
   private readonly categoryService = inject(CategoryService);
+  private readonly transactionService = inject(TransactionService);
   private readonly dialog = inject(MatDialog);
   private readonly snackBar = inject(MatSnackBar);
 
   loading = signal(true);
   categories = signal<Category[]>([]);
+  transactions = signal<Transaction[]>([]);
   searchCtrl = new FormControl('');
+
+  // Filtro de período (mesmo padrão do Dashboard).
+  periodMode = signal<PeriodMode>('thisMonth');
+  customStartDate = signal<Date | null>(null);
+  customEndDate = signal<Date | null>(null);
 
   private searchValue = toSignal(
     this.searchCtrl.valueChanges.pipe(startWith('')),
     { initialValue: '' }
   );
 
+  // Transações filtradas pelo período selecionado.
+  private periodFilteredTransactions = computed(() => {
+    const range = this.resolvePeriodRange();
+    const all = this.transactions();
+    if (!range) return all;
+    const { start, end } = range;
+    return all.filter(t => {
+      const d = new Date(t.dueDate);
+      return d >= start && d < end;
+    });
+  });
+
+  // Categorias com totais recalculados a partir das transações do período.
+  // Mantém a mesma fórmula do backend (received - spent, sem filtrar status).
+  private displayCategories = computed<Category[]>(() => {
+    const filtered = this.periodFilteredTransactions();
+    return this.categories().map(cat => {
+      const catTxs = filtered.filter(t => t.categoryName === cat.name);
+      const received = catTxs
+        .filter(t => t.type === 'Revenue')
+        .reduce((s, t) => s + t.amount, 0);
+      const spent = catTxs
+        .filter(t => t.type === 'Expense')
+        .reduce((s, t) => s + t.amount, 0);
+      return {
+        ...cat,
+        total: { received, spent, balance: received - spent },
+      };
+    });
+  });
+
   filteredCategories = computed(() => {
     const search = (this.searchValue() ?? '').toLowerCase();
-    return this.categories().filter(c =>
+    return this.displayCategories().filter(c =>
       !search || c.name.toLowerCase().includes(search)
     );
   });
@@ -333,14 +428,18 @@ export class CategoryListComponent implements OnInit {
   grandBalance = computed(() => this.grandTotalReceived() - this.grandTotalSpent());
 
   ngOnInit(): void {
-    this.loadCategories();
+    this.loadAll();
   }
 
-  loadCategories(): void {
+  loadAll(): void {
     this.loading.set(true);
-    this.categoryService.getAll().subscribe({
-      next: (list) => {
-        this.categories.set(list);
+    forkJoin({
+      categories: this.categoryService.getAll(),
+      transactions: this.transactionService.getAll(),
+    }).subscribe({
+      next: ({ categories, transactions }) => {
+        this.categories.set(categories);
+        this.transactions.set(transactions);
         this.loading.set(false);
       },
       error: () => this.loading.set(false),
@@ -355,7 +454,7 @@ export class CategoryListComponent implements OnInit {
     ref.afterClosed().subscribe(result => {
       if (result) {
         this.snackBar.open('Categoria criada com sucesso!', 'OK', { duration: 3000 });
-        this.loadCategories();
+        this.loadAll();
       }
     });
   }
@@ -363,5 +462,67 @@ export class CategoryListComponent implements OnInit {
   spentPercent(cat: Category): number {
     if (cat.total.received === 0) return cat.total.spent > 0 ? 100 : 0;
     return Math.min((cat.total.spent / cat.total.received) * 100, 100);
+  }
+
+  setPeriod(value: PeriodMode): void {
+    this.periodMode.set(value);
+    if (value === 'custom' && (!this.customStartDate() || !this.customEndDate())) {
+      const now = new Date();
+      const start = new Date(now.getFullYear(), now.getMonth(), 1);
+      const end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+      this.customStartDate.set(start);
+      this.customEndDate.set(end);
+    }
+  }
+
+  // Resolve o intervalo [start, end) atual considerando preset ou custom.
+  private resolvePeriodRange(): { start: Date; end: Date } | null {
+    const mode = this.periodMode();
+    if (mode === 'custom') {
+      const start = this.customStartDate();
+      const end = this.customEndDate();
+      if (!start || !end) return null;
+      const inclusiveEnd = new Date(end);
+      inclusiveEnd.setHours(0, 0, 0, 0);
+      inclusiveEnd.setDate(inclusiveEnd.getDate() + 1);
+      const normalizedStart = new Date(start);
+      normalizedStart.setHours(0, 0, 0, 0);
+      return { start: normalizedStart, end: inclusiveEnd };
+    }
+    return this.getPeriodRange(mode);
+  }
+
+  private getPeriodRange(mode: PeriodMode): { start: Date; end: Date } | null {
+    const now = new Date();
+    switch (mode) {
+      case 'thisMonth': {
+        const start = new Date(now.getFullYear(), now.getMonth(), 1);
+        const end = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+        return { start, end };
+      }
+      case 'lastMonth': {
+        const start = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+        const end = new Date(now.getFullYear(), now.getMonth(), 1);
+        return { start, end };
+      }
+      case 'last30Days': {
+        const start = new Date(now);
+        start.setDate(start.getDate() - 30);
+        start.setHours(0, 0, 0, 0);
+        const end = new Date(now);
+        end.setDate(end.getDate() + 1);
+        end.setHours(0, 0, 0, 0);
+        return { start, end };
+      }
+      case 'thisYear': {
+        const start = new Date(now.getFullYear(), 0, 1);
+        const end = new Date(now.getFullYear() + 1, 0, 1);
+        return { start, end };
+      }
+      case 'all':
+      case 'custom':
+      default:
+        return null;
+    }
   }
 }
