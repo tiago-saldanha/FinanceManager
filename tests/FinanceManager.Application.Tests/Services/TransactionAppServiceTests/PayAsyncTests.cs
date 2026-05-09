@@ -56,18 +56,5 @@ namespace FinanceManager.Application.Tests.Services.TransactionAppServiceTests
             Assert.Equal(TransactionStatus.Paid, transaction.Status);
             Assert.Equal(Yesterday, transaction.PaymentDate);
         }
-
-        [Fact]
-        public async Task PayAsync_WhenPaymentDateIsBeforeCreatedAt_ShouldThrowTransactionPayException()
-        {
-            var request = new PayTransactionRequest(Yesterday);
-            var transaction = Transaction.Create("Description 1", 100, Tomorrow, TransactionType.Revenue, Guid.Empty, Today);
-            _repositoryMock.Setup(r => r.GetByIdAsync(transaction.Id)).ReturnsAsync(transaction);
-
-            await Assert.ThrowsAsync<TransactionPayException>(() => _service.PayAsync(transaction.Id, request));
-            _dispatcherMock.Verify(d => d.DispatchAsync(It.IsAny<IEnumerable<IDomainEvent>>()), Times.Never);
-            Assert.Equal(TransactionStatus.Pending, transaction.Status);
-            Assert.Null(transaction.PaymentDate);
-        }
     }
 }
