@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using FinanceManager.Domain.Entities;
+using FinanceManager.Domain.Enums;
 
 namespace FinanceManager.Domain.Repositories
 {
@@ -8,7 +9,9 @@ namespace FinanceManager.Domain.Repositories
         Task<Transaction> GetByIdAsync(Guid id);
         Task AddAsync(Transaction request);
         void Update(Transaction request);
+        void Remove(Transaction request);
         Task<List<Transaction>> GetAllAsync();
         Task<List<Transaction>> GetByFilterAsync(Expression<Func<Transaction, bool>> predicate);
+        Task<List<Transaction>> SearchAsync(string? search, TransactionStatus? status, TransactionType? type, DateTime? startDate, DateTime? endDate);
     }
 }

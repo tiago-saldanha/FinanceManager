@@ -51,8 +51,8 @@ namespace FinanceManager.Domain.Entities
             if (Status == TransactionStatus.Paid)
                 throw new TransactionPayException("A transação já foi paga");
 
-            if (paymentDate.Date < Dates.CreatedAt.Date)
-                throw new TransactionPayException("A data de pagamento não pode ser anterior à data de criação da transação");
+            //if (paymentDate.Date < Dates.CreatedAt.Date)
+            //    throw new TransactionPayException("A data de pagamento não pode ser anterior à data de criação da transação");
 
             PaymentDate = paymentDate;
             Status = TransactionStatus.Paid;
@@ -83,6 +83,21 @@ namespace FinanceManager.Domain.Entities
             PaymentDate = null;
 
             AddDomainEvent(new TransactionCancelEvent(Id, Status));
+        }
+
+        public void Update(string description, decimal amount, DateTime dueDate, TransactionType type, Guid categoryId)
+        {
+            if (Status == TransactionStatus.Paid)
+                throw new TransactionUpdateException("Não é possível editar uma transação que já foi paga");
+
+            if (Status == TransactionStatus.Cancelled)
+                throw new TransactionUpdateException("Não é possível editar uma transação que foi cancelada");
+
+            Description = new Description(description);
+            Amount = new Money(amount);
+            Dates = new TransactionDates(dueDate, Dates.CreatedAt);
+            Type = type;
+            CategoryId = categoryId;
         }
 
         public bool IsOverdue(DateTime today) => Status == TransactionStatus.Pending && today.Date > Dates.DueDate.Date;

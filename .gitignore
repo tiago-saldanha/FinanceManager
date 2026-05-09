@@ -25,3 +25,11 @@
 /tests/FinanceManager.Infrastructure.Tests/obj
 /tests/FinanceManager.API.Tests/bin/Debug/net8.0
 /tests/FinanceManager.API.Tests/obj
+/finance-manager-frontend/.angular/cache/18.2.21/finance-manager-frontend
+/finance-manager-frontend/dist/finance-manager-frontend
+/finance-manager-frontend/node_modules
+/src/FinanceManager.Client/.angular/cache/18.2.21/finance-manager-frontend
+/src/FinanceManager.Client/dist/finance-manager-frontend
+/src/FinanceManager.Client/dist/finance-manager-frontend/browser/media/material-icons-latin-400-normal-LEZCGFVT.woff2
+/src/FinanceManager.Client/node_modules
+/src/FinanceManager.Client/obj/Debug

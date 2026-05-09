@@ -5,6 +5,7 @@ using FinanceManager.Application.Handlers;
 using FinanceManager.Application.Interfaces.Dispatchers;
 using FinanceManager.Application.Interfaces.Handlers;
 using FinanceManager.Domain.Events;
+using FinanceManager.Infrastructure.Data;
 
 namespace FinanceManager.API.Extensions
 {
@@ -20,11 +21,24 @@ namespace FinanceManager.API.Extensions
             services.AddProblemDetails();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
+
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy =>
+                    policy.WithOrigins("http://localhost:4200")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod());
+            });
+
             return services;
         }
 
         public static WebApplication Setup(this WebApplication app)
         {
+            using var scope = app.Services.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            db.Database.EnsureCreated();
+
             app.UseExceptionHandler();
 
             if (app.Environment.IsDevelopment())
@@ -33,6 +47,7 @@ namespace FinanceManager.API.Extensions
                 app.UseSwaggerUI();
             }
 
+            app.UseCors();
             app.UseHttpsRedirection();
 
             app.MapCategoryEndpoints();

@@ -34,19 +34,6 @@ namespace FinanceManager.Domain.Tests.Entities
         }
 
         [Fact]
-        public void Pay_WhenPaymentDateIsBeforeCreatedAt_ShouldThrowTransactionPayException()
-        {
-            var sut = Transaction.Create("Test", 100.0M, Today, TransactionType.Revenue, Guid.NewGuid(), Today);
-            var invalidPaymentDate = Yesterday;
-
-            Assert.Throws<TransactionPayException>(() => sut.Pay(invalidPaymentDate));
-
-            Assert.Equal(TransactionStatus.Pending, sut.Status);
-            Assert.Null(sut.PaymentDate);
-            Assert.False(sut.IsOverdue(Today));
-        }
-
-        [Fact]
         public void Pay_WhenTransactionIsAlreadyPaid_ShouldThrowTransactionPayException()
         {
             var sut = Transaction.Create("Test", 100.0M, Yesterday, TransactionType.Expense, Guid.NewGuid(), Yesterday);

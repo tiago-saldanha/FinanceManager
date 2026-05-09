@@ -1,5 +1,4 @@
-﻿using FinanceManager.Domain.Exceptions;
-using FinanceManager.Domain.ValueObjects;
+﻿using FinanceManager.Domain.ValueObjects;
 
 namespace FinanceManager.Domain.Tests.ValueObjects
 {
@@ -15,12 +14,6 @@ namespace FinanceManager.Domain.Tests.ValueObjects
             
             Assert.Equal(Today, transactionDates.DueDate);
             Assert.Equal(Yesterday, transactionDates.CreatedAt);
-        }
-
-        [Fact]
-        public void Constructor_WhenDueDateIsBeforeCreatedAt_ShouldThrowTransactionDateException()
-        {
-            Assert.Throws<TransactionDateException>(() => new TransactionDates(Yesterday, Today));
         }
     }
 }

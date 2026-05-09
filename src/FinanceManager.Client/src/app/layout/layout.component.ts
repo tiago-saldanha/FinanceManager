@@ -1,0 +1,170 @@
+import { Component, signal } from '@angular/core';
+import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { CommonModule } from '@angular/common';
+
+interface NavItem {
+  path: string;
+  label: string;
+  icon: string;
+}
+
+@Component({
+  selector: 'app-layout',
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatListModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTooltipModule,
+  ],
+  template: `
+    <mat-sidenav-container class="sidenav-container">
+      <mat-sidenav
+        #sidenav
+        [mode]="isMobile() ? 'over' : 'side'"
+        [opened]="!isMobile()"
+        class="sidenav"
+      >
+        <!-- Brand -->
+        <div class="brand">
+          <mat-icon class="brand-icon">account_balance_wallet</mat-icon>
+          <span class="brand-name">Finance Manager</span>
+        </div>
+
+        <!-- Nav links -->
+        <mat-nav-list>
+          @for (item of navItems; track item.path) {
+            <a
+              mat-list-item
+              [routerLink]="item.path"
+              routerLinkActive="active-link"
+              [routerLinkActiveOptions]="{ exact: false }"
+              (click)="isMobile() && sidenav.close()"
+            >
+              <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+              <span matListItemTitle>{{ item.label }}</span>
+            </a>
+          }
+        </mat-nav-list>
+      </mat-sidenav>
+
+      <mat-sidenav-content>
+        <!-- Toolbar -->
+        <mat-toolbar color="primary" class="toolbar">
+          <button mat-icon-button (click)="sidenav.toggle()" class="menu-btn">
+            <mat-icon>menu</mat-icon>
+          </button>
+          <span class="toolbar-title">Finance Manager</span>
+          <span class="spacer"></span>
+          <span class="toolbar-date">{{ today | date:'fullDate':'':'pt-BR' }}</span>
+        </mat-toolbar>
+
+        <!-- Page content -->
+        <main class="main-content">
+          <router-outlet />
+        </main>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+  `,
+  styles: [`
+    .sidenav-container {
+      height: 100vh;
+    }
+
+    .sidenav {
+      width: 240px;
+      background: #064e3b;
+      color: white;
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 20px 16px;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        .brand-icon {
+          font-size: 32px;
+          width: 32px;
+          height: 32px;
+          color: #6ee7b7;
+        }
+        .brand-name {
+          font-size: 17px;
+          font-weight: 500;
+          color: white;
+        }
+      }
+
+      mat-nav-list {
+        padding-top: 8px;
+        a {
+          color: rgba(255,255,255,0.8);
+          border-radius: 0 24px 24px 0;
+          margin-right: 12px;
+          margin-bottom: 2px;
+          transition: all 0.2s;
+
+          &:hover {
+            color: white;
+            background: rgba(255,255,255,0.12) !important;
+          }
+
+          &.active-link {
+            color: white;
+            background: rgba(110,231,183,0.2) !important;
+            border-left: 3px solid #6ee7b7;
+            mat-icon { color: #6ee7b7; }
+          }
+
+          mat-icon { color: inherit; }
+        }
+      }
+    }
+
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #065f46 !important;
+      color: white !important;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+
+      .menu-btn { margin-right: 8px; }
+      .toolbar-title { font-size: 18px; font-weight: 500; }
+      .spacer { flex: 1; }
+      .toolbar-date {
+        font-size: 13px;
+        opacity: 0.85;
+        text-transform: capitalize;
+      }
+    }
+
+    .main-content {
+      min-height: calc(100vh - 64px);
+      background: #f0fdf4;
+    }
+  `],
+})
+export class LayoutComponent {
+  today = new Date();
+
+  isMobile = signal(window.innerWidth < 768);
+
+  navItems: NavItem[] = [
+    { path: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
+    { path: '/transactions', label: 'Transações', icon: 'receipt_long' },
+    { path: '/categories', label: 'Categorias', icon: 'category' },
+  ];
+}

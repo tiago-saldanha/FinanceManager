@@ -30,6 +30,14 @@ namespace FinanceManager.Application.Services
             return transactions.Select(TransactionResponse.Create);
         }
 
+        public async Task<IEnumerable<TransactionResponse>> SearchAsync(string? search, TransactionStatusDto? status, TransactionTypeDto? type, DateTime? startDate, DateTime? endDate)
+        {
+            var domainStatus = status.HasValue ? Mapper.Mapper.TransactionStatus(status.Value) : (Domain.Enums.TransactionStatus?)null;
+            var domainType = type.HasValue ? Mapper.Mapper.TransactionType(type.Value) : (Domain.Enums.TransactionType?)null;
+            var transactions = await repository.SearchAsync(search, domainStatus, domainType, startDate, endDate);
+            return transactions.Select(TransactionResponse.Create);
+        }
+
         public async Task<TransactionResponse> PayAsync(Guid id, PayTransactionRequest request)
         {
             var transaction = await repository.GetByIdAsync(id);
@@ -64,6 +72,29 @@ namespace FinanceManager.Application.Services
         {
             var transaction = request.ToEntity();
             await repository.AddAsync(transaction);
+            await unitOfWork.CommitAsync();
+            return TransactionResponse.Create(transaction);
+        }
+
+        public async Task<TransactionResponse> UpdateAsync(Guid id, UpdateTransactionRequest request)
+        {
+            var transaction = await repository.GetByIdAsync(id);
+            transaction.Update(
+                request.Description,
+                request.Amount,
+                request.DueDate,
+                Mapper.Mapper.TransactionType(request.TransactionType),
+                request.CategoryId
+            );
+            repository.Update(transaction);
+            await unitOfWork.CommitAsync();
+            return TransactionResponse.Create(transaction);
+        }
+
+        public async Task<TransactionResponse> RemoveByIdAsync(Guid id)
+        {
+            var transaction = await repository.GetByIdAsync(id);
+            repository.Remove(transaction);
             await unitOfWork.CommitAsync();
             return TransactionResponse.Create(transaction);
         }
