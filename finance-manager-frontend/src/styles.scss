@@ -1,0 +1,213 @@
+/* Global Styles */
+
+/* Material Icons — fonte servida localmente via assets/fonts */
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url('/fonts/material-icons.woff2') format('woff2');
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  font-feature-settings: 'liga';
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: #f0fdf4;
+}
+
+/* Sobrescreve cores primárias do Angular Material — Paleta Esmeralda */
+.mat-toolbar.mat-primary {
+  background-color: #065f46 !important;
+  color: white !important;
+}
+.mat-mdc-raised-button.mat-primary,
+.mat-mdc-fab.mat-primary,
+.mat-mdc-mini-fab.mat-primary {
+  --mdc-filled-button-container-color: #065f46;
+  --mdc-filled-button-label-text-color: white;
+}
+.mat-mdc-outlined-button.mat-primary {
+  --mdc-outlined-button-label-text-color: #065f46;
+  --mdc-outlined-button-outline-color: #065f46;
+}
+.mat-mdc-checkbox.mat-primary {
+  --mdc-checkbox-selected-checkmark-color: white;
+  --mdc-checkbox-selected-focus-icon-color: #065f46;
+  --mdc-checkbox-selected-hover-icon-color: #065f46;
+  --mdc-checkbox-selected-icon-color: #065f46;
+  --mdc-checkbox-selected-pressed-icon-color: #065f46;
+}
+.mat-primary .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled) .mdc-list-item__primary-text {
+  color: #065f46;
+}
+.mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
+  color: #065f46 !important;
+}
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
+  border-color: #065f46 !important;
+}
+
+/* Custom theme colors */
+:root {
+  --color-revenue: #4caf50;
+  --color-expense: #f44336;
+  --color-pending: #ff9800;
+  --color-paid: #4caf50;
+  --color-cancelled: #9e9e9e;
+  --color-overdue: #f44336;
+}
+
+/* Utility classes */
+.text-revenue { color: var(--color-revenue) !important; }
+.text-expense { color: var(--color-expense) !important; }
+.text-pending { color: var(--color-pending) !important; }
+.text-paid { color: var(--color-paid) !important; }
+.text-cancelled { color: var(--color-cancelled) !important; }
+.text-overdue { color: var(--color-overdue) !important; }
+
+.page-container {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 24px;
+}
+
+/* Summary cards */
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.summary-card {
+  mat-card-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px !important;
+  }
+  .card-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    mat-icon {
+      font-size: 28px;
+      width: 28px;
+      height: 28px;
+      color: white;
+    }
+  }
+  .card-info {
+    flex: 1;
+    .card-label {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 4px;
+    }
+    .card-value {
+      font-size: 22px;
+      font-weight: 500;
+    }
+  }
+}
+
+/* Status chip colors */
+.chip-pending {
+  background-color: #fff3e0 !important;
+  color: #e65100 !important;
+}
+.chip-paid {
+  background-color: #e8f5e9 !important;
+  color: #2e7d32 !important;
+}
+.chip-cancelled {
+  background-color: #f5f5f5 !important;
+  color: #616161 !important;
+}
+
+/* Table styles */
+.mat-mdc-table {
+  width: 100%;
+  mat-row:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+}
+
+/* Filter bar */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: nowrap;
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+  mat-form-field {
+    min-width: unset;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .page-container {
+    padding: 12px;
+  }
+  .summary-cards {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .summary-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Snackbar de erro */
+.error-snackbar {
+  --mdc-snackbar-container-color: #7f1d1d;
+  --mdc-snackbar-supporting-text-color: #fef2f2;
+  --mat-snack-bar-button-color: #fca5a5;
+  .mat-mdc-snack-bar-label {
+    font-size: 14px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+  }
+}

@@ -9,9 +9,6 @@ namespace FinanceManager.Domain.ValueObjects
         
         public TransactionDates(DateTime dueDate, DateTime createdAt)
         {
-            if (dueDate.Date < createdAt.Date)
-                throw new TransactionDateException();
-
             DueDate = dueDate;
             CreatedAt = createdAt;
         }

@@ -26,6 +26,7 @@ public class GlobalExceptionHandler : IExceptionHandler
             case TransactionPayException:
             case TransactionReopenException:
             case TransactionCancelException:
+            case TransactionUpdateException:
                 problemDetails.Status = StatusCodes.Status400BadRequest;
                 problemDetails.Title = "Regra de Negócio violada";
                 problemDetails.Detail = message;
