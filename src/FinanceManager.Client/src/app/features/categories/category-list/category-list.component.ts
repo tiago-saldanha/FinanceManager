@@ -296,7 +296,7 @@ type PeriodMode = 'thisMonth' | 'lastMonth' | 'last30Days' | 'thisYear' | 'all' 
         display: flex;
         align-items: center;
         justify-content: center;
-        mat-icon { color: #065f46; }
+        mat-icon { color: #00695c; }
       }
 
       .cat-totals {

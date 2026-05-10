@@ -103,7 +103,7 @@ import { AuthService } from '../../../core/services/auth.service';
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, #064e3b 0%, #065f46 50%, #047857 100%);
+      background: linear-gradient(135deg, #004d40 0%, #00695c 50%, #047857 100%);
       padding: 16px;
     }
 
@@ -126,12 +126,12 @@ import { AuthService } from '../../../core/services/auth.service';
         font-size: 36px;
         width: 36px;
         height: 36px;
-        color: #065f46;
+        color: #00695c;
       }
       .brand-name {
         font-size: 20px;
         font-weight: 600;
-        color: #064e3b;
+        color: #004d40;
       }
     }
 
@@ -158,7 +158,7 @@ import { AuthService } from '../../../core/services/auth.service';
       margin-top: 8px;
       font-size: 16px;
       font-weight: 500;
-      background-color: #065f46;
+      background-color: #00695c;
       color: white;
       border-radius: 8px;
 
@@ -176,7 +176,7 @@ import { AuthService } from '../../../core/services/auth.service';
       margin: 0;
 
       .link {
-        color: #065f46;
+        color: #00695c;
         font-weight: 500;
         text-decoration: none;
         &:hover { text-decoration: underline; }

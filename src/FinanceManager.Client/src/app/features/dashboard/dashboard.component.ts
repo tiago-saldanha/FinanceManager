@@ -106,8 +106,8 @@ Chart.register(...registerables);
         <div class="summary-cards">
           <mat-card class="summary-card">
             <mat-card-content>
-              <div class="card-icon" style="background: #e8f5e9;">
-                <mat-icon style="color: #2e7d32;">trending_up</mat-icon>
+              <div class="card-icon" style="background: #E1F5EE;">
+                <mat-icon style="color: #085041;">trending_up</mat-icon>
               </div>
               <div class="card-info">
                 <div class="card-label">Total Receitas</div>
@@ -120,8 +120,8 @@ Chart.register(...registerables);
 
           <mat-card class="summary-card">
             <mat-card-content>
-              <div class="card-icon" style="background: #ffebee;">
-                <mat-icon style="color: #c62828;">trending_down</mat-icon>
+              <div class="card-icon" style="background: #FAECE7;">
+                <mat-icon style="color: #993C1D;">trending_down</mat-icon>
               </div>
               <div class="card-info">
                 <div class="card-label">Total Despesas</div>
@@ -160,8 +160,8 @@ Chart.register(...registerables);
 
           <mat-card class="summary-card">
             <mat-card-content>
-              <div class="card-icon" style="background: #fce4ec;">
-                <mat-icon style="color: #ad1457;">warning_amber</mat-icon>
+              <div class="card-icon" style="background: #FAECE7;">
+                <mat-icon style="color: #993C1D;">warning_amber</mat-icon>
               </div>
               <div class="card-info">
                 <div class="card-label">Em Atraso</div>
@@ -401,8 +401,8 @@ Chart.register(...registerables);
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
-        &.icon-revenue { background: #e8f5e9; mat-icon { color: #2e7d32; } }
-        &.icon-expense { background: #ffebee; mat-icon { color: #c62828; } }
+        &.icon-revenue { background: #E1F5EE; mat-icon { color: #085041; } }
+        &.icon-expense { background: #FAECE7; mat-icon { color: #993C1D; } }
       }
 
       .tx-info {
@@ -538,8 +538,8 @@ export class DashboardComponent implements OnInit {
     return {
       labels,
       datasets: [
-        { label: 'Receitas', data: revenues, backgroundColor: '#66bb6a' },
-        { label: 'Despesas', data: expenses, backgroundColor: '#ef5350' },
+        { label: 'Receitas', data: revenues, backgroundColor: '#1D9E75' },
+        { label: 'Despesas', data: expenses, backgroundColor: '#D85A30' },
       ],
     };
   });
@@ -562,7 +562,7 @@ export class DashboardComponent implements OnInit {
       labels: ['Pendente', 'Pago', 'Cancelado'],
       datasets: [{
         data: [pending, paid, cancelled],
-        backgroundColor: ['#ff9800', '#4caf50', '#9e9e9e'],
+        backgroundColor: ['#ff9800', '#1D9E75', '#9e9e9e'],
       }],
     };
   });
@@ -574,12 +574,12 @@ export class DashboardComponent implements OnInit {
 
   // Paletas separadas para receitas (verdes/azuis) e despesas (vermelhos/laranjas).
   private static readonly REVENUE_PALETTE = [
-    '#43a047', '#26a69a', '#5e35b1', '#1e88e5', '#00897b',
+    '#1D9E75', '#0F6E56', '#5e35b1', '#1e88e5', '#00897b',
     '#7cb342', '#039be5', '#3949ab', '#00acc1', '#558b2f',
   ];
   private static readonly EXPENSE_PALETTE = [
-    '#e53935', '#fb8c00', '#8e24aa', '#d81b60', '#f4511e',
-    '#c62828', '#ef6c00', '#ad1457', '#6d4c41', '#bf360c',
+    '#D85A30', '#993C1D', '#8e24aa', '#d81b60', '#f4511e',
+    '#993C1D', '#D85A30', '#BA7517', '#6d4c41', '#bf360c',
   ];
 
   // Pizza: receitas por categoria (respeita período + filtro de status).
