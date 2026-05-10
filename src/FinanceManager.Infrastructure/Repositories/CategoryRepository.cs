@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FinanceManager.Infrastructure.Repositories
 {
-    public class CategoryRepository(AppDbContext context) : ICategoryRepository
+    public class CategoryRepository(TenantDbContext context) : ICategoryRepository
     {
         public async Task AddAsync(Category category)
             => await context.Categories.AddAsync(category);

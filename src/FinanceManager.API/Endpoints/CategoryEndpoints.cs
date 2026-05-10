@@ -7,14 +7,15 @@ namespace API.Endpoints
     {
         public static void MapCategoryEndpoints(this IEndpointRouteBuilder builder)
         {
-            var group = builder.MapGroup("/api/categories");
-            
+            var group = builder.MapGroup("/api/categories")
+                .RequireAuthorization();
+
             group.MapGet("/all", async (ICategoryAppService service) 
                 => Results.Ok(await service.GetAllAsync()));
-            
+
             group.MapGet("/{id:guid}", async (Guid id, ICategoryAppService service) 
                 => Results.Ok(await service.GetByIdAsync(id)));
-            
+
             group.MapPost("/", async (CategoryRequest request, ICategoryAppService service) =>
             {
                 var result = await service.CreateAsync(request);

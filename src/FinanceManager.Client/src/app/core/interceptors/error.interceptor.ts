@@ -1,5 +1,6 @@
 import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError, throwError } from 'rxjs';
 
@@ -34,11 +35,19 @@ function extractMessage(error: HttpErrorResponse): string {
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const snackBar = inject(MatSnackBar);
+  const router   = inject(Router);
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      const message = extractMessage(error);
+      // Sessão expirada ou token inválido — redireciona para login silenciosamente
+      if (error.status === 401 && !req.url.includes('/auth/')) {
+        localStorage.removeItem('fm_token');
+        localStorage.removeItem('fm_user');
+        router.navigate(['/login']);
+        return throwError(() => error);
+      }
 
+      const message = extractMessage(error);
       snackBar.open(message, 'Fechar', {
         duration: 6000,
         horizontalPosition: 'right',
