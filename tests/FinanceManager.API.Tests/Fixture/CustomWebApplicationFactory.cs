@@ -16,7 +16,7 @@ namespace FinanceManager.API.Tests.Fixture;
 
 public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
-    internal const string SecretKey  = "65a0be4c-5f49-4f14-a720-1fd6e713691c";
+    internal const string SecretKey  = "65a0be4c-5f49-4f14-a720-1fd6e713691b";
     internal const string Issuer     = "FinanceManager.API.Tests";
     internal const string Audience   = "FinanceManager.Client.Tests";
     public   const string TestUserId = "test-user-id-00000000-0000-0000-0001";

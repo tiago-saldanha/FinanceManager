@@ -69,19 +69,6 @@ namespace FinanceManager.Domain.Tests.Entities
             Assert.Throws<TransactionAmountException>(() => Transaction.Create(description, amount, dueDate, type, categoryId, createdAt));
         }
 
-        [Fact(Skip = "Deactivate rule")]
-        public void Create_WhenCreatedAtIsAfterDueDate_ShouldThrowTransactionDateException()
-        {
-            var description = "Test";
-            var amount = 100.0M;
-            var dueDate = Yesterday;
-            var type = TransactionType.Revenue;
-            var categoryId = Guid.NewGuid();
-            var createdAt = Today;
-
-            Assert.Throws<TransactionDateException>(() => Transaction.Create(description, amount, dueDate, type, categoryId, createdAt));
-        }
-
         [Fact]
         public void Create_WhenDescriptionIsEmpty_ShouldThrowDescriptionException()
         {
