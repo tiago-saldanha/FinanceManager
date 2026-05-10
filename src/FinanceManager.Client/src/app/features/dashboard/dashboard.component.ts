@@ -7,6 +7,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartData } from 'chart.js';
 import { Chart, registerables } from 'chart.js';
@@ -33,11 +38,64 @@ Chart.register(...registerables);
     MatProgressSpinnerModule,
     MatChipsModule,
     MatDividerModule,
+    MatButtonToggleModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatInputModule,
     BaseChartDirective,
   ],
   template: `
     <div class="page-container">
-      <h1 class="page-title">Dashboard</h1>
+      <div class="page-header">
+        <h1 class="page-title">Dashboard</h1>
+        <div class="page-filters">
+          <mat-form-field appearance="outline" class="period-select" subscriptSizing="dynamic">
+            <mat-label>Período</mat-label>
+            <mat-select [value]="periodMode()" (valueChange)="setPeriod($event)">
+              <mat-option value="thisMonth">Este mês</mat-option>
+              <mat-option value="lastMonth">Mês passado</mat-option>
+              <mat-option value="last30Days">Últimos 30 dias</mat-option>
+              <mat-option value="thisYear">Este ano</mat-option>
+              <mat-option value="all">Tudo</mat-option>
+              <mat-option value="custom">Personalizado</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          @if (periodMode() === 'custom') {
+            <mat-form-field appearance="outline" class="date-range" subscriptSizing="dynamic">
+              <mat-label>Data Inicial</mat-label>
+              <input matInput
+                     [matDatepicker]="startPicker"
+                     [value]="customStartDate()"
+                     (dateChange)="customStartDate.set($event.value)" />
+              <mat-datepicker-toggle matIconSuffix [for]="startPicker" />
+              <mat-datepicker #startPicker />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="date-range" subscriptSizing="dynamic">
+              <mat-label>Data Final</mat-label>
+              <input matInput
+                     [matDatepicker]="endPicker"
+                     [value]="customEndDate()"
+                     [min]="customStartDate()"
+                     (dateChange)="customEndDate.set($event.value)" />
+              <mat-datepicker-toggle matIconSuffix [for]="endPicker" />
+              <mat-datepicker #endPicker />
+            </mat-form-field>
+          }
+
+          <mat-button-toggle-group
+            [value]="filterMode()"
+            (change)="setFilter($event.value)"
+            aria-label="Filtrar transações"
+            class="filter-toggle">
+            <mat-button-toggle value="all">Todas</mat-button-toggle>
+            <mat-button-toggle value="paid">Pagas</mat-button-toggle>
+            <mat-button-toggle value="unpaid">Pendentes</mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+      </div>
 
       @if (loading()) {
         <div class="loading-center">
@@ -121,9 +179,9 @@ Chart.register(...registerables);
               <mat-card-title>Receitas vs Despesas por Categoria</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-              @if (barChartData.datasets[0].data.length > 0) {
+              @if (barChartData().datasets[0].data.length > 0) {
                 <canvas baseChart
-                  [data]="barChartData"
+                  [data]="barChartData()"
                   [options]="barChartOptions"
                   type="bar">
                 </canvas>
@@ -142,9 +200,9 @@ Chart.register(...registerables);
               <mat-card-title>Status das Transações</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-              @if (pieChartData.datasets[0].data.length > 0) {
+              @if (pieChartData().datasets[0].data.length > 0) {
                 <canvas baseChart
-                  [data]="pieChartData"
+                  [data]="pieChartData()"
                   [options]="pieChartOptions"
                   type="doughnut">
                 </canvas>
@@ -152,6 +210,49 @@ Chart.register(...registerables);
                 <div class="empty-chart">
                   <mat-icon>pie_chart</mat-icon>
                   <p>Sem dados para exibir</p>
+                </div>
+              }
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <!-- Category Pies Row -->
+        <div class="charts-grid charts-grid--two">
+          <mat-card class="chart-card">
+            <mat-card-header>
+              <mat-card-title>Receitas por Categoria</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              @if (revenueByCategoryChart().datasets[0].data.length > 0) {
+                <canvas baseChart
+                  [data]="revenueByCategoryChart()"
+                  [options]="categoryPieOptions"
+                  type="pie">
+                </canvas>
+              } @else {
+                <div class="empty-chart">
+                  <mat-icon>pie_chart</mat-icon>
+                  <p>Sem receitas no período</p>
+                </div>
+              }
+            </mat-card-content>
+          </mat-card>
+
+          <mat-card class="chart-card">
+            <mat-card-header>
+              <mat-card-title>Despesas por Categoria</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              @if (expenseByCategoryChart().datasets[0].data.length > 0) {
+                <canvas baseChart
+                  [data]="expenseByCategoryChart()"
+                  [options]="categoryPieOptions"
+                  type="pie">
+                </canvas>
+              } @else {
+                <div class="empty-chart">
+                  <mat-icon>pie_chart</mat-icon>
+                  <p>Sem despesas no período</p>
                 </div>
               }
             </mat-card-content>
@@ -206,6 +307,38 @@ Chart.register(...registerables);
       height: 300px;
     }
 
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+
+      .page-title {
+        margin: 0;
+      }
+    }
+
+    .page-filters {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .period-select {
+      width: 200px;
+    }
+
+    .date-range {
+      width: 170px;
+    }
+
+    .filter-toggle {
+      align-self: center;
+    }
+
     .charts-grid {
       display: grid;
       grid-template-columns: 2fr 1fr;
@@ -215,6 +348,10 @@ Chart.register(...registerables);
       @media (max-width: 900px) {
         grid-template-columns: 1fr;
       }
+    }
+
+    .charts-grid--two {
+      grid-template-columns: 1fr 1fr;
     }
 
     .chart-card {
@@ -295,42 +432,117 @@ export class DashboardComponent implements OnInit {
   transactions = signal<Transaction[]>([]);
   categories = signal<Category[]>([]);
 
+  // Filtro de status: todas / pagas / pendentes.
+  filterMode = signal<'all' | 'paid' | 'unpaid'>('all');
+
+  // Filtro de período. Padrão: este mês.
+  periodMode = signal<'thisMonth' | 'lastMonth' | 'last30Days' | 'thisYear' | 'all' | 'custom'>('thisMonth');
+
+  // Datas usadas quando o período é 'custom'. Enquanto não preenchidas o
+  // filtro fica desligado (mesmo comportamento de "Tudo").
+  customStartDate = signal<Date | null>(null);
+  customEndDate = signal<Date | null>(null);
+
+  // Transações dentro do período selecionado (independe do filtro de status).
+  // O filtro é aplicado no `dueDate` da transação.
+  periodFiltered = computed(() => {
+    const range = this.resolvePeriodRange();
+    const all = this.transactions();
+    if (!range) return all;
+    const { start, end } = range;
+    return all.filter(t => {
+      const d = new Date(t.dueDate);
+      return d >= start && d < end;
+    });
+  });
+
+  // Resolve o intervalo atual considerando tanto os modos predefinidos
+  // quanto o modo 'custom' (que depende dos signals customStart/customEnd).
+  private resolvePeriodRange(): { start: Date; end: Date } | null {
+    const mode = this.periodMode();
+    if (mode === 'custom') {
+      const start = this.customStartDate();
+      const end = this.customEndDate();
+      if (!start || !end) return null;
+      // O fim do intervalo é exclusivo, então somamos 1 dia para
+      // incluir transações que vencem no próprio dia "Data Final".
+      const inclusiveEnd = new Date(end);
+      inclusiveEnd.setHours(0, 0, 0, 0);
+      inclusiveEnd.setDate(inclusiveEnd.getDate() + 1);
+      const normalizedStart = new Date(start);
+      normalizedStart.setHours(0, 0, 0, 0);
+      return { start: normalizedStart, end: inclusiveEnd };
+    }
+    return this.getPeriodRange(mode);
+  }
+
+  // Transações depois de aplicar período + filtro de status.
+  // 'all' inclui Paid e Pending (Cancelled é deixado de fora por padrão).
+  filteredTransactions = computed(() => {
+    const all = this.periodFiltered();
+    switch (this.filterMode()) {
+      case 'paid':
+        return all.filter(t => t.status === 'Paid');
+      case 'unpaid':
+        return all.filter(t => t.status === 'Pending');
+      default:
+        return all.filter(t => t.status !== 'Cancelled');
+    }
+  });
+
   totalRevenue = computed(() =>
-    this.transactions()
-      .filter(t => t.type === 'Revenue' && t.status === 'Paid')
+    this.filteredTransactions()
+      .filter(t => t.type === 'Revenue')
       .reduce((sum, t) => sum + t.amount, 0)
   );
 
   totalExpense = computed(() =>
-    this.transactions()
-      .filter(t => t.type === 'Expense' && t.status === 'Paid')
+    this.filteredTransactions()
+      .filter(t => t.type === 'Expense')
       .reduce((sum, t) => sum + t.amount, 0)
   );
 
   balance = computed(() => this.totalRevenue() - this.totalExpense());
 
+  // Contadores de pendentes/atraso ignoram o filtro de status (sempre são sobre
+  // pendentes), mas respeitam o período selecionado.
   pendingCount = computed(() =>
-    this.transactions().filter(t => t.status === 'Pending').length
+    this.periodFiltered().filter(t => t.status === 'Pending').length
   );
 
   overdueCount = computed(() =>
-    this.transactions().filter(t => t.isOverdue && t.status === 'Pending').length
+    this.periodFiltered().filter(t => t.isOverdue && t.status === 'Pending').length
   );
 
   recentTransactions = computed(() =>
-    [...this.transactions()]
+    [...this.filteredTransactions()]
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
       .slice(0, 5)
   );
 
-  // Bar chart: revenue vs expense per category
-  barChartData: ChartData<'bar'> = {
-    labels: [],
-    datasets: [
-      { label: 'Receitas', data: [], backgroundColor: '#66bb6a' },
-      { label: 'Despesas', data: [], backgroundColor: '#ef5350' },
-    ],
-  };
+  // Bar chart: receitas vs despesas por categoria, respeitando o filtro
+  barChartData = computed<ChartData<'bar'>>(() => {
+    const filtered = this.filteredTransactions();
+    const cats = this.categories();
+    const labels = cats.map(c => c.name);
+    const revenues = cats.map(c =>
+      filtered
+        .filter(t => t.categoryName === c.name && t.type === 'Revenue')
+        .reduce((s, t) => s + t.amount, 0)
+    );
+    const expenses = cats.map(c =>
+      filtered
+        .filter(t => t.categoryName === c.name && t.type === 'Expense')
+        .reduce((s, t) => s + t.amount, 0)
+    );
+    return {
+      labels,
+      datasets: [
+        { label: 'Receitas', data: revenues, backgroundColor: '#66bb6a' },
+        { label: 'Despesas', data: expenses, backgroundColor: '#ef5350' },
+      ],
+    };
+  });
 
   barChartOptions: ChartConfiguration['options'] = {
     responsive: true,
@@ -340,19 +552,93 @@ export class DashboardComponent implements OnInit {
     },
   };
 
-  // Doughnut: status distribution
-  pieChartData: ChartData<'doughnut'> = {
-    labels: ['Pendente', 'Pago', 'Cancelado'],
-    datasets: [{
-      data: [],
-      backgroundColor: ['#ff9800', '#4caf50', '#9e9e9e'],
-    }],
-  };
+  // Doughnut: distribuição de status dentro do período selecionado.
+  pieChartData = computed<ChartData<'doughnut'>>(() => {
+    const all = this.periodFiltered();
+    const pending = all.filter(t => t.status === 'Pending').length;
+    const paid = all.filter(t => t.status === 'Paid').length;
+    const cancelled = all.filter(t => t.status === 'Cancelled').length;
+    return {
+      labels: ['Pendente', 'Pago', 'Cancelado'],
+      datasets: [{
+        data: [pending, paid, cancelled],
+        backgroundColor: ['#ff9800', '#4caf50', '#9e9e9e'],
+      }],
+    };
+  });
 
   pieChartOptions: ChartConfiguration['options'] = {
     responsive: true,
     plugins: { legend: { position: 'bottom' } },
   };
+
+  // Paletas separadas para receitas (verdes/azuis) e despesas (vermelhos/laranjas).
+  private static readonly REVENUE_PALETTE = [
+    '#43a047', '#26a69a', '#5e35b1', '#1e88e5', '#00897b',
+    '#7cb342', '#039be5', '#3949ab', '#00acc1', '#558b2f',
+  ];
+  private static readonly EXPENSE_PALETTE = [
+    '#e53935', '#fb8c00', '#8e24aa', '#d81b60', '#f4511e',
+    '#c62828', '#ef6c00', '#ad1457', '#6d4c41', '#bf360c',
+  ];
+
+  // Pizza: receitas por categoria (respeita período + filtro de status).
+  revenueByCategoryChart = computed<ChartData<'pie'>>(() => {
+    return this.buildCategoryPie('Revenue', DashboardComponent.REVENUE_PALETTE);
+  });
+
+  // Pizza: despesas por categoria (respeita período + filtro de status).
+  expenseByCategoryChart = computed<ChartData<'pie'>>(() => {
+    return this.buildCategoryPie('Expense', DashboardComponent.EXPENSE_PALETTE);
+  });
+
+  categoryPieOptions: ChartConfiguration['options'] = {
+    responsive: true,
+    plugins: {
+      legend: { position: 'bottom' },
+      tooltip: {
+        callbacks: {
+          label: (ctx) => {
+            const value = Number(ctx.parsed) || 0;
+            const dataset = ctx.dataset.data as number[];
+            const total = dataset.reduce((s, v) => s + (Number(v) || 0), 0);
+            const pct = total > 0 ? ((value / total) * 100).toFixed(1) : '0';
+            const formatted = value.toLocaleString('pt-BR', {
+              style: 'currency',
+              currency: 'BRL',
+            });
+            return `${ctx.label}: ${formatted} (${pct}%)`;
+          },
+        },
+      },
+    },
+  };
+
+  private buildCategoryPie(
+    type: 'Revenue' | 'Expense',
+    palette: readonly string[]
+  ): ChartData<'pie'> {
+    const filtered = this.filteredTransactions().filter(t => t.type === type);
+    const totalsByCategory = new Map<string, number>();
+    for (const t of filtered) {
+      const key = t.categoryName ?? 'Sem categoria';
+      totalsByCategory.set(key, (totalsByCategory.get(key) ?? 0) + t.amount);
+    }
+    // Mantém somente categorias com valor > 0 e ordena do maior para o menor
+    // (a fatia maior fica em destaque na pizza).
+    const entries = [...totalsByCategory.entries()]
+      .filter(([, v]) => v > 0)
+      .sort((a, b) => b[1] - a[1]);
+
+    const labels = entries.map(([k]) => k);
+    const data = entries.map(([, v]) => v);
+    const backgroundColor = entries.map((_, i) => palette[i % palette.length]);
+
+    return {
+      labels,
+      datasets: [{ data, backgroundColor }],
+    };
+  }
 
   ngOnInit(): void {
     forkJoin({
@@ -362,11 +648,65 @@ export class DashboardComponent implements OnInit {
       next: ({ transactions, categories }) => {
         this.transactions.set(transactions);
         this.categories.set(categories);
-        this.buildCharts(transactions, categories);
         this.loading.set(false);
       },
       error: () => this.loading.set(false),
     });
+  }
+
+  setFilter(value: 'all' | 'paid' | 'unpaid'): void {
+    this.filterMode.set(value);
+  }
+
+  setPeriod(value: 'thisMonth' | 'lastMonth' | 'last30Days' | 'thisYear' | 'all' | 'custom'): void {
+    this.periodMode.set(value);
+    // Ao entrar no modo personalizado pela primeira vez, pré-preenche o
+    // intervalo com o mês atual para o usuário ter um ponto de partida.
+    if (value === 'custom' && (!this.customStartDate() || !this.customEndDate())) {
+      const now = new Date();
+      const start = new Date(now.getFullYear(), now.getMonth(), 1);
+      const end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+      this.customStartDate.set(start);
+      this.customEndDate.set(end);
+    }
+  }
+
+  // Retorna o intervalo [start, end) correspondente ao período selecionado,
+  // ou null para "tudo" (sem filtro de data).
+  private getPeriodRange(
+    mode: 'thisMonth' | 'lastMonth' | 'last30Days' | 'thisYear' | 'all' | 'custom'
+  ): { start: Date; end: Date } | null {
+    const now = new Date();
+    switch (mode) {
+      case 'thisMonth': {
+        const start = new Date(now.getFullYear(), now.getMonth(), 1);
+        const end = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+        return { start, end };
+      }
+      case 'lastMonth': {
+        const start = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+        const end = new Date(now.getFullYear(), now.getMonth(), 1);
+        return { start, end };
+      }
+      case 'last30Days': {
+        const start = new Date(now);
+        start.setDate(start.getDate() - 30);
+        start.setHours(0, 0, 0, 0);
+        const end = new Date(now);
+        end.setDate(end.getDate() + 1);
+        end.setHours(0, 0, 0, 0);
+        return { start, end };
+      }
+      case 'thisYear': {
+        const start = new Date(now.getFullYear(), 0, 1);
+        const end = new Date(now.getFullYear() + 1, 0, 1);
+        return { start, end };
+      }
+      case 'all':
+      case 'custom':
+      default:
+        return null;
+    }
   }
 
   statusLabel(status: string): string {
@@ -376,41 +716,5 @@ export class DashboardComponent implements OnInit {
       Cancelled: 'Cancelado',
     };
     return map[status] ?? status;
-  }
-
-  private buildCharts(transactions: Transaction[], categories: Category[]): void {
-    // Bar chart by category
-    const catLabels = categories.map(c => c.name);
-    const revenues = categories.map(c =>
-      transactions
-        .filter(t => t.categoryName === c.name && t.type === 'Revenue' && t.status === 'Paid')
-        .reduce((s, t) => s + t.amount, 0)
-    );
-    const expenses = categories.map(c =>
-      transactions
-        .filter(t => t.categoryName === c.name && t.type === 'Expense' && t.status === 'Paid')
-        .reduce((s, t) => s + t.amount, 0)
-    );
-
-    this.barChartData = {
-      labels: catLabels,
-      datasets: [
-        { label: 'Receitas', data: revenues, backgroundColor: '#66bb6a' },
-        { label: 'Despesas', data: expenses, backgroundColor: '#ef5350' },
-      ],
-    };
-
-    // Pie chart by status
-    const pending = transactions.filter(t => t.status === 'Pending').length;
-    const paid = transactions.filter(t => t.status === 'Paid').length;
-    const cancelled = transactions.filter(t => t.status === 'Cancelled').length;
-
-    this.pieChartData = {
-      labels: ['Pendente', 'Pago', 'Cancelado'],
-      datasets: [{
-        data: [pending, paid, cancelled],
-        backgroundColor: ['#ff9800', '#4caf50', '#9e9e9e'],
-      }],
-    };
   }
 }
