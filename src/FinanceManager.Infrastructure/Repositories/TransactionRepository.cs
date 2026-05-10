@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace FinanceManager.Infrastructure.Repositories
 {
-    public class TransactionRepository(AppDbContext context) : ITransactionRepository
+    public class TransactionRepository(TenantDbContext context) : ITransactionRepository
     {
         public async Task AddAsync(Transaction transaction)
             => await context.Transactions.AddAsync(transaction);

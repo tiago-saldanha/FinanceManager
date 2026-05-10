@@ -33,3 +33,4 @@
 /src/FinanceManager.Client/dist/finance-manager-frontend/browser/media/material-icons-latin-400-normal-LEZCGFVT.woff2
 /src/FinanceManager.Client/node_modules
 /src/FinanceManager.Client/obj/Debug
+/src/FinanceManager.Infrastructure/Tenants

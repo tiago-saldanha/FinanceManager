@@ -9,7 +9,8 @@ namespace API.Endpoints
     {
         public static void MapTransactionEndpoints(this IEndpointRouteBuilder builder)
         {
-            var group = builder.MapGroup("/api/transactions");
+            var group = builder.MapGroup("/api/transactions")
+                .RequireAuthorization();
 
             group.MapGet("/{id:guid}", async (Guid id, ITransactionAppService service)
                 => Results.Ok(await service.GetByIdAsync(id)));

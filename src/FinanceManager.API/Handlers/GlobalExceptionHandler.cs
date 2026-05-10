@@ -36,6 +36,16 @@ public class GlobalExceptionHandler : IExceptionHandler
                 problemDetails.Title = "Recurso não encontrado";
                 problemDetails.Detail = message;
                 break;
+            case InvalidOperationException:
+                problemDetails.Status = StatusCodes.Status400BadRequest;
+                problemDetails.Title = "Operação inválida";
+                problemDetails.Detail = message;
+                break;
+            case UnauthorizedAccessException:
+                problemDetails.Status = StatusCodes.Status401Unauthorized;
+                problemDetails.Title = "Não autorizado";
+                problemDetails.Detail = message;
+                break;
 
             default:
                 problemDetails.Status = StatusCodes.Status500InternalServerError;

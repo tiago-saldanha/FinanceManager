@@ -10,7 +10,7 @@ namespace FinanceManager.Infrastructure.Data
             var builder = new DbContextOptionsBuilder<AppDbContext>();
 
             builder.UseSqlite(
-                "Data Source=financeiro.db",
+                "Data Source=app.db",
                 b => b.MigrationsAssembly("Infrastructure")
             );
 
