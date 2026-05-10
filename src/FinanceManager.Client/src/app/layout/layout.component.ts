@@ -90,7 +90,7 @@ interface NavItem {
 
     .sidenav {
       width: 240px;
-      background: #064e3b;
+      background: #00695c;
       color: white;
 
       .brand {
@@ -103,7 +103,7 @@ interface NavItem {
           font-size: 32px;
           width: 32px;
           height: 32px;
-          color: #6ee7b7;
+          color: #80cbc4;
         }
         .brand-name {
           font-size: 17px;
@@ -115,7 +115,7 @@ interface NavItem {
       mat-nav-list {
         padding-top: 8px;
         a {
-          color: rgba(255,255,255,0.8);
+          color: white;
           border-radius: 0 24px 24px 0;
           margin-right: 12px;
           margin-bottom: 2px;
@@ -128,12 +128,15 @@ interface NavItem {
 
           &.active-link {
             color: white;
-            background: rgba(110,231,183,0.2) !important;
-            border-left: 3px solid #6ee7b7;
-            mat-icon { color: #6ee7b7; }
+            background: rgba(128,203,196,0.2) !important;
+            border-left: 3px solid #80cbc4;
+            mat-icon { color: #80cbc4; }
           }
 
           mat-icon { color: inherit; }
+          --mdc-list-list-item-label-text-color: white;
+          --mdc-list-list-item-hover-label-text-color: white;
+          --mdc-list-list-item-focus-label-text-color: white;
         }
       }
     }
@@ -142,7 +145,7 @@ interface NavItem {
       position: sticky;
       top: 0;
       z-index: 100;
-      background: #065f46 !important;
+      background: #00695c !important;
       color: white !important;
       box-shadow: 0 2px 4px rgba(0,0,0,0.15);
 
@@ -165,7 +168,7 @@ interface NavItem {
 
     .main-content {
       min-height: calc(100vh - 64px);
-      background: #f0fdf4;
+      background: #e0f2f1;
     }
   `],
 })

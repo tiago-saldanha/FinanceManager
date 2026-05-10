@@ -35,51 +35,51 @@
 html, body {
   height: 100%;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  background-color: #f0fdf4;
+  background-color: #e0f2f1;
 }
 
-/* Sobrescreve cores primárias do Angular Material — Paleta Esmeralda */
+/* Sobrescreve cores primárias do Angular Material — Paleta Teal Moderno */
 .mat-toolbar.mat-primary {
-  background-color: #065f46 !important;
+  background-color: #00695c !important;
   color: white !important;
 }
 .mat-mdc-raised-button.mat-primary,
 .mat-mdc-fab.mat-primary,
 .mat-mdc-mini-fab.mat-primary {
-  --mdc-filled-button-container-color: #065f46;
+  --mdc-filled-button-container-color: #00695c;
   --mdc-filled-button-label-text-color: white;
 }
 .mat-mdc-outlined-button.mat-primary {
-  --mdc-outlined-button-label-text-color: #065f46;
-  --mdc-outlined-button-outline-color: #065f46;
+  --mdc-outlined-button-label-text-color: #00695c;
+  --mdc-outlined-button-outline-color: #00695c;
 }
 .mat-mdc-checkbox.mat-primary {
   --mdc-checkbox-selected-checkmark-color: white;
-  --mdc-checkbox-selected-focus-icon-color: #065f46;
-  --mdc-checkbox-selected-hover-icon-color: #065f46;
-  --mdc-checkbox-selected-icon-color: #065f46;
-  --mdc-checkbox-selected-pressed-icon-color: #065f46;
+  --mdc-checkbox-selected-focus-icon-color: #00695c;
+  --mdc-checkbox-selected-hover-icon-color: #00695c;
+  --mdc-checkbox-selected-icon-color: #00695c;
+  --mdc-checkbox-selected-pressed-icon-color: #00695c;
 }
 .mat-primary .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled) .mdc-list-item__primary-text {
-  color: #065f46;
+  color: #00695c;
 }
 .mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
-  color: #065f46 !important;
+  color: #00695c !important;
 }
 .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
 .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
 .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
-  border-color: #065f46 !important;
+  border-color: #00695c !important;
 }
 
 /* Custom theme colors */
 :root {
-  --color-revenue: #4caf50;
-  --color-expense: #f44336;
+  --color-revenue: #1D9E75;
+  --color-expense: #D85A30;
   --color-pending: #ff9800;
-  --color-paid: #4caf50;
+  --color-paid: #1D9E75;
   --color-cancelled: #9e9e9e;
-  --color-overdue: #f44336;
+  --color-overdue: #D85A30;
 }
 
 /* Utility classes */
@@ -152,8 +152,8 @@ html, body {
   color: #e65100 !important;
 }
 .chip-paid {
-  background-color: #e8f5e9 !important;
-  color: #2e7d32 !important;
+  background-color: #E1F5EE !important;
+  color: #085041 !important;
 }
 .chip-cancelled {
   background-color: #f5f5f5 !important;

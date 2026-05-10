@@ -130,7 +130,7 @@ export interface TransactionFormData {
     .dialog-title {
       font-size: 18px;
       font-weight: 600;
-      color: #064e3b;
+      color: #004d40;
       padding-bottom: 4px;
     }
 
@@ -153,12 +153,12 @@ export interface TransactionFormData {
     mat-dialog-actions { padding: 16px 24px; gap: 8px; }
 
     .save-btn {
-      background-color: #064e3b;
+      background-color: #004d40;
       color: white;
       min-width: 100px;
-      &.saving { background-color: #065f46; opacity: 0.85; }
+      &.saving { background-color: #00695c; opacity: 0.85; }
       &:disabled {
-        background-color: #6ee7b7 !important;
+        background-color: #80cbc4 !important;
         color: white !important;
       }
     }

@@ -133,13 +133,13 @@ export interface PayTransactionDialogData {
     }
 
     .confirm-btn {
-      background-color: #065f46;
+      background-color: #00695c;
       color: white;
       display: flex;
       align-items: center;
       gap: 6px;
       mat-icon { font-size: 18px; width: 18px; height: 18px; }
-      &:hover { background-color: #064e3b; }
+      &:hover { background-color: #004d40; }
       &:disabled {
         background-color: #e0e0e0 !important;
         color: #9e9e9e !important;
