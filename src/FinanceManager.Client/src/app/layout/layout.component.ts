@@ -6,8 +6,10 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatMenuModule } from '@angular/material/menu';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../core/services/auth.service';
+import { ThemeService, THEMES, Theme } from '../core/services/theme.service';
 
 interface NavItem {
   path: string;
@@ -29,6 +31,7 @@ interface NavItem {
     MatIconModule,
     MatButtonModule,
     MatTooltipModule,
+    MatMenuModule,
   ],
   template: `
     <mat-sidenav-container class="sidenav-container">
@@ -71,6 +74,27 @@ interface NavItem {
           <span class="spacer"></span>
           <span class="toolbar-date">{{ today | date:'fullDate':'':'pt-BR' }}</span>
           <span class="user-name">{{ auth.user()?.fullName }}</span>
+
+          <!-- Seletor de tema -->
+          <button mat-icon-button matTooltip="Trocar tema" [matMenuTriggerFor]="themeMenu">
+            <mat-icon>palette</mat-icon>
+          </button>
+          <mat-menu #themeMenu="matMenu" class="theme-menu">
+            @for (t of themes; track t.id) {
+              <button mat-menu-item (click)="applyTheme(t)" class="theme-option">
+                <div class="theme-swatches">
+                  <span class="swatch" [style.background]="t.primary"></span>
+                  <span class="swatch" [style.background]="t.revenue"></span>
+                  <span class="swatch" [style.background]="t.expense"></span>
+                </div>
+                <span class="theme-label">{{ t.label }}</span>
+                @if (themeService.current().id === t.id) {
+                  <mat-icon class="theme-check">check</mat-icon>
+                }
+              </button>
+            }
+          </mat-menu>
+
           <button mat-icon-button matTooltip="Sair" (click)="auth.logout()">
             <mat-icon>logout</mat-icon>
           </button>
@@ -90,7 +114,7 @@ interface NavItem {
 
     .sidenav {
       width: 240px;
-      background: #00695c;
+      background: var(--color-primary);
       color: white;
 
       .brand {
@@ -103,7 +127,7 @@ interface NavItem {
           font-size: 32px;
           width: 32px;
           height: 32px;
-          color: #80cbc4;
+          color: var(--color-accent);
         }
         .brand-name {
           font-size: 17px;
@@ -128,9 +152,9 @@ interface NavItem {
 
           &.active-link {
             color: white;
-            background: rgba(128,203,196,0.2) !important;
-            border-left: 3px solid #80cbc4;
-            mat-icon { color: #80cbc4; }
+            background: color-mix(in srgb, var(--color-accent) 20%, transparent) !important;
+            border-left: 3px solid var(--color-accent);
+            mat-icon { color: var(--color-accent); }
           }
 
           mat-icon { color: inherit; }
@@ -145,7 +169,7 @@ interface NavItem {
       position: sticky;
       top: 0;
       z-index: 100;
-      background: #00695c !important;
+      background: var(--color-primary) !important;
       color: white !important;
       box-shadow: 0 2px 4px rgba(0,0,0,0.15);
 
@@ -168,15 +192,44 @@ interface NavItem {
 
     .main-content {
       min-height: calc(100vh - 64px);
-      background: #e0f2f1;
+      background: var(--color-bg-page);
+    }
+
+    /* Theme picker */
+    .theme-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 180px;
+    }
+    .theme-swatches {
+      display: flex;
+      gap: 4px;
+    }
+    .swatch {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .theme-label {
+      flex: 1;
+      font-size: 14px;
+    }
+    .theme-check {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+      color: #555;
     }
   `],
 })
 export class LayoutComponent {
   readonly auth = inject(AuthService);
+  readonly themeService = inject(ThemeService);
 
+  readonly themes = THEMES;
   today = new Date();
-
   isMobile = signal(window.innerWidth < 768);
 
   navItems: NavItem[] = [
@@ -184,4 +237,8 @@ export class LayoutComponent {
     { path: '/transactions', label: 'Transações', icon: 'receipt_long' },
     { path: '/categories', label: 'Categorias', icon: 'category' },
   ];
+
+  applyTheme(theme: Theme): void {
+    this.themeService.apply(theme);
+  }
 }

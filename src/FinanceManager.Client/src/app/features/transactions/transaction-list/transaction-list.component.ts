@@ -290,8 +290,8 @@ import { PayTransactionDialogComponent } from '../pay-transaction-dialog/pay-tra
       display: flex;
       align-items: center;
       justify-content: center;
-      &.type-revenue { background: #E1F5EE; mat-icon { color: #085041; font-size: 20px; width: 20px; height: 20px; line-height: 20px; } }
-      &.type-expense { background: #FAECE7; mat-icon { color: #993C1D; font-size: 20px; width: 20px; height: 20px; line-height: 20px; } }
+      &.type-revenue { background: var(--color-revenue-bg); mat-icon { color: var(--color-revenue-text); font-size: 20px; width: 20px; height: 20px; line-height: 20px; } }
+      &.type-expense { background: var(--color-expense-bg); mat-icon { color: var(--color-expense-text); font-size: 20px; width: 20px; height: 20px; line-height: 20px; } }
     }
 
     .desc-cell {

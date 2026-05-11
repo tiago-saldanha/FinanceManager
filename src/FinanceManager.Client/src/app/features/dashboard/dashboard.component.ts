@@ -1,5 +1,6 @@
 import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
+import { ThemeService } from '../../core/services/theme.service';
 import { RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -106,8 +107,8 @@ Chart.register(...registerables);
         <div class="summary-cards">
           <mat-card class="summary-card">
             <mat-card-content>
-              <div class="card-icon" style="background: #E1F5EE;">
-                <mat-icon style="color: #085041;">trending_up</mat-icon>
+              <div class="card-icon" style="background: var(--color-revenue-bg);">
+                <mat-icon style="color: var(--color-revenue-text);">trending_up</mat-icon>
               </div>
               <div class="card-info">
                 <div class="card-label">Total Receitas</div>
@@ -120,8 +121,8 @@ Chart.register(...registerables);
 
           <mat-card class="summary-card">
             <mat-card-content>
-              <div class="card-icon" style="background: #FAECE7;">
-                <mat-icon style="color: #993C1D;">trending_down</mat-icon>
+              <div class="card-icon" style="background: var(--color-expense-bg);">
+                <mat-icon style="color: var(--color-expense-text);">trending_down</mat-icon>
               </div>
               <div class="card-info">
                 <div class="card-label">Total Despesas</div>
@@ -160,8 +161,8 @@ Chart.register(...registerables);
 
           <mat-card class="summary-card">
             <mat-card-content>
-              <div class="card-icon" style="background: #FAECE7;">
-                <mat-icon style="color: #993C1D;">warning_amber</mat-icon>
+              <div class="card-icon" style="background: var(--color-expense-bg);">
+                <mat-icon style="color: var(--color-expense-text);">warning_amber</mat-icon>
               </div>
               <div class="card-info">
                 <div class="card-label">Em Atraso</div>
@@ -401,8 +402,8 @@ Chart.register(...registerables);
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
-        &.icon-revenue { background: #E1F5EE; mat-icon { color: #085041; } }
-        &.icon-expense { background: #FAECE7; mat-icon { color: #993C1D; } }
+        &.icon-revenue { background: var(--color-revenue-bg); mat-icon { color: var(--color-revenue-text); } }
+        &.icon-expense { background: var(--color-expense-bg); mat-icon { color: var(--color-expense-text); } }
       }
 
       .tx-info {
@@ -427,6 +428,11 @@ Chart.register(...registerables);
 export class DashboardComponent implements OnInit {
   private readonly transactionService = inject(TransactionService);
   private readonly categoryService = inject(CategoryService);
+  private readonly themeService = inject(ThemeService);
+
+  private cssVar(name: string): string {
+    return getComputedStyle(document.body).getPropertyValue(name).trim();
+  }
 
   loading = signal(true);
   transactions = signal<Transaction[]>([]);
@@ -522,6 +528,7 @@ export class DashboardComponent implements OnInit {
 
   // Bar chart: receitas vs despesas por categoria, respeitando o filtro
   barChartData = computed<ChartData<'bar'>>(() => {
+    void this.themeService.current();
     const filtered = this.filteredTransactions();
     const cats = this.categories();
     const labels = cats.map(c => c.name);
@@ -538,8 +545,8 @@ export class DashboardComponent implements OnInit {
     return {
       labels,
       datasets: [
-        { label: 'Receitas', data: revenues, backgroundColor: '#1D9E75' },
-        { label: 'Despesas', data: expenses, backgroundColor: '#D85A30' },
+        { label: 'Receitas', data: revenues, backgroundColor: this.cssVar('--color-revenue') },
+        { label: 'Despesas', data: expenses, backgroundColor: this.cssVar('--color-expense') },
       ],
     };
   });
@@ -554,6 +561,7 @@ export class DashboardComponent implements OnInit {
 
   // Doughnut: distribuição de status dentro do período selecionado.
   pieChartData = computed<ChartData<'doughnut'>>(() => {
+    void this.themeService.current();
     const all = this.periodFiltered();
     const pending = all.filter(t => t.status === 'Pending').length;
     const paid = all.filter(t => t.status === 'Paid').length;
@@ -562,7 +570,7 @@ export class DashboardComponent implements OnInit {
       labels: ['Pendente', 'Pago', 'Cancelado'],
       datasets: [{
         data: [pending, paid, cancelled],
-        backgroundColor: ['#ff9800', '#1D9E75', '#9e9e9e'],
+        backgroundColor: ['#ff9800', this.cssVar('--color-revenue'), '#9e9e9e'],
       }],
     };
   });
@@ -584,12 +592,16 @@ export class DashboardComponent implements OnInit {
 
   // Pizza: receitas por categoria (respeita período + filtro de status).
   revenueByCategoryChart = computed<ChartData<'pie'>>(() => {
-    return this.buildCategoryPie('Revenue', DashboardComponent.REVENUE_PALETTE);
+    void this.themeService.current();
+    const palette = [this.cssVar('--color-revenue'), ...DashboardComponent.REVENUE_PALETTE.slice(1)];
+    return this.buildCategoryPie('Revenue', palette);
   });
 
   // Pizza: despesas por categoria (respeita período + filtro de status).
   expenseByCategoryChart = computed<ChartData<'pie'>>(() => {
-    return this.buildCategoryPie('Expense', DashboardComponent.EXPENSE_PALETTE);
+    void this.themeService.current();
+    const palette = [this.cssVar('--color-expense'), ...DashboardComponent.EXPENSE_PALETTE.slice(1)];
+    return this.buildCategoryPie('Expense', palette);
   });
 
   categoryPieOptions: ChartConfiguration['options'] = {

@@ -35,60 +35,120 @@
 html, body {
   height: 100%;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  background-color: #e0f2f1;
+  background-color: var(--color-bg-page);
 }
 
-/* Sobrescreve cores primárias do Angular Material — Paleta Teal Moderno */
+/* ─── Temas ────────────────────────────────────────────────────────────────── */
+
+/* Teal Moderno (padrão) */
+body, body.theme-teal {
+  --color-primary:        #00695c;
+  --color-primary-light:  #E1F5EE;
+  --color-primary-dark:   #004d40;
+  --color-accent:         #80cbc4;
+  --color-bg-page:        #e0f2f1;
+  --color-revenue:        #1D9E75;
+  --color-revenue-bg:     #E1F5EE;
+  --color-revenue-text:   #085041;
+  --color-expense:        #D85A30;
+  --color-expense-bg:     #FAECE7;
+  --color-expense-text:   #993C1D;
+}
+
+/* Esmeralda */
+body.theme-emerald {
+  --color-primary:        #065f46;
+  --color-primary-light:  #ecfdf5;
+  --color-primary-dark:   #064e3b;
+  --color-accent:         #6ee7b7;
+  --color-bg-page:        #f0fdf4;
+  --color-revenue:        #059669;
+  --color-revenue-bg:     #ecfdf5;
+  --color-revenue-text:   #064e3b;
+  --color-expense:        #dc2626;
+  --color-expense-bg:     #fef2f2;
+  --color-expense-text:   #991b1b;
+}
+
+/* Azul */
+body.theme-blue {
+  --color-primary:        #1565c0;
+  --color-primary-light:  #e3f2fd;
+  --color-primary-dark:   #0d47a1;
+  --color-accent:         #90caf9;
+  --color-bg-page:        #e8f4fd;
+  --color-revenue:        #1976d2;
+  --color-revenue-bg:     #e3f2fd;
+  --color-revenue-text:   #0d47a1;
+  --color-expense:        #D85A30;
+  --color-expense-bg:     #FAECE7;
+  --color-expense-text:   #993C1D;
+}
+
+/* Roxo */
+body.theme-purple {
+  --color-primary:        #6a1b9a;
+  --color-primary-light:  #f3e5f5;
+  --color-primary-dark:   #4a148c;
+  --color-accent:         #ce93d8;
+  --color-bg-page:        #f5eeff;
+  --color-revenue:        #1D9E75;
+  --color-revenue-bg:     #E1F5EE;
+  --color-revenue-text:   #085041;
+  --color-expense:        #D85A30;
+  --color-expense-bg:     #FAECE7;
+  --color-expense-text:   #993C1D;
+}
+
+/* ─── Variáveis derivadas (comuns a todos os temas) ─────────────────────────── */
+body {
+  --color-pending:   #ff9800;
+  --color-paid:      var(--color-revenue);
+  --color-cancelled: #9e9e9e;
+  --color-overdue:   var(--color-expense);
+}
+
+/* ─── Angular Material overrides (usam as variáveis de tema) ────────────────── */
 .mat-toolbar.mat-primary {
-  background-color: #00695c !important;
+  background-color: var(--color-primary) !important;
   color: white !important;
 }
 .mat-mdc-raised-button.mat-primary,
 .mat-mdc-fab.mat-primary,
 .mat-mdc-mini-fab.mat-primary {
-  --mdc-filled-button-container-color: #00695c;
+  --mdc-filled-button-container-color: var(--color-primary);
   --mdc-filled-button-label-text-color: white;
 }
 .mat-mdc-outlined-button.mat-primary {
-  --mdc-outlined-button-label-text-color: #00695c;
-  --mdc-outlined-button-outline-color: #00695c;
+  --mdc-outlined-button-label-text-color: var(--color-primary);
+  --mdc-outlined-button-outline-color: var(--color-primary);
 }
 .mat-mdc-checkbox.mat-primary {
   --mdc-checkbox-selected-checkmark-color: white;
-  --mdc-checkbox-selected-focus-icon-color: #00695c;
-  --mdc-checkbox-selected-hover-icon-color: #00695c;
-  --mdc-checkbox-selected-icon-color: #00695c;
-  --mdc-checkbox-selected-pressed-icon-color: #00695c;
+  --mdc-checkbox-selected-focus-icon-color: var(--color-primary);
+  --mdc-checkbox-selected-hover-icon-color: var(--color-primary);
+  --mdc-checkbox-selected-icon-color: var(--color-primary);
+  --mdc-checkbox-selected-pressed-icon-color: var(--color-primary);
 }
 .mat-primary .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled) .mdc-list-item__primary-text {
-  color: #00695c;
+  color: var(--color-primary);
 }
 .mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
-  color: #00695c !important;
+  color: var(--color-primary) !important;
 }
 .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
 .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
 .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
-  border-color: #00695c !important;
+  border-color: var(--color-primary) !important;
 }
 
-/* Custom theme colors */
-:root {
-  --color-revenue: #1D9E75;
-  --color-expense: #D85A30;
-  --color-pending: #ff9800;
-  --color-paid: #1D9E75;
-  --color-cancelled: #9e9e9e;
-  --color-overdue: #D85A30;
-}
-
-/* Utility classes */
-.text-revenue { color: var(--color-revenue) !important; }
-.text-expense { color: var(--color-expense) !important; }
-.text-pending { color: var(--color-pending) !important; }
-.text-paid { color: var(--color-paid) !important; }
+/* ─── Utility classes ───────────────────────────────────────────────────────── */
+.text-revenue   { color: var(--color-revenue)   !important; }
+.text-expense   { color: var(--color-expense)   !important; }
+.text-pending   { color: var(--color-pending)   !important; }
+.text-paid      { color: var(--color-paid)      !important; }
 .text-cancelled { color: var(--color-cancelled) !important; }
-.text-overdue { color: var(--color-overdue) !important; }
+.text-overdue   { color: var(--color-overdue)   !important; }
 
 .page-container {
   padding: 24px;
@@ -152,8 +212,8 @@ html, body {
   color: #e65100 !important;
 }
 .chip-paid {
-  background-color: #E1F5EE !important;
-  color: #085041 !important;
+  background-color: var(--color-revenue-bg) !important;
+  color: var(--color-revenue-text) !important;
 }
 .chip-cancelled {
   background-color: #f5f5f5 !important;
