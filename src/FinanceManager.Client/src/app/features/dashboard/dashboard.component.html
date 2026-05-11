@@ -1,0 +1,252 @@
+<div class="page-container">
+      <div class="page-header">
+        <h1 class="page-title">Dashboard</h1>
+        <div class="page-filters">
+          <mat-form-field appearance="outline" class="period-select" subscriptSizing="dynamic">
+            <mat-label>Período</mat-label>
+            <mat-select [value]="periodMode()" (valueChange)="setPeriod($event)">
+              <mat-option value="thisMonth">Este mês</mat-option>
+              <mat-option value="lastMonth">Mês passado</mat-option>
+              <mat-option value="last30Days">Últimos 30 dias</mat-option>
+              <mat-option value="thisYear">Este ano</mat-option>
+              <mat-option value="all">Tudo</mat-option>
+              <mat-option value="custom">Personalizado</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          @if (periodMode() === 'custom') {
+            <mat-form-field appearance="outline" class="date-range" subscriptSizing="dynamic">
+              <mat-label>Data Inicial</mat-label>
+              <input matInput
+                     [matDatepicker]="startPicker"
+                     [value]="customStartDate()"
+                     (dateChange)="customStartDate.set($event.value)" />
+              <mat-datepicker-toggle matIconSuffix [for]="startPicker" />
+              <mat-datepicker #startPicker />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="date-range" subscriptSizing="dynamic">
+              <mat-label>Data Final</mat-label>
+              <input matInput
+                     [matDatepicker]="endPicker"
+                     [value]="customEndDate()"
+                     [min]="customStartDate()"
+                     (dateChange)="customEndDate.set($event.value)" />
+              <mat-datepicker-toggle matIconSuffix [for]="endPicker" />
+              <mat-datepicker #endPicker />
+            </mat-form-field>
+          }
+
+          <mat-button-toggle-group
+            [value]="filterMode()"
+            (change)="setFilter($event.value)"
+            aria-label="Filtrar transações"
+            class="filter-toggle">
+            <mat-button-toggle value="all">Todas</mat-button-toggle>
+            <mat-button-toggle value="paid">Pagas</mat-button-toggle>
+            <mat-button-toggle value="unpaid">Pendentes</mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+      </div>
+
+      @if (loading()) {
+        <div class="loading-center">
+          <mat-spinner diameter="48" />
+        </div>
+      } @else {
+        <!-- Summary Cards -->
+        <div class="summary-cards">
+          <mat-card class="summary-card">
+            <mat-card-content>
+              <div class="card-icon" style="background: var(--color-revenue-bg);">
+                <mat-icon style="color: var(--color-revenue-text);">trending_up</mat-icon>
+              </div>
+              <div class="card-info">
+                <div class="card-label">Total Receitas</div>
+                <div class="card-value text-revenue">
+                  {{ totalRevenue() | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <mat-card class="summary-card">
+            <mat-card-content>
+              <div class="card-icon" style="background: var(--color-expense-bg);">
+                <mat-icon style="color: var(--color-expense-text);">trending_down</mat-icon>
+              </div>
+              <div class="card-info">
+                <div class="card-label">Total Despesas</div>
+                <div class="card-value text-expense">
+                  {{ totalExpense() | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <mat-card class="summary-card">
+            <mat-card-content>
+              <div class="card-icon" style="background: #e3f2fd;">
+                <mat-icon style="color: #1565c0;">account_balance</mat-icon>
+              </div>
+              <div class="card-info">
+                <div class="card-label">Saldo</div>
+                <div class="card-value" [class.text-revenue]="balance() >= 0" [class.text-expense]="balance() < 0">
+                  {{ balance() | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <mat-card class="summary-card">
+            <mat-card-content>
+              <div class="card-icon" style="background: #fff8e1;">
+                <mat-icon style="color: #e65100;">pending_actions</mat-icon>
+              </div>
+              <div class="card-info">
+                <div class="card-label">Pendentes</div>
+                <div class="card-value text-pending">{{ pendingCount() }}</div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <mat-card class="summary-card">
+            <mat-card-content>
+              <div class="card-icon" style="background: var(--color-expense-bg);">
+                <mat-icon style="color: var(--color-expense-text);">warning_amber</mat-icon>
+              </div>
+              <div class="card-info">
+                <div class="card-label">Em Atraso</div>
+                <div class="card-value text-overdue">{{ overdueCount() }}</div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="charts-grid">
+          <!-- Revenue vs Expense by Category (Bar) -->
+          <mat-card class="chart-card">
+            <mat-card-header>
+              <mat-card-title>Receitas vs Despesas por Categoria</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              @if (barChartData().datasets[0].data.length > 0) {
+                <canvas baseChart
+                  [data]="barChartData()"
+                  [options]="barChartOptions"
+                  type="bar">
+                </canvas>
+              } @else {
+                <div class="empty-chart">
+                  <mat-icon>bar_chart</mat-icon>
+                  <p>Sem dados para exibir</p>
+                </div>
+              }
+            </mat-card-content>
+          </mat-card>
+
+          <!-- Transaction status (Pie) -->
+          <mat-card class="chart-card chart-card--small">
+            <mat-card-header>
+              <mat-card-title>Status das Transações</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              @if (pieChartData().datasets[0].data.length > 0) {
+                <canvas baseChart
+                  [data]="pieChartData()"
+                  [options]="pieChartOptions"
+                  type="doughnut">
+                </canvas>
+              } @else {
+                <div class="empty-chart">
+                  <mat-icon>pie_chart</mat-icon>
+                  <p>Sem dados para exibir</p>
+                </div>
+              }
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <!-- Category Pies Row -->
+        <div class="charts-grid charts-grid--two">
+          <mat-card class="chart-card">
+            <mat-card-header>
+              <mat-card-title>Receitas por Categoria</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              @if (revenueByCategoryChart().datasets[0].data.length > 0) {
+                <canvas baseChart
+                  [data]="revenueByCategoryChart()"
+                  [options]="categoryPieOptions"
+                  type="pie">
+                </canvas>
+              } @else {
+                <div class="empty-chart">
+                  <mat-icon>pie_chart</mat-icon>
+                  <p>Sem receitas no período</p>
+                </div>
+              }
+            </mat-card-content>
+          </mat-card>
+
+          <mat-card class="chart-card">
+            <mat-card-header>
+              <mat-card-title>Despesas por Categoria</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              @if (expenseByCategoryChart().datasets[0].data.length > 0) {
+                <canvas baseChart
+                  [data]="expenseByCategoryChart()"
+                  [options]="categoryPieOptions"
+                  type="pie">
+                </canvas>
+              } @else {
+                <div class="empty-chart">
+                  <mat-icon>pie_chart</mat-icon>
+                  <p>Sem despesas no período</p>
+                </div>
+              }
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <!-- Recent Transactions -->
+        <mat-card class="recent-card">
+          <mat-card-header>
+            <mat-card-title>Transações Recentes</mat-card-title>
+            <div class="card-header-action">
+              <a mat-button color="primary" routerLink="/transactions">Ver todas</a>
+            </div>
+          </mat-card-header>
+          <mat-card-content>
+            @if (recentTransactions().length === 0) {
+              <p class="empty-text">Nenhuma transação cadastrada.</p>
+            } @else {
+              <div class="transaction-list">
+                @for (tx of recentTransactions(); track tx.id) {
+                  <div class="transaction-item">
+                    <div class="tx-icon" [class.icon-revenue]="tx.type === 'Revenue'" [class.icon-expense]="tx.type === 'Expense'">
+                      <mat-icon>{{ tx.type === 'Revenue' ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
+                    </div>
+                    <div class="tx-info">
+                      <div class="tx-description">{{ tx.description }}</div>
+                      <div class="tx-meta">{{ tx.categoryName }} · {{ tx.dueDate | date:'dd/MM/yyyy' }}</div>
+                    </div>
+                    <div class="tx-right">
+                      <div class="tx-amount" [class.text-revenue]="tx.type === 'Revenue'" [class.text-expense]="tx.type === 'Expense'">
+                        {{ (tx.type === 'Expense' ? -tx.amount : tx.amount) | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+                      </div>
+                      <mat-chip [class]="'chip-' + tx.status.toLowerCase()">
+                        {{ statusLabel(tx.status) }}
+                      </mat-chip>
+                    </div>
+                  </div>
+                  <mat-divider />
+                }
+              </div>
+            }
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>

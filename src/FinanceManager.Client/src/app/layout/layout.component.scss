@@ -1,0 +1,114 @@
+.sidenav-container {
+      height: 100vh;
+    }
+
+    .sidenav {
+      width: 240px;
+      background: var(--color-primary);
+      color: white;
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 20px 16px;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        .brand-icon {
+          font-size: 32px;
+          width: 32px;
+          height: 32px;
+          color: var(--color-accent);
+        }
+        .brand-name {
+          font-size: 17px;
+          font-weight: 500;
+          color: white;
+        }
+      }
+
+      mat-nav-list {
+        padding-top: 8px;
+        a {
+          color: white;
+          border-radius: 0 24px 24px 0;
+          margin-right: 12px;
+          margin-bottom: 2px;
+          transition: all 0.2s;
+
+          &:hover {
+            color: white;
+            background: rgba(255,255,255,0.12) !important;
+          }
+
+          &.active-link {
+            color: white;
+            background: color-mix(in srgb, var(--color-accent) 20%, transparent) !important;
+            border-left: 3px solid var(--color-accent);
+            mat-icon { color: var(--color-accent); }
+          }
+
+          mat-icon { color: inherit; }
+          --mdc-list-list-item-label-text-color: white;
+          --mdc-list-list-item-hover-label-text-color: white;
+          --mdc-list-list-item-focus-label-text-color: white;
+        }
+      }
+    }
+
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--color-primary) !important;
+      color: white !important;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+
+      .menu-btn { margin-right: 8px; }
+      .toolbar-title { font-size: 18px; font-weight: 500; }
+      .spacer { flex: 1; }
+      .toolbar-date {
+        font-size: 13px;
+        opacity: 0.85;
+        text-transform: capitalize;
+      }
+      .user-name {
+        font-size: 13px;
+        opacity: 0.9;
+        margin-left: 16px;
+        margin-right: 4px;
+        font-weight: 500;
+      }
+    }
+
+    .main-content {
+      min-height: calc(100vh - 64px);
+      background: var(--color-bg-page);
+    }
+
+    /* Theme picker */
+    .theme-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 180px;
+    }
+    .theme-swatches {
+      display: flex;
+      gap: 4px;
+    }
+    .swatch {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .theme-label {
+      flex: 1;
+      font-size: 14px;
+    }
+    .theme-check {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+      color: #555;
+    }

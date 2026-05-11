@@ -1,0 +1,35 @@
+.dialog-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #004d40;
+      padding-bottom: 4px;
+    }
+    .form-wrapper {
+      display: flex;
+      flex-direction: column;
+      min-width: 400px;
+      padding-top: 8px;
+      @media (max-width: 480px) { min-width: unset; }
+    }
+    .full-width { width: 100%; }
+    mat-dialog-actions { padding: 16px 24px; gap: 8px; }
+
+    .save-btn {
+      background-color: #004d40;
+      color: white;
+      min-width: 100px;
+      &.saving {
+        background-color: #00695c;
+        opacity: 0.85;
+      }
+      &:disabled {
+        background-color: #80cbc4 !important;
+        color: white !important;
+      }
+    }
+    .btn-content {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      mat-spinner { --mdc-circular-progress-active-indicator-color: white; }
+    }

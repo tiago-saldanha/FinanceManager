@@ -1,0 +1,42 @@
+.dialog-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #004d40;
+      padding-bottom: 4px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 16px;
+      min-width: 480px;
+      padding-top: 8px;
+
+      @media (max-width: 600px) {
+        grid-template-columns: 1fr;
+        min-width: unset;
+      }
+    }
+
+    .full-width { grid-column: 1 / -1; }
+
+    mat-dialog-content { overflow: visible; }
+    mat-dialog-actions { padding: 16px 24px; gap: 8px; }
+
+    .save-btn {
+      background-color: #004d40;
+      color: white;
+      min-width: 100px;
+      &.saving { background-color: #00695c; opacity: 0.85; }
+      &:disabled {
+        background-color: #80cbc4 !important;
+        color: white !important;
+      }
+    }
+
+    .btn-content {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      mat-spinner { --mdc-circular-progress-active-indicator-color: white; }
+    }

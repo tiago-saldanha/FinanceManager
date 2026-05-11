@@ -23,87 +23,8 @@ import { CategoryService } from '../../../core/services/category.service';
     MatIconModule,
     MatProgressSpinnerModule,
   ],
-  template: `
-    <h2 mat-dialog-title class="dialog-title">
-      Nova Categoria
-    </h2>
-
-    <mat-dialog-content>
-      <form [formGroup]="form" class="form-wrapper">
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Nome da Categoria</mat-label>
-          <input matInput formControlName="name" placeholder="Ex: Alimentação, Moradia..." />
-          @if (form.get('name')?.hasError('required') && form.get('name')?.touched) {
-            <mat-error>Nome é obrigatório</mat-error>
-          }
-          @if (form.get('name')?.hasError('minlength') && form.get('name')?.touched) {
-            <mat-error>Mínimo 2 caracteres</mat-error>
-          }
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Descrição (opcional)</mat-label>
-          <textarea matInput formControlName="description" rows="3" placeholder="Descreva a categoria..."></textarea>
-        </mat-form-field>
-      </form>
-    </mat-dialog-content>
-
-    <mat-dialog-actions align="end">
-      <button mat-button mat-dialog-close>Cancelar</button>
-      <button
-        mat-flat-button
-        class="save-btn"
-        [class.saving]="saving()"
-        (click)="save()"
-      >
-        <span class="btn-content">
-          @if (saving()) {
-            <mat-spinner diameter="18" />
-            <span>Salvando...</span>
-          } @else {
-            <span>Salvar</span>
-          }
-        </span>
-      </button>
-    </mat-dialog-actions>
-  `,
-  styles: [`
-    .dialog-title {
-      font-size: 18px;
-      font-weight: 600;
-      color: #004d40;
-      padding-bottom: 4px;
-    }
-    .form-wrapper {
-      display: flex;
-      flex-direction: column;
-      min-width: 400px;
-      padding-top: 8px;
-      @media (max-width: 480px) { min-width: unset; }
-    }
-    .full-width { width: 100%; }
-    mat-dialog-actions { padding: 16px 24px; gap: 8px; }
-
-    .save-btn {
-      background-color: #004d40;
-      color: white;
-      min-width: 100px;
-      &.saving {
-        background-color: #00695c;
-        opacity: 0.85;
-      }
-      &:disabled {
-        background-color: #80cbc4 !important;
-        color: white !important;
-      }
-    }
-    .btn-content {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      mat-spinner { --mdc-circular-progress-active-indicator-color: white; }
-    }
-  `],
+  templateUrl: './category-form.component.html',
+  styleUrl: './category-form.component.scss',
 })
 export class CategoryFormComponent {
   private readonly fb = inject(FormBuilder);

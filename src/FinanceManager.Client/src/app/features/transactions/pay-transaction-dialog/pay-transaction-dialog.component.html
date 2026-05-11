@@ -1,0 +1,45 @@
+<div class="pay-dialog">
+      <div class="pay-header">
+        <div class="success-icon">
+          <mat-icon>payments</mat-icon>
+        </div>
+        <h2 mat-dialog-title>Confirmar Pagamento</h2>
+      </div>
+
+      <mat-dialog-content>
+        <p class="transaction-desc">
+          <strong>{{ data.description }}</strong>
+        </p>
+        <p class="transaction-amount">
+          {{ data.amount | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+        </p>
+
+        <mat-form-field appearance="outline" class="date-field">
+          <mat-label>Data de Pagamento</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            [formControl]="paymentDateCtrl"
+            placeholder="DD/MM/AAAA"
+          />
+          <mat-datepicker-toggle matIconSuffix [for]="picker" />
+          <mat-datepicker #picker />
+          @if (paymentDateCtrl.hasError('required')) {
+            <mat-error>A data de pagamento é obrigatória</mat-error>
+          }
+        </mat-form-field>
+      </mat-dialog-content>
+
+      <mat-dialog-actions align="end">
+        <button mat-button [mat-dialog-close]="null">Cancelar</button>
+        <button
+          mat-flat-button
+          class="confirm-btn"
+          [disabled]="paymentDateCtrl.invalid"
+          (click)="confirm()"
+        >
+          <mat-icon>check_circle</mat-icon>
+          Confirmar Pagamento
+        </button>
+      </mat-dialog-actions>
+    </div>

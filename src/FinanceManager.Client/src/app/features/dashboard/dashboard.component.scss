@@ -1,0 +1,122 @@
+.loading-center {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 300px;
+    }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+
+      .page-title {
+        margin: 0;
+      }
+    }
+
+    .page-filters {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .period-select {
+      width: 200px;
+    }
+
+    .date-range {
+      width: 170px;
+    }
+
+    .filter-toggle {
+      align-self: center;
+    }
+
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+
+      @media (max-width: 900px) {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .charts-grid--two {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .chart-card {
+      mat-card-header {
+        margin-bottom: 16px;
+      }
+      canvas {
+        max-height: 300px;
+      }
+    }
+
+    .empty-chart {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 200px;
+      color: #bdbdbd;
+      mat-icon { font-size: 48px; width: 48px; height: 48px; }
+      p { margin-top: 8px; }
+    }
+
+    .recent-card {
+      mat-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+      }
+      .card-header-action {
+        margin-left: auto;
+      }
+    }
+
+    .transaction-list { width: 100%; }
+    .transaction-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+
+      .tx-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        &.icon-revenue { background: var(--color-revenue-bg); mat-icon { color: var(--color-revenue-text); } }
+        &.icon-expense { background: var(--color-expense-bg); mat-icon { color: var(--color-expense-text); } }
+      }
+
+      .tx-info {
+        flex: 1;
+        .tx-description { font-weight: 500; font-size: 14px; }
+        .tx-meta { font-size: 12px; color: #757575; margin-top: 2px; }
+      }
+
+      .tx-right {
+        text-align: right;
+        .tx-amount { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+      }
+    }
+
+    .empty-text {
+      text-align: center;
+      color: #9e9e9e;
+      padding: 24px 0;
+    }

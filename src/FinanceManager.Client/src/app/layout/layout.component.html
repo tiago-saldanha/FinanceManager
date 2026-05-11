@@ -1,0 +1,72 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    #sidenav
+    [mode]="isMobile() ? 'over' : 'side'"
+    [opened]="!isMobile()"
+    class="sidenav"
+  >
+    <!-- Brand -->
+    <div class="brand">
+      <mat-icon class="brand-icon">account_balance_wallet</mat-icon>
+      <span class="brand-name">Finance Manager</span>
+    </div>
+
+    <!-- Nav links -->
+    <mat-nav-list>
+      @for (item of navItems; track item.path) {
+        <a
+          mat-list-item
+          [routerLink]="item.path"
+          routerLinkActive="active-link"
+          [routerLinkActiveOptions]="{ exact: false }"
+          (click)="isMobile() && sidenav.close()"
+        >
+          <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+          <span matListItemTitle>{{ item.label }}</span>
+        </a>
+      }
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <!-- Toolbar -->
+    <mat-toolbar color="primary" class="toolbar">
+      <button mat-icon-button (click)="sidenav.toggle()" class="menu-btn">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="toolbar-title">Finance Manager</span>
+      <span class="spacer"></span>
+      <span class="toolbar-date">{{ today | date:'fullDate':'':'pt-BR' }}</span>
+      <span class="user-name">{{ auth.user()?.fullName }}</span>
+
+      <!-- Seletor de tema -->
+      <button mat-icon-button matTooltip="Trocar tema" [matMenuTriggerFor]="themeMenu">
+        <mat-icon>palette</mat-icon>
+      </button>
+      <mat-menu #themeMenu="matMenu">
+        @for (t of themes; track t.id) {
+          <button mat-menu-item (click)="applyTheme(t)" class="theme-option">
+            <div class="theme-swatches">
+              <span class="swatch" [style.background]="t.primary"></span>
+              <span class="swatch" [style.background]="t.revenue"></span>
+              <span class="swatch" [style.background]="t.expense"></span>
+            </div>
+            <span class="theme-label">{{ t.label }}</span>
+            @if (themeService.current().id === t.id) {
+              <mat-icon class="theme-check">check</mat-icon>
+            }
+          </button>
+        }
+      </mat-menu>
+
+      <button mat-icon-button matTooltip="Sair" (click)="auth.logout()">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </mat-toolbar>
+
+    <!-- Page content -->
+    <main class="main-content">
+      <router-outlet />
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>
