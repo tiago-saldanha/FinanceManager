@@ -34,3 +34,4 @@
 /src/FinanceManager.Client/node_modules
 /src/FinanceManager.Client/obj/Debug
 /src/FinanceManager.Infrastructure/Tenants
+/.claude

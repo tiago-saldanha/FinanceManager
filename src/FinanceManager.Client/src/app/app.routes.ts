@@ -15,6 +15,17 @@ export const routes: Routes = [
       import('./features/auth/register/register.component').then(m => m.RegisterComponent),
   },
 
+  {
+    path: 'forgot-password',
+    loadComponent: () =>
+      import('./features/auth/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent),
+  },
+  {
+    path: 'reset-password',
+    loadComponent: () =>
+      import('./features/auth/reset-password/reset-password.component').then(m => m.ResetPasswordComponent),
+  },
+
   // Rotas protegidas (com layout)
   {
     path: '',
@@ -39,6 +50,13 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/categories/category-list/category-list.component').then(
             m => m.CategoryListComponent
+          ),
+      },
+      {
+        path: 'change-password',
+        loadComponent: () =>
+          import('./features/auth/change-password/change-password.component').then(
+            m => m.ChangePasswordComponent
           ),
       },
       { path: '**', redirectTo: 'dashboard' },

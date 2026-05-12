@@ -32,12 +32,12 @@ namespace FinanceManager.API.Extensions
             {
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
-                    Name         = "Authorization",
-                    Type         = SecuritySchemeType.Http,
-                    Scheme       = "Bearer",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "Bearer",
                     BearerFormat = "JWT",
-                    In           = ParameterLocation.Header,
-                    Description  = "Informe o token JWT. Exemplo: Bearer {seu_token}"
+                    In = ParameterLocation.Header,
+                    Description = "Informe o token JWT. Exemplo: Bearer {seu_token}"
                 });
                 options.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
@@ -47,7 +47,7 @@ namespace FinanceManager.API.Extensions
                             Reference = new OpenApiReference
                             {
                                 Type = ReferenceType.SecurityScheme,
-                                Id   = "Bearer"
+                                Id = "Bearer"
                             }
                         },
                         Array.Empty<string>()
@@ -57,7 +57,7 @@ namespace FinanceManager.API.Extensions
 
             // JWT Bearer Authentication
             var jwtSection = configuration.GetSection("Jwt");
-            var secretKey  = jwtSection["SecretKey"]!;
+            var secretKey = jwtSection["SecretKey"]!;
 
             services
                 .AddAuthentication(options =>
@@ -67,17 +67,17 @@ namespace FinanceManager.API.Extensions
                 })
                 .AddJwtBearer(options =>
                 {
+                    options.MapInboundClaims = false;
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidateIssuer           = true,
-                        ValidateAudience         = true,
-                        ValidateLifetime         = true,
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
                         ValidateIssuerSigningKey  = true,
-                        ValidIssuer              = jwtSection["Issuer"],
-                        ValidAudience            = jwtSection["Audience"],
-                        IssuerSigningKey         = new SymmetricSecurityKey(
-                                                       Encoding.UTF8.GetBytes(secretKey)),
-                        ClockSkew                = TimeSpan.Zero
+                        ValidIssuer = jwtSection["Issuer"],
+                        ValidAudience = jwtSection["Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
+                        ClockSkew = TimeSpan.Zero
                     };
                 });
 

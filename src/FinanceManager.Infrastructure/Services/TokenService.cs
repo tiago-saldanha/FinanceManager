@@ -13,27 +13,27 @@ public class TokenService(IConfiguration configuration)
     {
         var jwtSection = configuration.GetSection("Jwt");
         var secretKey = jwtSection["SecretKey"]!;
-        var issuer    = jwtSection["Issuer"]!;
-        var audience  = jwtSection["Audience"]!;
+        var issuer = jwtSection["Issuer"]!;
+        var audience = jwtSection["Audience"]!;
         var expiresIn = int.Parse(jwtSection["ExpiresInMinutes"] ?? "60");
 
-        var key   = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
         var expiresAt = DateTime.UtcNow.AddMinutes(expiresIn);
 
         var claims = new[]
         {
-            new Claim(JwtRegisteredClaimNames.Sub,   user.Id),
+            new Claim(JwtRegisteredClaimNames.Sub, user.Id),
             new Claim(JwtRegisteredClaimNames.Email, user.Email!),
-            new Claim(JwtRegisteredClaimNames.Name,  user.FullName),
-            new Claim(JwtRegisteredClaimNames.Jti,   Guid.NewGuid().ToString())
+            new Claim(JwtRegisteredClaimNames.Name, user.FullName),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
 
         var token = new JwtSecurityToken(
-            issuer:             issuer,
-            audience:           audience,
-            claims:             claims,
-            expires:            expiresAt,
+            issuer: issuer,
+            audience: audience,
+            claims: claims,
+            expires: expiresAt,
             signingCredentials: creds);
 
         return (new JwtSecurityTokenHandler().WriteToken(token), expiresAt);
