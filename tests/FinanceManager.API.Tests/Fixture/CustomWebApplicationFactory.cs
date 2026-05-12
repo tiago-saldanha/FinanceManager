@@ -16,9 +16,9 @@ namespace FinanceManager.API.Tests.Fixture;
 
 public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
-    internal const string SecretKey  = "65a0be4c-5f49-4f14-a720-1fd6e713691b";
-    internal const string Issuer     = "FinanceManager.API.Tests";
-    internal const string Audience   = "FinanceManager.Client.Tests";
+    internal const string SecretKey = "65a0be4c-5f49-4f14-a720-1fd6e713691b";
+    internal const string Issuer = "FinanceManager.API.Tests";
+    internal const string Audience = "FinanceManager.Client.Tests";
     public   const string TestUserId = "test-user-id-00000000-0000-0000-0001";
 
     private readonly SqliteConnection _identityConnection = new("DataSource=:memory:");
@@ -36,11 +36,11 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         {
             config.AddInMemoryCollection(new Dictionary<string, string?>
             {
-                ["Jwt:SecretKey"]         = SecretKey,
-                ["Jwt:Issuer"]            = Issuer,
-                ["Jwt:Audience"]          = Audience,
-                ["Jwt:ExpiresInMinutes"]  = "60",
-                ["TenantDb:BaseFolder"]   = Path.GetTempPath(),
+                ["Jwt:SecretKey"] = SecretKey,
+                ["Jwt:Issuer"] = Issuer,
+                ["Jwt:Audience"] = Audience,
+                ["Jwt:ExpiresInMinutes"] = "60",
+                ["TenantDb:BaseFolder"] = Path.GetTempPath(),
             });
         });
 
@@ -85,17 +85,17 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 
         var claims = new[]
         {
-            new Claim(JwtRegisteredClaimNames.Sub,   userId),
+            new Claim(JwtRegisteredClaimNames.Sub, userId),
             new Claim(JwtRegisteredClaimNames.Email, "test@financemanager.com"),
-            new Claim(JwtRegisteredClaimNames.Name,  "Test User"),
-            new Claim(JwtRegisteredClaimNames.Jti,   Guid.NewGuid().ToString()),
+            new Claim(JwtRegisteredClaimNames.Name, "Test User"),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         };
 
         var token = new JwtSecurityToken(
-            issuer:             Issuer,
-            audience:           Audience,
-            claims:             claims,
-            expires:            DateTime.UtcNow.AddHours(1),
+            issuer: Issuer,
+            audience: Audience,
+            claims: claims,
+            expires: DateTime.UtcNow.AddHours(1),
             signingCredentials: creds);
 
         return new JwtSecurityTokenHandler().WriteToken(token);
