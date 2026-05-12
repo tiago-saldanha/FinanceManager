@@ -22,6 +22,12 @@ namespace FinanceManager.Domain.Entities
             );
         }
 
+        public void Update(string name, string? description)
+        {
+            Name = new Description(name);
+            Description = description;
+        }
+
         public Guid Id { get; private set; }
         public Description Name { get; private set; }
         public string? Description { get; private set; }

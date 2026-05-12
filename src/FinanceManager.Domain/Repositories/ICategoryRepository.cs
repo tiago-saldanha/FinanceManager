@@ -7,5 +7,6 @@ namespace FinanceManager.Domain.Repositories
         Task<IEnumerable<Category>> GetAllAsync();
         Task<Category> GetByIdAsync(Guid id);
         Task AddAsync(Category category);
+        Task UpdateAsync(Category category);
     }
 }

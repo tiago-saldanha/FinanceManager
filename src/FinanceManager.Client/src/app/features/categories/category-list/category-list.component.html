@@ -113,6 +113,14 @@
                 @if (cat.description) {
                   <mat-card-subtitle>{{ cat.description }}</mat-card-subtitle>
                 }
+                <button
+                  mat-icon-button
+                  class="edit-btn"
+                  matTooltip="Editar categoria"
+                  (click)="openEditDialog(cat)"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
               </mat-card-header>
 
               <mat-card-content>

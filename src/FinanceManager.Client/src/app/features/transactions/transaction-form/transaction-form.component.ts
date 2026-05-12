@@ -15,6 +15,7 @@ import { CategoryService } from '../../../core/services/category.service';
 import { TransactionService } from '../../../core/services/transaction.service';
 import { Transaction } from '../../../core/models/transaction.model';
 import { Category } from '../../../core/models/category.model';
+import { CurrencyMaskDirective } from '../../../core/directives/currency-mask.directive';
 
 export interface TransactionFormData {
   transaction?: Transaction;
@@ -34,6 +35,7 @@ export interface TransactionFormData {
     MatButtonModule,
     MatIconModule,
     MatProgressSpinnerModule,
+    CurrencyMaskDirective,
   ],
   templateUrl: './transaction-form.component.html',
   styleUrl: './transaction-form.component.scss',

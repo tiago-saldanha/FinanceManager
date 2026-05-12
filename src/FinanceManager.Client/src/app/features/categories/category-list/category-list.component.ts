@@ -20,7 +20,7 @@ import { CategoryService } from '../../../core/services/category.service';
 import { TransactionService } from '../../../core/services/transaction.service';
 import { Category } from '../../../core/models/category.model';
 import { Transaction } from '../../../core/models/transaction.model';
-import { CategoryFormComponent } from '../category-form/category-form.component';
+import { CategoryFormComponent, CategoryFormData } from '../category-form/category-form.component';
 
 type PeriodMode = 'thisMonth' | 'lastMonth' | 'last30Days' | 'thisYear' | 'all' | 'custom';
 
@@ -143,6 +143,21 @@ export class CategoryListComponent implements OnInit {
     ref.afterClosed().subscribe(result => {
       if (result) {
         this.snackBar.open('Categoria criada com sucesso!', 'OK', { duration: 3000 });
+        this.loadAll();
+      }
+    });
+  }
+
+  openEditDialog(cat: Category): void {
+    const data: CategoryFormData = { category: cat };
+    const ref = this.dialog.open(CategoryFormComponent, {
+      width: '480px',
+      disableClose: true,
+      data,
+    });
+    ref.afterClosed().subscribe(result => {
+      if (result) {
+        this.snackBar.open('Categoria atualizada com sucesso!', 'OK', { duration: 3000 });
         this.loadAll();
       }
     });

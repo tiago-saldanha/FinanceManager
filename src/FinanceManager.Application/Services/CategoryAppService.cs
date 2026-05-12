@@ -33,5 +33,16 @@ namespace FinanceManager.Application.Services
             var domainService = new CategoryTotalService();
             return CategoryResponse.Create(category, domainService);
         }
+
+        public async Task<CategoryResponse> UpdateAsync(Guid id, CategoryRequest request)
+        {
+            if (string.IsNullOrWhiteSpace(request.Name)) throw new CategoryNameAppException();
+            var category = await repository.GetByIdAsync(id);
+            category.Update(request.Name, request.Description);
+            await repository.UpdateAsync(category);
+            await unitOfWork.CommitAsync();
+            var domainService = new CategoryTotalService();
+            return CategoryResponse.Create(category, domainService);
+        }
     }
 }

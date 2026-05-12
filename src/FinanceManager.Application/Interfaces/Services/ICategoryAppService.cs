@@ -8,5 +8,6 @@ namespace FinanceManager.Application.Interfaces.Services
         Task<IEnumerable<CategoryResponse>> GetAllAsync();
         Task<CategoryResponse> GetByIdAsync(Guid id);
         Task<CategoryResponse> CreateAsync(CategoryRequest request);
+        Task<CategoryResponse> UpdateAsync(Guid id, CategoryRequest request);
     }
 }

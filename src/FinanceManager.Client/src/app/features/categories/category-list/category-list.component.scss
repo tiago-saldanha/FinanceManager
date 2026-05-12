@@ -77,6 +77,12 @@
       transition: box-shadow 0.2s;
       &:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
 
+      .edit-btn {
+        margin-left: auto;
+        color: #757575;
+        &:hover { color: #004d40; }
+      }
+
       .cat-avatar {
         background: #d1fae5;
         border-radius: 50%;

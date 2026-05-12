@@ -21,6 +21,9 @@ namespace API.Endpoints
                 var result = await service.CreateAsync(request);
                 return Results.Created($"/api/categories/{result.Id}", result);
             });
+
+            group.MapPut("/{id:guid}", async (Guid id, CategoryRequest request, ICategoryAppService service) =>
+                Results.Ok(await service.UpdateAsync(id, request)));
         }
     }
 }

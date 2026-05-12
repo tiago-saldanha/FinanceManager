@@ -37,7 +37,8 @@ public static class InfrastructureDependencyInjection
                 options.User.RequireUniqueEmail = true;
             })
             .AddEntityFrameworkStores<AppDbContext>()
-            .AddDefaultTokenProviders();
+            .AddDefaultTokenProviders()
+            .AddErrorDescriber<PortugueseIdentityErrorDescriber>();
 
         // ── Multi-tenancy ─────────────────────────────────────────────────
         services.AddScoped<ITenantConnectionResolver, TenantConnectionResolver>();

@@ -78,6 +78,23 @@ public class CategoryEndpointTests
         Assert.Single(categories!);
     }
 
+    [Fact]
+    public async Task PUT_WhenIdAndRequestAreValid_ShouldUpdateCategory()
+    {
+        var createRequest = new { name = "Original", description = "Original Description" };
+        var createResult  = await _client.PostAsync("/api/categories", GetContent(createRequest));
+        var created       = await createResult.Content.ReadFromJsonAsync<CategoryResponse>();
+
+        var updateRequest = new { name = "Updated", description = "Updated Description" };
+        var response      = await _client.PutAsync($"/api/categories/{created!.Id}", GetContent(updateRequest));
+        var updated       = await response.Content.ReadFromJsonAsync<CategoryResponse>();
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equal(created.Id,          updated!.Id);
+        Assert.Equal(updateRequest.name,        updated.Name);
+        Assert.Equal(updateRequest.description, updated.Description);
+    }
+
     private static StringContent GetContent(object request)
         => new(JsonSerializer.Serialize(request), System.Text.Encoding.UTF8, "application/json");
 }

@@ -11,6 +11,12 @@ namespace FinanceManager.Infrastructure.Repositories
         public async Task AddAsync(Category category)
             => await context.Categories.AddAsync(category);
 
+        public Task UpdateAsync(Category category)
+        {
+            context.Categories.Update(category);
+            return Task.CompletedTask;
+        }
+
         public async Task<IEnumerable<Category>> GetAllAsync()
             => await context.Categories.AsNoTracking().Include(q => q.Transactions).ToListAsync();
 
