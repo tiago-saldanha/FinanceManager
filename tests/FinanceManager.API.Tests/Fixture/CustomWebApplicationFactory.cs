@@ -3,8 +3,11 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 using FinanceManager.Infrastructure.Data;
+using FinanceManager.Infrastructure.Identity;
+using FinanceManager.Infrastructure.Interfaces;
 using FinanceManager.Infrastructure.Tenancy;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +23,10 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
     internal const string Issuer = "FinanceManager.API.Tests";
     internal const string Audience = "FinanceManager.Client.Tests";
     public   const string TestUserId = "test-user-id-00000000-0000-0000-0001";
+    public   const string TestUserEmail = "test@financemanager.com";
+    public   const string TestUserPassword = "Test@123";
+
+    public EmailServiceStub EmailStub { get; } = new();
 
     private readonly SqliteConnection _identityConnection = new("DataSource=:memory:");
     private readonly SqliteConnection _tenantConnection   = new("DataSource=:memory:");
@@ -41,6 +48,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
                 ["Jwt:Audience"] = Audience,
                 ["Jwt:ExpiresInMinutes"] = "60",
                 ["TenantDb:BaseFolder"] = Path.GetTempPath(),
+                ["App:FrontendUrl"] = "http://localhost:4200",
             });
         });
 
@@ -58,18 +66,26 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
             RemoveService<ITenantConnectionResolver>(services);
             services.AddScoped<ITenantConnectionResolver, StubTenantConnectionResolver>();
 
+            RemoveService<IEmailService>(services);
+            services.AddSingleton<IEmailService>(EmailStub);
+
             var provider = services.BuildServiceProvider();
             using var scope = provider.CreateScope();
-            scope.ServiceProvider.GetRequiredService<AppDbContext>()
-                 .Database.EnsureCreated();
-            scope.ServiceProvider.GetRequiredService<TenantDbContext>()
-                 .Database.EnsureCreated();
+            scope.ServiceProvider.GetRequiredService<AppDbContext>().Database.EnsureCreated();
+            scope.ServiceProvider.GetRequiredService<TenantDbContext>().Database.EnsureCreated();
+
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+            var testUser = new AppUser
+            {
+                Id       = TestUserId,
+                UserName = TestUserEmail,
+                Email    = TestUserEmail,
+                FullName = "Test User",
+            };
+            userManager.CreateAsync(testUser, TestUserPassword).GetAwaiter().GetResult();
         });
     }
 
-    /// <summary>
-    /// Cria um HttpClient já autenticado com um JWT de teste válido.
-    /// </summary>
     public HttpClient CreateAuthenticatedClient(string userId = TestUserId)
     {
         var client = CreateClient();
@@ -86,7 +102,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         var claims = new[]
         {
             new Claim(JwtRegisteredClaimNames.Sub, userId),
-            new Claim(JwtRegisteredClaimNames.Email, "test@financemanager.com"),
+            new Claim(JwtRegisteredClaimNames.Email, TestUserEmail),
             new Claim(JwtRegisteredClaimNames.Name, "Test User"),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         };
@@ -116,10 +132,17 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
     }
 }
 
-/// <summary>
-/// Stub para satisfazer o grafo de DI nos testes.
-/// O TenantDbContext é substituído diretamente, então este resolver nunca é chamado.
-/// </summary>
+public sealed class EmailServiceStub : IEmailService
+{
+    public string? LastResetLink { get; private set; }
+
+    public Task SendPasswordResetAsync(string toEmail, string resetLink)
+    {
+        LastResetLink = resetLink;
+        return Task.CompletedTask;
+    }
+}
+
 file sealed class StubTenantConnectionResolver : ITenantConnectionResolver
 {
     public string GetConnectionString() => "DataSource=:memory:";
