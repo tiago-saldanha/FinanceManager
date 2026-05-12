@@ -27,6 +27,8 @@ jobs:
 
       - name: Run tests with coverage
         run: dotnet test --no-build --configuration Release --collect:"XPlat Code Coverage"
+        env:
+          Jwt__SecretKey: ${{ secrets.JWT_SECRET_KEY }}
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4

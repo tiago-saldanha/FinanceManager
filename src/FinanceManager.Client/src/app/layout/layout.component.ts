@@ -48,6 +48,7 @@ export class LayoutComponent {
     { path: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
     { path: '/transactions', label: 'Transações', icon: 'receipt_long' },
     { path: '/categories', label: 'Categorias', icon: 'category' },
+    { path: '/change-password', label: 'Alterar senha', icon: 'lock_reset' },
   ];
 
   applyTheme(theme: Theme): void {

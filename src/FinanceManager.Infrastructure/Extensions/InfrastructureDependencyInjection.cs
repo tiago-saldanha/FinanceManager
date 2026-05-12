@@ -5,6 +5,7 @@ using FinanceManager.Infrastructure.Interfaces;
 using FinanceManager.Infrastructure.Repositories;
 using FinanceManager.Infrastructure.Services;
 using FinanceManager.Infrastructure.Tenancy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,14 +29,15 @@ public static class InfrastructureDependencyInjection
         services
             .AddIdentityCore<AppUser>(options =>
             {
-                options.Password.RequireDigit           = true;
-                options.Password.RequireLowercase       = true;
-                options.Password.RequireUppercase       = true;
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
                 options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequiredLength         = 6;
-                options.User.RequireUniqueEmail         = true;
+                options.Password.RequiredLength = 6;
+                options.User.RequireUniqueEmail = true;
             })
-            .AddEntityFrameworkStores<AppDbContext>();
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddDefaultTokenProviders();
 
         // ── Multi-tenancy ─────────────────────────────────────────────────
         services.AddScoped<ITenantConnectionResolver, TenantConnectionResolver>();
@@ -51,6 +53,13 @@ public static class InfrastructureDependencyInjection
         // ── Serviços de autenticação ──────────────────────────────────────
         services.AddScoped<TokenService>();
         services.AddScoped<IAuthAppService, AuthAppService>();
+
+        // ── E-mail (Resend) ───────────────────────────────────────────────
+        services.AddHttpClient<IEmailService, ResendEmailService>((sp, client) =>
+        {
+            var apiKey = configuration["Resend:ApiKey"]!;
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
+        });
 
         // ── Repositórios ──────────────────────────────────────────────────
         services.AddScoped<IUnitOfWork, UnitOfWork>();

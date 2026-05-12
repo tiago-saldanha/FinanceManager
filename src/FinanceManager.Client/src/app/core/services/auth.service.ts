@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs';
 import { environment } from '@environments/environment';
-import { AuthResponse, LoginRequest, RegisterRequest } from '../models/auth.model';
+import { AuthResponse, ChangePasswordRequest, ForgotPasswordRequest, LoginRequest, RegisterRequest, ResetPasswordRequest } from '../models/auth.model';
 
 const TOKEN_KEY    = 'fm_token';
 const USER_KEY     = 'fm_user';
@@ -33,6 +33,20 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${this.baseUrl}/register`, request).pipe(
       tap(response => this.persist(response))
     );
+  }
+
+  // ── Change Password ───────────────────────────────────────────────────────
+  changePassword(request: ChangePasswordRequest) {
+    return this.http.put(`${this.baseUrl}/change-password`, request);
+  }
+
+  // ── Forgot / Reset Password ───────────────────────────────────────────────
+  forgotPassword(request: ForgotPasswordRequest) {
+    return this.http.post(`${this.baseUrl}/forgot-password`, request);
+  }
+
+  resetPassword(request: ResetPasswordRequest) {
+    return this.http.post(`${this.baseUrl}/reset-password`, request);
   }
 
   // ── Logout ────────────────────────────────────────────────────────────────
