@@ -1,8 +1,0 @@
-<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/0.5.126-alpha">
-  <PropertyGroup>
-    <StartupCommand>npm start</StartupCommand>
-    <JavaScriptTestFramework>Jasmine</JavaScriptTestFramework>
-    <!-- Onde o build do Angular será gerado -->
-    <BuildOutputFolder>$(MSBuildProjectDirectory)\dist\finance-manager-frontend</BuildOutputFolder>
-  </PropertyGroup>
-</Project>

@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "src\\FinanceManager.API\\Finanza.API.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "src\\FinanceManager.Client\\Finanza.Client.esproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

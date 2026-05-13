@@ -1,0 +1,20 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+
+namespace Finanza.Infrastructure.Data
+{
+    public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
+    {
+        public AppDbContext CreateDbContext(string[] args)
+        {
+            var builder = new DbContextOptionsBuilder<AppDbContext>();
+
+            builder.UseSqlite(
+                "Data Source=app.db",
+                b => b.MigrationsAssembly("Infrastructure")
+            );
+
+            return new AppDbContext(builder.Options);
+        }
+    }
+}

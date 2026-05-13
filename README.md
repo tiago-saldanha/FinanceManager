@@ -1,10 +1,10 @@
-﻿# Finance Manager
+﻿# Finanza
 
 ![Build](https://github.com/tiago-saldanha/FinanceManager/actions/workflows/ci.yml/badge.svg)
 ![Coverage](https://codecov.io/gh/tiago-saldanha/FinanceManager/branch/master/graph/badge.svg)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-Finance Manager is a backend application built with ASP.NET Core (.NET 8) following Clean Architecture and Domain-Driven Design (DDD) principles.
+Finanza is a backend application built with ASP.NET Core (.NET 8) following Clean Architecture and Domain-Driven Design (DDD) principles.
 
 The project focuses on maintainability, separation of concerns, and testability, simulating a real-world enterprise-ready architecture.
 
