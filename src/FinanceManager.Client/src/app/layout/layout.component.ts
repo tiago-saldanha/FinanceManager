@@ -45,10 +45,10 @@ export class LayoutComponent {
   isMobile = signal(window.innerWidth < 768);
 
   navItems: NavItem[] = [
-    { path: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
-    { path: '/transactions', label: 'Transações', icon: 'receipt_long' },
-    { path: '/categories', label: 'Categorias', icon: 'category' },
-    { path: '/change-password', label: 'Alterar senha', icon: 'lock_reset' },
+    { path: '/dashboard',    label: 'Dashboard',   icon: 'dashboard' },
+    { path: '/transactions', label: 'Transações',  icon: 'receipt_long' },
+    { path: '/categories',   label: 'Categorias',  icon: 'category' },
+    { path: '/account',      label: 'Minha Conta', icon: 'manage_accounts' },
   ];
 
   applyTheme(theme: Theme): void {

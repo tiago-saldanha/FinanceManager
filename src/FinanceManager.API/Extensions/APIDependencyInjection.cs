@@ -117,6 +117,7 @@ namespace FinanceManager.API.Extensions
             app.MapAuthEndpoints();
             app.MapCategoryEndpoints();
             app.MapTransactionEndpoints();
+            app.MapAccountEndpoints();
 
             return app;
         }

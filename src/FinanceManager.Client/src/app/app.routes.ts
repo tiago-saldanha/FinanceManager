@@ -59,6 +59,11 @@ export const routes: Routes = [
             m => m.ChangePasswordComponent
           ),
       },
+      {
+        path: 'account',
+        loadComponent: () =>
+          import('./features/account/account.component').then(m => m.AccountComponent),
+      },
       { path: '**', redirectTo: 'dashboard' },
     ],
   },

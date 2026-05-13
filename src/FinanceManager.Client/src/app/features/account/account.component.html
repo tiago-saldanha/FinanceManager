@@ -1,0 +1,101 @@
+<div class="page-container">
+  <h1 class="page-title">Minha Conta</h1>
+
+  <!-- Dados do perfil -->
+  <mat-card class="section-card">
+    <mat-card-header>
+      <div class="card-icon-wrap" mat-card-avatar>
+        <mat-icon>person</mat-icon>
+      </div>
+      <mat-card-title>Dados do perfil</mat-card-title>
+      <mat-card-subtitle>Informações da sua conta Finanza</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="info-row">
+        <mat-icon class="info-icon">badge</mat-icon>
+        <div>
+          <div class="info-label">Nome completo</div>
+          <div class="info-value">{{ user()?.fullName }}</div>
+        </div>
+      </div>
+
+      <div class="info-row">
+        <mat-icon class="info-icon">email</mat-icon>
+        <div>
+          <div class="info-label">E-mail</div>
+          <div class="info-value">{{ user()?.email }}</div>
+        </div>
+      </div>
+
+      <mat-divider class="divider" />
+
+      <div class="password-row">
+        <div class="password-info">
+          <mat-icon class="info-icon">lock</mat-icon>
+          <div>
+            <div class="info-label">Senha</div>
+            <div class="info-value">••••••••</div>
+          </div>
+        </div>
+        <button mat-stroked-button routerLink="/change-password">
+          <mat-icon>edit</mat-icon>
+          Alterar senha
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Exportar dados -->
+  <mat-card class="section-card">
+    <mat-card-header>
+      <div class="card-icon-wrap" mat-card-avatar>
+        <mat-icon>download</mat-icon>
+      </div>
+      <mat-card-title>Exportar meus dados</mat-card-title>
+      <mat-card-subtitle>Direito de portabilidade — LGPD art. 18, V</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <p class="section-text">
+        Baixe uma cópia completa dos seus dados: perfil, categorias e transações em formato JSON.
+      </p>
+      <button mat-flat-button class="export-btn" (click)="exportData()" [disabled]="exporting()">
+        <span class="btn-content">
+          @if (exporting()) {
+            <mat-spinner diameter="18" />
+            <span>Exportando...</span>
+          } @else {
+            <mat-icon>{{ hasExported() ? 'check_circle' : 'download' }}</mat-icon>
+            <span>{{ hasExported() ? 'Baixar novamente' : 'Baixar meus dados' }}</span>
+          }
+        </span>
+      </button>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Cancelar conta -->
+  <mat-card class="section-card danger-card">
+    <mat-card-header>
+      <div class="card-icon-wrap danger-icon-wrap" mat-card-avatar>
+        <mat-icon>dangerous</mat-icon>
+      </div>
+      <mat-card-title class="danger-title">Cancelar conta</mat-card-title>
+      <mat-card-subtitle>Zona de perigo — ação irreversível</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <p class="section-text">
+        Todos os seus dados serão <strong>permanentemente excluídos</strong>, conforme o direito ao
+        esquecimento previsto na LGPD (art. 18, VI).
+        @if (!hasExported()) {
+          <span class="export-hint">Recomendamos exportar seus dados antes de prosseguir.</span>
+        }
+      </p>
+      <button mat-flat-button class="delete-btn" (click)="openDeleteFlow()">
+        <mat-icon>delete_forever</mat-icon>
+        Cancelar minha conta
+      </button>
+    </mat-card-content>
+  </mat-card>
+</div>

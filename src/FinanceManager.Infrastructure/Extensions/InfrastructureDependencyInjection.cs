@@ -54,6 +54,7 @@ public static class InfrastructureDependencyInjection
         // ── Serviços de autenticação ──────────────────────────────────────
         services.AddScoped<TokenService>();
         services.AddScoped<IAuthAppService, AuthAppService>();
+        services.AddScoped<IAccountAppService, AccountAppService>();
 
         // ── E-mail (Resend) ───────────────────────────────────────────────
         services.AddHttpClient<IEmailService, ResendEmailService>((sp, client) =>

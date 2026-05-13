@@ -1,0 +1,38 @@
+.dialog-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #b71c1c;
+
+  .warning-icon { color: #b71c1c; }
+}
+
+.warning-text {
+  color: #424242;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.form-wrapper {
+  min-width: 380px;
+  @media (max-width: 480px) { min-width: unset; }
+}
+
+.full-width { width: 100%; }
+
+mat-dialog-actions { padding: 16px 24px; gap: 8px; }
+
+.delete-btn {
+  background-color: #c62828;
+  color: white;
+  &.deleting { opacity: 0.8; }
+}
+
+.btn-content {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  mat-spinner { --mdc-circular-progress-active-indicator-color: white; }
+}

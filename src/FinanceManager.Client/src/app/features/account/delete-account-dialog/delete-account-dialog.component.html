@@ -1,0 +1,43 @@
+<h2 mat-dialog-title class="dialog-title">
+  <mat-icon class="warning-icon">warning</mat-icon>
+  Cancelar conta
+</h2>
+
+<mat-dialog-content>
+  <p class="warning-text">
+    Esta ação é <strong>irreversível</strong>. Todos os seus dados (categorias e transações) serão
+    permanentemente excluídos. Confirme sua senha para prosseguir.
+  </p>
+
+  <form [formGroup]="form" class="form-wrapper">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Sua senha</mat-label>
+      <input matInput
+             [type]="hidePassword() ? 'password' : 'text'"
+             formControlName="password"
+             autocomplete="current-password" />
+      <button mat-icon-button matSuffix type="button"
+              (click)="hidePassword.set(!hidePassword())">
+        <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+      @if (form.get('password')?.hasError('required') && form.get('password')?.touched) {
+        <mat-error>Senha é obrigatória</mat-error>
+      }
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Voltar</button>
+  <button mat-flat-button class="delete-btn" [class.deleting]="deleting()" (click)="confirm()">
+    <span class="btn-content">
+      @if (deleting()) {
+        <mat-spinner diameter="18" />
+        <span>Excluindo...</span>
+      } @else {
+        <mat-icon>delete_forever</mat-icon>
+        <span>Excluir minha conta</span>
+      }
+    </span>
+  </button>
+</mat-dialog-actions>

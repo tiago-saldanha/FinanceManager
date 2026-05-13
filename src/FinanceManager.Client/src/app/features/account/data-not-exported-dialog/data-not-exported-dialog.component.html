@@ -1,0 +1,24 @@
+<h2 mat-dialog-title class="dialog-title">
+  <mat-icon class="warning-icon">warning_amber</mat-icon>
+  Seus dados não foram exportados
+</h2>
+
+<mat-dialog-content>
+  <p class="message">
+    Você ainda <strong>não exportou seus dados</strong> nesta sessão.
+    Ao cancelar a conta, todas as suas informações — categorias e transações —
+    serão <strong>permanentemente excluídas</strong> e <strong>não será possível recuperá-las</strong>
+    após esta operação.
+  </p>
+  <p class="message">
+    Deseja continuar mesmo assim?
+  </p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Voltar e exportar</button>
+  <button mat-flat-button class="confirm-btn" (click)="confirm()">
+    <mat-icon>delete_forever</mat-icon>
+    Entendo, quero cancelar mesmo assim
+  </button>
+</mat-dialog-actions>
