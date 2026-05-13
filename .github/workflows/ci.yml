@@ -20,18 +20,19 @@ jobs:
           dotnet-version: 8.0.x
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore Finanza.Backend.slnf
 
       - name: Build
-        run: dotnet build --no-restore --configuration Release
+        run: dotnet build Finanza.Backend.slnf --no-restore --configuration Release
 
       - name: Run tests with coverage
-        run: dotnet test --no-build --configuration Release --collect:"XPlat Code Coverage"
+        run: dotnet test Finanza.Backend.slnf --no-build --configuration Release --collect:"XPlat Code Coverage"
         env:
           Jwt__SecretKey: ${{ secrets.JWT_SECRET_KEY }}
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
+          token: ${{ secrets.CODECOV_TOKEN }}
           files: '**/coverage.cobertura.xml'
           fail_ci_if_error: true

@@ -1,0 +1,15 @@
+{
+  "solution": {
+    "path": "Finanza.sln",
+    "projects": [
+      "src/Finanza.API/Finanza.API.csproj",
+      "src/Finanza.Application/Finanza.Application.csproj",
+      "src/Finanza.Domain/Finanza.Domain.csproj",
+      "src/Finanza.Infrastructure/Finanza.Infrastructure.csproj",
+      "tests/Finanza.API.Tests/Finanza.API.Tests.csproj",
+      "tests/Finanza.Application.Tests/Finanza.Application.Tests.csproj",
+      "tests/Finanza.Domain.Tests/Finanza.Domain.Tests.csproj",
+      "tests/Finanza.Infrastructure.Tests/Finanza.Infrastructure.Tests.csproj"
+    ]
+  }
+}
